@@ -1,0 +1,148 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "admin01",
+            "password": "hashed_or_plain",
+            "role": "admin",
+            "fullName": "Nguyen Van A",
+            "email": "a@example.com"
+        },
+        {
+            "id": 3,
+            "username": "manager01",
+            "password": "hashed_or_plain",
+            "role": "manager",
+            "fullName": "Tran Thi B",
+            "email": "b@example.com"
+        },
+        {
+            "id": 4,
+            "username": "staff01",
+            "password": "hashed_or_plain",
+            "role": "staff",
+            "fullName": "Le Van C",
+            "email": "c@example.com"
+        },
+        {
+            "id": 5,
+            "username": "staff02",
+            "password": "hashed_or_plain",
+            "role": "staff",
+            "fullName": "Pham Van D",
+            "email": "d@example.com"
+        },
+        {
+            "id": 7,
+            "username": "buyer01",
+            "password": "hashed_or_plain",
+            "role": "buyer",
+            "fullName": "Nguyen Thi E",
+            "email": "e@example.com"
+        },
+        {
+            "id": 8,
+            "username": "shipper01",
+            "password": "hashed_or_plain",
+            "role": "shipper",
+            "fullName": "Ngo Van F",
+            "email": "f@example.com"
+        }
+    ],
+    "products": [
+        {
+            "id": 1,
+            "name": "Loa bluetooth",
+            "description": "Loa công suất lớn",
+            "price": 200000,
+            "status": "available",
+            "warrantyExpire": "2025-12-31",
+            "enterpriseId": 2
+        }
+    ],
+    "warehouses": [
+        {
+            "id": 1,
+            "name": "Kho HCM",
+            "location": "TP.HCM",
+            "enterpriseId": 2
+        }
+    ],
+    "inventory": [
+        {
+            "id": 1,
+            "productId": 1,
+            "warehouseId": 1,
+            "quantity": 120
+        }
+    ],
+    "enterprises": [
+        {
+            "id": 2,
+            "name": "Công ty Loa Việt",
+            "ownerId": 3
+        }
+    ],
+    "importOrders": [
+        {
+            "id": 1,
+            "staffId": 4,
+            "warehouseId": 1,
+            "date": "2025-06-27",
+            "note": "Nhập hàng mới"
+        }
+    ],
+    "exportOrders": [
+        {
+            "id": 2,
+            "staffId": 5,
+            "warehouseId": 1,
+            "location": "TP.HCM",
+            "date": "2025-06-27",
+            "type": "order"
+        }
+    ],
+    "orderDetails": [
+        {
+            "id": 1,
+            "orderType": "import",
+            "orderId": 1,
+            "productId": 1,
+            "quantity": 50
+        }
+    ],
+    "wholesaleOrders": [
+        {
+            "id": 3,
+            "buyerId": 7,
+            "status": "pending",
+            "totalPrice": 10000000,
+            "date": "2025-06-27"
+        }
+    ],
+    "wholesaleOrderItems": [
+        {
+            "id": 1,
+            "orderId": 3,
+            "productId": 1,
+            "quantity": 50
+        }
+    ],
+    "shipments": [
+        {
+            "id": 1,
+            "wholesaleOrderId": 3,
+            "shipperId": 8,
+            "status": "assigned",
+            "deliveryDate": null
+        }
+    ],
+    "logs": [
+        {
+            "id": 1,
+            "userId": 1,
+            "action": "created import order",
+            "timestamp": "2025-06-27T12:30:00"
+        }
+    ]
+}
