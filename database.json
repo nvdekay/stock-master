@@ -3,7 +3,7 @@
         {
             "id": 1,
             "username": "admin01",
-            "password": "hashed_or_plain",
+            "password": "123",
             "role": "admin",
             "fullName": "Nguyen Van A",
             "email": "a@example.com"
@@ -11,7 +11,7 @@
         {
             "id": 3,
             "username": "manager01",
-            "password": "hashed_or_plain",
+            "password": "123",
             "role": "manager",
             "fullName": "Tran Thi B",
             "email": "b@example.com"
@@ -19,7 +19,7 @@
         {
             "id": 4,
             "username": "staff01",
-            "password": "hashed_or_plain",
+            "password": "123",
             "role": "staff",
             "fullName": "Le Van C",
             "email": "c@example.com"
@@ -27,7 +27,7 @@
         {
             "id": 5,
             "username": "staff02",
-            "password": "hashed_or_plain",
+            "password": "123",
             "role": "staff",
             "fullName": "Pham Van D",
             "email": "d@example.com"
@@ -35,7 +35,7 @@
         {
             "id": 7,
             "username": "buyer01",
-            "password": "hashed_or_plain",
+            "password": "123",
             "role": "buyer",
             "fullName": "Nguyen Thi E",
             "email": "e@example.com"
@@ -43,7 +43,7 @@
         {
             "id": 8,
             "username": "shipper01",
-            "password": "hashed_or_plain",
+            "password": "123",
             "role": "shipper",
             "fullName": "Ngo Van F",
             "email": "f@example.com"
