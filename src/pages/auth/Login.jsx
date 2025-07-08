@@ -69,7 +69,9 @@ const LoginPage = () => {
             setTimeout(() => {
                 setFormData({ usernameOrEmail: '', password: '' });
                 setShowAlert(false);
-                navigate("/");
+                if (user.role.toLowerCase().includes("admin"))
+                    navigate("/admin");
+                else navigate("/");
             }, 2000);
 
             setAlertMessage('Login successful! Redirecting to Home Page')
