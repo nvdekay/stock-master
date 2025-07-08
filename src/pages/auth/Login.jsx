@@ -38,7 +38,7 @@ const LoginPage = () => {
         }
 
         // Here you would typically make an API call to authenticate the user
-        console.log('Login attempt:', formData);
+        // console.log('Login attempt:', formData);
 
         try {
             const response = await api.post("/login", {
@@ -46,7 +46,7 @@ const LoginPage = () => {
                 password: formData.password
             });
 
-            console.log("Login response:", response.data);
+            // console.log("Login response:", response.data);
 
             // If your server returns { accessToken, user }
             const { accessToken, user } = response.data;
