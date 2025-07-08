@@ -259,6 +259,11 @@
       "warrantyExpire": "2026-11-01",
       "enterpriseId": 2,
       "image": "/images/products/21.jpg"
+    },
+    {
+      "username": "admin01",
+      "password": "123",
+      "id": 22
     }
   ],
   "warehouses": [

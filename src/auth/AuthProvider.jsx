@@ -1,11 +1,11 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 // create context
 const AuthContext = createContext();
 
 // context provider
-export function AuthProvider() {
+export function AuthProvider({children}) {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
 
@@ -20,9 +20,11 @@ export function AuthProvider() {
         }
     }, []);
 
-    const login = (userData) => {
+    const login = ({userData, token}) => {
         setUser(userData);
+        setToken(token);
         localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("token", JSON.stringify(token));
     }
 
     const logout = () => {
@@ -33,8 +35,9 @@ export function AuthProvider() {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
-            <Outlet />
+        <AuthContext.Provider value={{ token, user, login, logout }}>
+            {/* <Outlet /> */}
+            {children}
         </AuthContext.Provider>
     );
 }

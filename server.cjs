@@ -44,7 +44,14 @@ app.post("/login", (req, res) => {
         { expiresIn: "1h" }
     );
 
-    res.json({ accessToken: token, userId: user.id, username: user.username, role: user.role });
+    const userInfo = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role
+    }
+
+    res.json({ accessToken: token, user: userInfo});
 });
 
 app.post("/register", (req, res) => {
