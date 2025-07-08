@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Bell,
     Search,
@@ -14,8 +14,15 @@ import {
     Button,
     Dropdown,
 } from 'react-bootstrap';
+import LogoutPopup from '../../pages/auth/Logout';
 
 const Header = () => {
+    // log out modal
+    const [showLogoutModal, setShowLogoutModal] = useState(false)
+
+    const handleShowLogout = () => setShowLogoutModal(true)
+    const handleHideLogout = () => setShowLogoutModal(false)
+
     const getInitials = (name) =>
         name
             .split(' ')
@@ -102,12 +109,14 @@ const Header = () => {
                         <Dropdown.Item
                             href="#"
                             className="d-flex align-items-center gap-2 text-danger"
+                            onClick={() => setShowLogoutModal(!showLogoutModal)}
                         >
                             <LogOut size={16} /> Sign out
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
+            <LogoutPopup show={showLogoutModal} onHide={handleHideLogout} />
         </Navbar>
     );
 };
