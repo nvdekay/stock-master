@@ -8,9 +8,11 @@ const AuthContext = createContext();
 export function AuthProvider({children}) {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     // Load from localStorage on app start
     useEffect(() => {
+        setLoading(true);
         const storedUser = localStorage.getItem("user");
         const storedToken = localStorage.getItem("token");
         if (storedUser && storedToken) {
@@ -18,9 +20,11 @@ export function AuthProvider({children}) {
             setUser(JSON.parse(storedUser));
             setToken(storedToken);
         }
+        setLoading(false);
     }, []);
 
-    const login = ({userData, token}) => {
+    const login = (userData, token) => {
+        // console.log("auth provider_login: ", userData)
         setUser(userData);
         setToken(token);
         localStorage.setItem("user", JSON.stringify(userData));
@@ -35,7 +39,7 @@ export function AuthProvider({children}) {
     };
 
     return (
-        <AuthContext.Provider value={{ token, user, login, logout }}>
+        <AuthContext.Provider value={{ token, user, login, logout, loading }}>
             {/* <Outlet /> */}
             {children}
         </AuthContext.Provider>

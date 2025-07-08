@@ -51,8 +51,15 @@ const LoginPage = () => {
             // If your server returns { accessToken, user }
             const { accessToken, user } = response.data;
 
+            // console.log("response data: ", user)
+
+            // the following lines was already done in login method below
+            // localStorage.setItem("user", JSON.stringify(user));
+            // localStorage.setItem("token", JSON.stringify(accessToken));
+
             // Save to context + localStorage
-            login({ userData: user, token: accessToken });
+            login(user, accessToken);
+
             // Simulate login process
             setAlertMessage('Login successful!');
             setAlertVariant('success');
@@ -62,7 +69,9 @@ const LoginPage = () => {
             setTimeout(() => {
                 setFormData({ usernameOrEmail: '', password: '' });
                 setShowAlert(false);
-                navigate("/");
+                if (user.role.toLowerCase().includes("admin"))
+                    navigate("/admin");
+                else navigate("/");
             }, 2000);
 
             setAlertMessage('Login successful! Redirecting to Home Page')
@@ -70,7 +79,7 @@ const LoginPage = () => {
             setShowAlert(true);
 
         } catch (err) {
-            console.error("Login error:", err.code);
+            console.error("Login error:", err);
             switch (err.code) {
                 case "ERR_BAD_REQUEST":
                     setAlertMessage("Invalid username or password")
