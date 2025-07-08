@@ -65,10 +65,22 @@ const LoginPage = () => {
                 navigate("/");
             }, 2000);
 
-            alert("Login successful!");
+            setAlertMessage('Login successful! Redirecting to Home Page')
+            setAlertVariant('success');
+            setShowAlert(true);
+
         } catch (err) {
-            console.error("Login error:", err);
-            alert("Invalid credentials.");
+            console.error("Login error:", err.code);
+            switch (err.code) {
+                case "ERR_BAD_REQUEST":
+                    setAlertMessage("Invalid username or password")
+                    break;
+                case "ERR_NETWORK":
+                    setAlertMessage("The something wrong with the server! Please try again later");
+                    break;
+            }
+            setAlertVariant('danger');
+            setShowAlert(true);
         }
 
 
