@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create a base instance
 const api = axios.create({
-  baseURL: "http://localhost:9999", // your json-server URL
+  baseURL: "http://localhost:9999", // json-server URL
 });
 
 // Add a request interceptor to automatically inject token
