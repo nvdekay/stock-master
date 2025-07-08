@@ -23,13 +23,15 @@ function App() {
 
         </Route>
 
-        <Route path="/admin" element={<AdminDashboard />} />
 
         {/* Chuyển "/" về "/products" */}
-        <Route path="/" element={<Navigate to="/products" replace />} />
+        {/* <Route path="/" element={<Navigate to="/products" replace />} /> */}
+        <Route path="/">
+          <Route index element={<ProductList />} />
+          <Route path="products" element={<ProductList />} />
+          <Route path="product/:id" element={<ProductDetail />} />
+        </Route>
 
-        <Route path="/products" element={<ProductList />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
         {/* <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<CreateOrder />} />
         <Route path="/orders" element={<OrderTracking />} /> */}
@@ -46,19 +48,20 @@ function App() {
         {/* Routes that requires user to have role ABC */}
         <Route path="/admin" element={<ProtectedRoute requiredRoles={["admin"]} />}>
           {/* route mà cần user phải có role ADMIN thả vào đây */}
+          <Route index element={<AdminDashboard />} />
 
         </Route>
-
-        {/* làm tương tự cho các route cần role khác */}
 
         {/* Nếu trang liến quan đến quản lí mà
            cùng 1 trang hiển thị các chức năng khác nhau cho mỗi role riêng 
            thì chỉ cần ném nó vào mục này
         */}
-        <Route path="/staff" element={<ProtectedRoute requiredRoles={["admin", "manager"]} />}>
+        <Route path="/staff" element={<ProtectedRoute requiredRoles={["admin", "manager", "staff"]} />}>
           {/* route mà cần user phải có roles ADMIN/manager/... thả vào đây */}
 
         </Route>
+
+        {/* làm tương tự cho các route cần role khác */}
 
       </Routes>
     </Router>
