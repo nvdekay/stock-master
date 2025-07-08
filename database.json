@@ -1,349 +1,349 @@
 {
-    "users": [
-        {
-            "id": 1,
-            "username": "admin01",
-            "password": "123",
-            "role": "admin",
-            "fullName": "Nguyen Van A",
-            "email": "a@example.com"
-        },
-        {
-            "id": 3,
-            "username": "manager01",
-            "password": "123",
-            "role": "manager",
-            "fullName": "Tran Thi B",
-            "email": "b@example.com"
-        },
-        {
-            "id": 4,
-            "username": "staff01",
-            "password": "123",
-            "role": "staff",
-            "fullName": "Le Van C",
-            "email": "c@example.com"
-        },
-        {
-            "id": 5,
-            "username": "staff02",
-            "password": "123",
-            "role": "staff",
-            "fullName": "Pham Van D",
-            "email": "d@example.com"
-        },
-        {
-            "id": 7,
-            "username": "buyer01",
-            "password": "123",
-            "role": "buyer",
-            "fullName": "Nguyen Thi E",
-            "email": "e@example.com"
-        },
-        {
-            "id": 8,
-            "username": "shipper01",
-            "password": "123",
-            "role": "shipper",
-            "fullName": "Ngo Van F",
-            "email": "f@example.com"
-        }
-    ],
-    "products": [
-        {
-            "id": 1,
-            "name": "Loa không dây liền công suất JBL Eon 612",
-            "description": "Loa công suất lớn",
-            "price": 1200000,
-            "status": "available",
-            "warrantyExpire": "2025-12-31",
-            "enterpriseId": 2,
-            "image": "/images/products/1.jpg"
-        },
-        {
-            "id": 2,
-            "name": "Tai nghe Bluetooth chụp tai JBL Tune 520BT",
-            "description": "Chống ồn, chất âm mạnh",
-            "price": 350000,
-            "status": "available",
-            "warrantyExpire": "2025-11-30",
-            "enterpriseId": 2,
-            "image": "/images/products/2.jpg"
-        },
-        {
-            "id": 3,
-            "name": "Tai nghe Rapoo VM150 In-ear Gaming",
-            "description": "Nhỏ gọn, bass tốt",
-            "price": 180000,
-            "status": "available",
-            "warrantyExpire": "2026-01-10",
-            "enterpriseId": 2,
-            "image": "/images/products/3.jpg"
-        },
-        {
-            "id": 4,
-            "name": "Cáp sạc Lightning",
-            "description": "Hỗ trợ iPhone, dài 1m",
-            "price": 90000,
-            "status": "available",
-            "warrantyExpire": "2026-06-01",
-            "enterpriseId": 2,
-            "image": "/images/products/4.jpg"
-        },
-        {
-            "id": 5,
-            "name": "Cáp Type-C",
-            "description": "Sạc nhanh 3A",
-            "price": 75000,
-            "status": "available",
-            "warrantyExpire": "2026-06-01",
-            "enterpriseId": 2,
-            "image": "/images/products/5.jpg"
-        },
-        {
-            "id": 6,
-            "name": "Sạc dự phòng 10,000mAh",
-            "description": "2 cổng USB, nhanh",
-            "price": 290000,
-            "status": "available",
-            "warrantyExpire": "2025-10-01",
-            "enterpriseId": 2,
-            "image": "/images/products/6.jpg"
-        },
-        {
-            "id": 7,
-            "name": "Loa mini bluetooth",
-            "description": "Loa nhỏ gọn, thời trang",
-            "price": 150000,
-            "status": "expired",
-            "warrantyExpire": "2023-10-01",
-            "enterpriseId": 2,
-            "image": "/images/products/7.jpg"
-        },
-        {
-            "id": 8,
-            "name": "Ốp lưng iPhone 13",
-            "description": "Ốp lưng IPhone 13 Da Thật",
-            "price": 60000,
-            "status": "available",
-            "warrantyExpire": "2026-02-01",
-            "enterpriseId": 2,
-            "image": "/images/products/8.jpg"
-        },
-        {
-            "id": 9,
-            "name": "Miếng dán màn hình",
-            "description": "Kính cường lực KingKong nhám mờ chống bám mồ hôi, vân tay dành cho iPhone",
-            "price": 40000,
-            "status": "available",
-            "warrantyExpire": "2026-02-01",
-            "enterpriseId": 2,
-            "image": "/images/products/9.jpg"
-        },
-        {
-            "id": 10,
-            "name": "Sạc nhanh 20W",
-            "description": "Hỗ trợ PD 3.0",
-            "price": 220000,
-            "status": "available",
-            "warrantyExpire": "2026-03-15",
-            "enterpriseId": 2,
-            "image": "/images/products/10.jpg"
-        },
-        {
-            "id": 11,
-            "name": "Tai nghe True Wireless",
-            "description": "Chống nước IPX5",
-            "price": 420000,
-            "status": "available",
-            "warrantyExpire": "2026-05-10",
-            "enterpriseId": 2,
-            "image": "/images/products/11.jpg"
-        },
-        {
-            "id": 12,
-            "name": "Loa kéo di động",
-            "description": "Có micro, công suất lớn",
-            "price": 1350000,
-            "status": "available",
-            "warrantyExpire": "2025-12-01",
-            "enterpriseId": 2,
-            "image": "/images/products/12.jpg"
-        },
-        {
-            "id": 13,
-            "name": "Chuột không dây",
-            "description": "Pin 12 tháng",
-            "price": 110000,
-            "status": "available",
-            "warrantyExpire": "2026-07-01",
-            "enterpriseId": 2,
-            "image": "/images/products/13.jpg"
-        },
-        {
-            "id": 14,
-            "name": "Bàn phím Bluetooth",
-            "description": "Kết nối 3 thiết bị",
-            "price": 300000,
-            "status": "available",
-            "warrantyExpire": "2026-07-01",
-            "enterpriseId": 2,
-            "image": "/images/products/14.jpg"
-        },
-        {
-            "id": 15,
-            "name": "Quạt USB mini",
-            "description": "Nhỏ gọn, tiết kiệm điện",
-            "price": 80000,
-            "status": "available",
-            "warrantyExpire": "2025-12-15",
-            "enterpriseId": 2,
-            "image": "/images/products/15.jpg"
-        },
-        {
-            "id": 16,
-            "name": "Camera hành trình",
-            "description": "Full HD, chống rung",
-            "price": 890000,
-            "status": "out-of-stock",
-            "warrantyExpire": "2026-04-01",
-            "enterpriseId": 2,
-            "image": "/images/products/16.jpg"
-        },
-        {
-            "id": 17,
-            "name": "Pin tiểu AA",
-            "description": "2 viên, dùng lâu",
-            "price": 20000,
-            "status": "available",
-            "warrantyExpire": "2027-01-01",
-            "enterpriseId": 2,
-            "image": "/images/products/17.jpg"
-        },
-        {
-            "id": 18,
-            "name": "Hub USB 4 cổng",
-            "description": "Hỗ trợ USB 3.0",
-            "price": 180000,
-            "status": "available",
-            "warrantyExpire": "2026-08-01",
-            "enterpriseId": 2,
-            "image": "/images/products/18.jpg"
-        },
-        {
-            "id": 19,
-            "name": "Đèn bàn LED",
-            "description": "Cảm ứng, 3 chế độ sáng",
-            "price": 250000,
-            "status": "available",
-            "warrantyExpire": "2026-09-01",
-            "enterpriseId": 2,
-            "image": "/images/products/19.jpg"
-        },
-        {
-            "id": 20,
-            "name": "Micro thu âm",
-            "description": "Dành cho livestream",
-            "price": 360000,
-            "status": "available",
-            "warrantyExpire": "2026-10-01",
-            "enterpriseId": 2,
-            "image": "/images/products/20.jpg"
-        },
-        {
-            "id": 21,
-            "name": "Giá đỡ điện thoại",
-            "description": "Gấp gọn, điều chỉnh góc",
-            "price": 50000,
-            "status": "available",
-            "warrantyExpire": "2026-11-01",
-            "enterpriseId": 2,
-            "image": "/images/products/21.jpg"
-        }
-    ],
-    "warehouses": [
-        {
-            "id": 1,
-            "name": "Kho HCM",
-            "location": "TP.HCM",
-            "enterpriseId": 2
-        }
-    ],
-    "inventory": [
-        {
-            "id": 1,
-            "productId": 1,
-            "warehouseId": 1,
-            "quantity": 120
-        }
-    ],
-    "enterprises": [
-        {
-            "id": 2,
-            "name": "Công ty Loa Việt",
-            "ownerId": 3
-        }
-    ],
-    "importOrders": [
-        {
-            "id": 1,
-            "staffId": 4,
-            "warehouseId": 1,
-            "date": "2025-06-27",
-            "note": "Nhập hàng mới"
-        }
-    ],
-    "exportOrders": [
-        {
-            "id": 2,
-            "staffId": 5,
-            "warehouseId": 1,
-            "location": "TP.HCM",
-            "date": "2025-06-27",
-            "type": "order"
-        }
-    ],
-    "orderDetails": [
-        {
-            "id": 1,
-            "orderType": "import",
-            "orderId": 1,
-            "productId": 1,
-            "quantity": 50
-        }
-    ],
-    "wholesaleOrders": [
-        {
-            "id": 3,
-            "buyerId": 7,
-            "status": "pending",
-            "totalPrice": 10000000,
-            "date": "2025-06-27"
-        }
-    ],
-    "wholesaleOrderItems": [
-        {
-            "id": 1,
-            "orderId": 3,
-            "productId": 1,
-            "quantity": 50
-        }
-    ],
-    "shipments": [
-        {
-            "id": 1,
-            "wholesaleOrderId": 3,
-            "shipperId": 8,
-            "status": "assigned",
-            "deliveryDate": null
-        }
-    ],
-    "logs": [
-        {
-            "id": 1,
-            "userId": 1,
-            "action": "created import order",
-            "timestamp": "2025-06-27T12:30:00"
-        }
-    ]
+  "users": [
+    {
+      "id": 1,
+      "username": "admin01",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
+      "role": "admin",
+      "fullName": "Nguyen Van A",
+      "email": "a@example.com"
+    },
+    {
+      "id": 3,
+      "username": "manager01",
+      "password": "$2b$10$QjfHqEe5oC5wQ4BCtGI8U.xchLkZEVMXtHTygotaf5rEe1Tx2Jn26",
+      "role": "manager",
+      "fullName": "Tran Thi B",
+      "email": "b@example.com"
+    },
+    {
+      "id": 4,
+      "username": "staff01",
+      "password": "$2b$10$M830PmrR7tnS7g4csar9Kud1FhDKxUnDGzZroLaAbKr1JpAWgqK9C",
+      "role": "staff",
+      "fullName": "Le Van C",
+      "email": "c@example.com"
+    },
+    {
+      "id": 5,
+      "username": "staff02",
+      "password": "$2b$10$fRxXnY6Gsrx0N1PP8/C51OAAapkK9akr/rc./BxUgIdrGE1H6g2vu",
+      "role": "staff",
+      "fullName": "Pham Van D",
+      "email": "d@example.com"
+    },
+    {
+      "id": 7,
+      "username": "buyer01",
+      "password": "$2b$10$lo3eM19C0UpCg0fCqJ93/emKZkFrQP1dvUaI8iAEFnHUETKjGrsbK",
+      "role": "buyer",
+      "fullName": "Nguyen Thi E",
+      "email": "e@example.com"
+    },
+    {
+      "id": 8,
+      "username": "shipper01",
+      "password": "$2b$10$VeOzP1ApTJNYNbzWdBvIi.kRW2tWWKTo6LUb/m0ffsEqW44Dju4JC",
+      "role": "shipper",
+      "fullName": "Ngo Van F",
+      "email": "f@example.com"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Loa không dây liền công suất JBL Eon 612",
+      "description": "Loa công suất lớn",
+      "price": 1200000,
+      "status": "available",
+      "warrantyExpire": "2025-12-31",
+      "enterpriseId": 2,
+      "image": "/images/products/1.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Tai nghe Bluetooth chụp tai JBL Tune 520BT",
+      "description": "Chống ồn, chất âm mạnh",
+      "price": 350000,
+      "status": "available",
+      "warrantyExpire": "2025-11-30",
+      "enterpriseId": 2,
+      "image": "/images/products/2.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Tai nghe Rapoo VM150 In-ear Gaming",
+      "description": "Nhỏ gọn, bass tốt",
+      "price": 180000,
+      "status": "available",
+      "warrantyExpire": "2026-01-10",
+      "enterpriseId": 2,
+      "image": "/images/products/3.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Cáp sạc Lightning",
+      "description": "Hỗ trợ iPhone, dài 1m",
+      "price": 90000,
+      "status": "available",
+      "warrantyExpire": "2026-06-01",
+      "enterpriseId": 2,
+      "image": "/images/products/4.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Cáp Type-C",
+      "description": "Sạc nhanh 3A",
+      "price": 75000,
+      "status": "available",
+      "warrantyExpire": "2026-06-01",
+      "enterpriseId": 2,
+      "image": "/images/products/5.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Sạc dự phòng 10,000mAh",
+      "description": "2 cổng USB, nhanh",
+      "price": 290000,
+      "status": "available",
+      "warrantyExpire": "2025-10-01",
+      "enterpriseId": 2,
+      "image": "/images/products/6.jpg"
+    },
+    {
+      "id": 7,
+      "name": "Loa mini bluetooth",
+      "description": "Loa nhỏ gọn, thời trang",
+      "price": 150000,
+      "status": "expired",
+      "warrantyExpire": "2023-10-01",
+      "enterpriseId": 2,
+      "image": "/images/products/7.jpg"
+    },
+    {
+      "id": 8,
+      "name": "Ốp lưng iPhone 13",
+      "description": "Ốp lưng IPhone 13 Da Thật",
+      "price": 60000,
+      "status": "available",
+      "warrantyExpire": "2026-02-01",
+      "enterpriseId": 2,
+      "image": "/images/products/8.jpg"
+    },
+    {
+      "id": 9,
+      "name": "Miếng dán màn hình",
+      "description": "Kính cường lực KingKong nhám mờ chống bám mồ hôi, vân tay dành cho iPhone",
+      "price": 40000,
+      "status": "available",
+      "warrantyExpire": "2026-02-01",
+      "enterpriseId": 2,
+      "image": "/images/products/9.jpg"
+    },
+    {
+      "id": 10,
+      "name": "Sạc nhanh 20W",
+      "description": "Hỗ trợ PD 3.0",
+      "price": 220000,
+      "status": "available",
+      "warrantyExpire": "2026-03-15",
+      "enterpriseId": 2,
+      "image": "/images/products/10.jpg"
+    },
+    {
+      "id": 11,
+      "name": "Tai nghe True Wireless",
+      "description": "Chống nước IPX5",
+      "price": 420000,
+      "status": "available",
+      "warrantyExpire": "2026-05-10",
+      "enterpriseId": 2,
+      "image": "/images/products/11.jpg"
+    },
+    {
+      "id": 12,
+      "name": "Loa kéo di động",
+      "description": "Có micro, công suất lớn",
+      "price": 1350000,
+      "status": "available",
+      "warrantyExpire": "2025-12-01",
+      "enterpriseId": 2,
+      "image": "/images/products/12.jpg"
+    },
+    {
+      "id": 13,
+      "name": "Chuột không dây",
+      "description": "Pin 12 tháng",
+      "price": 110000,
+      "status": "available",
+      "warrantyExpire": "2026-07-01",
+      "enterpriseId": 2,
+      "image": "/images/products/13.jpg"
+    },
+    {
+      "id": 14,
+      "name": "Bàn phím Bluetooth",
+      "description": "Kết nối 3 thiết bị",
+      "price": 300000,
+      "status": "available",
+      "warrantyExpire": "2026-07-01",
+      "enterpriseId": 2,
+      "image": "/images/products/14.jpg"
+    },
+    {
+      "id": 15,
+      "name": "Quạt USB mini",
+      "description": "Nhỏ gọn, tiết kiệm điện",
+      "price": 80000,
+      "status": "available",
+      "warrantyExpire": "2025-12-15",
+      "enterpriseId": 2,
+      "image": "/images/products/15.jpg"
+    },
+    {
+      "id": 16,
+      "name": "Camera hành trình",
+      "description": "Full HD, chống rung",
+      "price": 890000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2026-04-01",
+      "enterpriseId": 2,
+      "image": "/images/products/16.jpg"
+    },
+    {
+      "id": 17,
+      "name": "Pin tiểu AA",
+      "description": "2 viên, dùng lâu",
+      "price": 20000,
+      "status": "available",
+      "warrantyExpire": "2027-01-01",
+      "enterpriseId": 2,
+      "image": "/images/products/17.jpg"
+    },
+    {
+      "id": 18,
+      "name": "Hub USB 4 cổng",
+      "description": "Hỗ trợ USB 3.0",
+      "price": 180000,
+      "status": "available",
+      "warrantyExpire": "2026-08-01",
+      "enterpriseId": 2,
+      "image": "/images/products/18.jpg"
+    },
+    {
+      "id": 19,
+      "name": "Đèn bàn LED",
+      "description": "Cảm ứng, 3 chế độ sáng",
+      "price": 250000,
+      "status": "available",
+      "warrantyExpire": "2026-09-01",
+      "enterpriseId": 2,
+      "image": "/images/products/19.jpg"
+    },
+    {
+      "id": 20,
+      "name": "Micro thu âm",
+      "description": "Dành cho livestream",
+      "price": 360000,
+      "status": "available",
+      "warrantyExpire": "2026-10-01",
+      "enterpriseId": 2,
+      "image": "/images/products/20.jpg"
+    },
+    {
+      "id": 21,
+      "name": "Giá đỡ điện thoại",
+      "description": "Gấp gọn, điều chỉnh góc",
+      "price": 50000,
+      "status": "available",
+      "warrantyExpire": "2026-11-01",
+      "enterpriseId": 2,
+      "image": "/images/products/21.jpg"
+    }
+  ],
+  "warehouses": [
+    {
+      "id": 1,
+      "name": "Kho HCM",
+      "location": "TP.HCM",
+      "enterpriseId": 2
+    }
+  ],
+  "inventory": [
+    {
+      "id": 1,
+      "productId": 1,
+      "warehouseId": 1,
+      "quantity": 120
+    }
+  ],
+  "enterprises": [
+    {
+      "id": 2,
+      "name": "Công ty Loa Việt",
+      "ownerId": 3
+    }
+  ],
+  "importOrders": [
+    {
+      "id": 1,
+      "staffId": 4,
+      "warehouseId": 1,
+      "date": "2025-06-27",
+      "note": "Nhập hàng mới"
+    }
+  ],
+  "exportOrders": [
+    {
+      "id": 2,
+      "staffId": 5,
+      "warehouseId": 1,
+      "location": "TP.HCM",
+      "date": "2025-06-27",
+      "type": "order"
+    }
+  ],
+  "orderDetails": [
+    {
+      "id": 1,
+      "orderType": "import",
+      "orderId": 1,
+      "productId": 1,
+      "quantity": 50
+    }
+  ],
+  "wholesaleOrders": [
+    {
+      "id": 3,
+      "buyerId": 7,
+      "status": "pending",
+      "totalPrice": 10000000,
+      "date": "2025-06-27"
+    }
+  ],
+  "wholesaleOrderItems": [
+    {
+      "id": 1,
+      "orderId": 3,
+      "productId": 1,
+      "quantity": 50
+    }
+  ],
+  "shipments": [
+    {
+      "id": 1,
+      "wholesaleOrderId": 3,
+      "shipperId": 8,
+      "status": "assigned",
+      "deliveryDate": null
+    }
+  ],
+  "logs": [
+    {
+      "id": 1,
+      "userId": 1,
+      "action": "created import order",
+      "timestamp": "2025-06-27T12:30:00"
+    }
+  ]
 }
