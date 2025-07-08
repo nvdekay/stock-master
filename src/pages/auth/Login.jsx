@@ -72,7 +72,7 @@ const LoginPage = () => {
                 if (user.role.toLowerCase().includes("admin"))
                     navigate("/admin");
                 else navigate("/");
-            }, 2000);
+            }, 1500);
 
             setAlertMessage('Login successful! Redirecting to Home Page')
             setAlertVariant('success');
