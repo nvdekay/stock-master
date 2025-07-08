@@ -19,6 +19,7 @@
     "json-server": "^0.17.3",
     "json-server-auth": "^2.1.0",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.525.0",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",

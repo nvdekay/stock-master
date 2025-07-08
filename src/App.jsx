@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
+import AdminDashboard from "./pages/admin/AdminDashboard";
+
 import ProductList from "./pages/ProductList";
 import ProductDetail from "./pages/ProductDetail";
 import ProtectedRoute from "./auth/ProtectedRoute";
@@ -20,6 +22,8 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
 
         </Route>
+
+        <Route path="/admin" element={<AdminDashboard />} />
 
         {/* Chuyển "/" về "/products" */}
         <Route path="/" element={<Navigate to="/products" replace />} />
