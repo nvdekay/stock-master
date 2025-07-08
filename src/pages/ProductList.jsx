@@ -37,7 +37,7 @@ function ProductList() {
 
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">
-                                    {product.price.toLocaleString()}₫
+                                    {product.price?.toLocaleString()}₫
                                 </Card.Subtitle>
                                 <Card.Text>{product.description}</Card.Text>
                                 <Card.Text>
