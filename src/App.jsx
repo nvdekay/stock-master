@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
+import AdminDashboard from "./pages/admin/AdminDashboard";
+
 import ProductList from "./pages/ProductList";
 import ProductDetail from "./pages/ProductDetail";
 // import Cart from "./pages/Cart";
@@ -10,6 +12,8 @@ function App() {
   return (
     <Router>
       <Routes>
+
+        <Route path="/admin" element={<AdminDashboard />} />
 
         {/* Chuyển "/" về "/products" */}
         <Route path="/" element={<Navigate to="/products" replace />} />
