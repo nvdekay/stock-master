@@ -2,15 +2,25 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import '../../public/assets/css/ProductList.css';
+import api from "../api/axiosInstance";
 
 
 function ProductList() {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        axios.get("http://localhost:9999/products")
-            .then(res => setProducts(res.data))
-            .catch(err => console.error("Lỗi khi fetch sản phẩm:", err));
+        // axios.get("http://localhost:9999/products")
+        //     .then(res => setProducts(res.data))
+        //     .catch(err => console.error("Lỗi khi fetch sản phẩm:", err));
+        const fetchProducts = async () => {
+            try {
+                const response = await api.get("/products");
+                if (response) setProducts(response.data);
+            } catch (err) {
+                console.log("Lỗi khi fetch sản phẩm:", err);
+            }
+        };
+        fetchProducts();
     }, []);
 
     return (
