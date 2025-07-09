@@ -15,7 +15,7 @@ function AdminDashboard() {
           <Sidebar />
         </div>
 
-        {/* Nội dung cuộn riêng */}
+        {/* Content */}
         <div
           className="flex-grow-1 overflow-auto p-4"
           style={{ height: 'calc(100vh - 64px)' }}
