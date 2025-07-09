@@ -12,6 +12,7 @@
     "dev:all": "concurrently \"npm run server\" \"npm run dev\""
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "axios": "^1.10.0",
     "bootstrap": "^5.3.7",
     "react": "^19.1.0",
@@ -31,5 +32,10 @@
     "globals": "^16.0.0",
     "json-server": "^1.0.0-beta.3",
     "vite": "^6.3.5"
-  }
+  },
+  "description": "",
+  "main": "eslint.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
