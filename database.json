@@ -3,7 +3,7 @@
     {
       "id": "1",
       "username": "admin01",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "admin",
       "fullName": "Nguyen Van A",
       "email": "a@example.com",
@@ -13,7 +13,7 @@
     {
       "id": "3",
       "username": "manager01",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "manager",
       "fullName": "Tran Thi B",
       "email": "b@example.com",
@@ -23,7 +23,7 @@
     {
       "id": "4",
       "username": "staff01",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "staff",
       "fullName": "Le Van C",
       "email": "c@example.com",
@@ -33,7 +33,7 @@
     {
       "id": "5",
       "username": "staff02",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "staff",
       "fullName": "Pham Van D",
       "email": "d@example.com",
@@ -43,7 +43,7 @@
     {
       "id": "7",
       "username": "buyer01",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "buyer",
       "fullName": "Nguyen Thi E",
       "email": "e@example.com",
@@ -53,7 +53,7 @@
     {
       "id": "8",
       "username": "shipper01",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "shipper",
       "fullName": "Ngo Van F",
       "email": "f@example.com",
@@ -63,7 +63,7 @@
     {
       "id": "9",
       "username": "admin02",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "admin",
       "fullName": "Hoang Van G",
       "email": "g@example.com",
@@ -73,7 +73,7 @@
     {
       "id": "10",
       "username": "manager02",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "manager",
       "fullName": "Do Thi H",
       "email": "h@example.com",
@@ -83,7 +83,7 @@
     {
       "id": "11",
       "username": "staff03",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "staff",
       "fullName": "Vu Van I",
       "email": "i@example.com",
@@ -93,7 +93,7 @@
     {
       "id": "12",
       "username": "staff04",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "staff",
       "fullName": "Bui Thi K",
       "email": "k@example.com",
@@ -103,7 +103,7 @@
     {
       "id": "13",
       "username": "buyer02",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "buyer",
       "fullName": "Dang Van L",
       "email": "l@example.com",
@@ -113,7 +113,7 @@
     {
       "id": "14",
       "username": "shipper02",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "shipper",
       "fullName": "Ho Thi M",
       "email": "m@example.com",
@@ -123,7 +123,7 @@
     {
       "id": "15",
       "username": "staff05",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "staff",
       "fullName": "Ngo Van N",
       "email": "n@example.com",
@@ -133,7 +133,7 @@
     {
       "id": "16",
       "username": "buyer03",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "buyer",
       "fullName": "Trinh Thi O",
       "email": "o@example.com",
@@ -143,7 +143,7 @@
     {
       "id": "17",
       "username": "shipper03",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "shipper",
       "fullName": "Dinh Van P",
       "email": "p@example.com",
@@ -153,7 +153,7 @@
     {
       "id": "18",
       "username": "manager03",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "manager",
       "fullName": "Ly Thi Q",
       "email": "q@example.com",
@@ -163,7 +163,7 @@
     {
       "id": "19",
       "username": "staff06",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "staff",
       "fullName": "Mai Van R",
       "email": "r@example.com",
@@ -173,7 +173,7 @@
     {
       "id": "20",
       "username": "buyer04",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "buyer",
       "fullName": "Duong Thi S",
       "email": "s@example.com",
@@ -183,7 +183,7 @@
     {
       "id": "21",
       "username": "shipper04",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "shipper",
       "fullName": "Phan Van T",
       "email": "t@example.com",
@@ -193,7 +193,7 @@
     {
       "id": "22",
       "username": "staff07",
-      "password": "123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "staff",
       "fullName": "Vo Thi U",
       "email": "u@example.com",
