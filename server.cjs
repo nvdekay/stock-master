@@ -55,22 +55,32 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-    const { email, username, password } = req.body;
+    const { email, username, password, role, fullName } = req.body;
 
     if (!email || !username || !password) {
         return res.status(400).json({ error: "Missing fields" });
     }
 
     // Check if email or username already exists
+    let exist = '';
     const existingUser = app.db
         .get("users")
         .find(
-            (u) => u.email === email || u.username === username
+            (u) => {
+                if (u.email === email) {
+                    exist = 'email';
+                    return true;
+                }
+                if (u.username === username) {
+                    exist = 'username';
+                    return true;
+                }
+            }
         )
         .value();
 
     if (existingUser) {
-        return res.status(400).json({ error: "User already exists" });
+        return res.status(400).json({ error: "This " + exist + " already exists" });
     }
 
     // Generate new user ID
@@ -79,9 +89,11 @@ app.post("/register", (req, res) => {
 
     const newUser = {
         id: newId,
-        email,
         username,
-        password
+        password: bcrypt.hashSync(password), 
+        role,
+        fullName,
+        email
     };
     // Save to db.json
     app.db.get("users").push(newUser).write();
@@ -93,7 +105,14 @@ app.post("/register", (req, res) => {
         { expiresIn: "1h" }
     );
 
-    res.status(201).json({ accessToken: token, user: newUser });
+    const userInfo = {
+        id: newId,
+        username,
+        email,
+        role 
+    }
+
+    res.status(201).json({ accessToken: token, user: userInfo });
 });
 
 app.use(router);

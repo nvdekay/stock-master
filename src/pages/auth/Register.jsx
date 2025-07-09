@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import api from '../../api/axiosInstance';
 
 const RegisterPage = () => {
     const [formData, setFormData] = useState({
@@ -53,12 +54,12 @@ const RegisterPage = () => {
         }
 
         // Validate password strength
-        if (password.length < 6) {
-            setAlertMessage('Password must be at least 6 characters long');
-            setAlertVariant('danger');
-            setShowAlert(true);
-            return false;
-        }
+        // if (password.length < 6) {
+        //     setAlertMessage('Password must be at least 6 characters long');
+        //     setAlertVariant('danger');
+        //     setShowAlert(true);
+        //     return false;
+        // }
 
         // Check if passwords match
         if (password !== confirmPassword) {
@@ -71,17 +72,40 @@ const RegisterPage = () => {
         return true;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setValidated(true);
 
         if (validateForm()) {
-            // Here you would typically make an API call to register the user
             console.log('Registration attempt:', formData);
 
+            try {
+                const response = await api.post("/register", {
+                    username: formData.username,
+                    email: formData.email,
+                    password: formData.password,
+                    fullName: formData.fullName,
+                    role: 'buyer'
+                })
+                if (response.status === 200) {
+                    setAlertMessage('Registration successful! Welcome aboard!');
+                    setAlertVariant('success');
+                }
+            } catch (err) {
+                console.error("Register error:", err);
+                switch (err.code) {
+                    case "ERR_BAD_REQUEST":
+                        setAlertMessage(err);
+                        break;
+                    case "ERR_NETWORK":
+                        setAlertMessage("The something wrong with the server! Please try again later");
+                        break;
+                }
+                setAlertVariant('danger');
+                setShowAlert(true);
+            }
+
             // Simulate registration process
-            setAlertMessage('Registration successful! Welcome aboard!');
-            setAlertVariant('success');
             setShowAlert(true);
 
             // Reset form after successful registration

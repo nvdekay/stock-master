@@ -47,6 +47,14 @@
       "role": "shipper",
       "fullName": "Ngo Van F",
       "email": "f@example.com"
+    },
+    {
+      "id": 9,
+      "username": "buyer02",
+      "password": "$2b$10$iKPovzMNhQ5QFta3GuX8Cemxw32.5HDlJkNfwD7htCjnAL0iAClXK",
+      "role": "buyer",
+      "fullName": "test register",
+      "email": "f@mail.com"
     }
   ],
   "products": [
