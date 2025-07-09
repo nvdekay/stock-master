@@ -1,148 +1,1584 @@
 {
-    "users": [
-        {
-            "id": 1,
-            "username": "admin01",
-            "password": "123",
-            "role": "admin",
-            "fullName": "Nguyen Van A",
-            "email": "a@example.com"
-        },
-        {
-            "id": 3,
-            "username": "manager01",
-            "password": "123",
-            "role": "manager",
-            "fullName": "Tran Thi B",
-            "email": "b@example.com"
-        },
-        {
-            "id": 4,
-            "username": "staff01",
-            "password": "123",
-            "role": "staff",
-            "fullName": "Le Van C",
-            "email": "c@example.com"
-        },
-        {
-            "id": 5,
-            "username": "staff02",
-            "password": "123",
-            "role": "staff",
-            "fullName": "Pham Van D",
-            "email": "d@example.com"
-        },
-        {
-            "id": 7,
-            "username": "buyer01",
-            "password": "123",
-            "role": "buyer",
-            "fullName": "Nguyen Thi E",
-            "email": "e@example.com"
-        },
-        {
-            "id": 8,
-            "username": "shipper01",
-            "password": "123",
-            "role": "shipper",
-            "fullName": "Ngo Van F",
-            "email": "f@example.com"
-        }
-    ],
-    "products": [
-        {
-            "id": 1,
-            "name": "Loa bluetooth",
-            "description": "Loa công suất lớn",
-            "price": 200000,
-            "status": "available",
-            "warrantyExpire": "2025-12-31",
-            "enterpriseId": 2
-        }
-    ],
-    "warehouses": [
-        {
-            "id": 1,
-            "name": "Kho HCM",
-            "location": "TP.HCM",
-            "enterpriseId": 2
-        }
-    ],
-    "inventory": [
-        {
-            "id": 1,
-            "productId": 1,
-            "warehouseId": 1,
-            "quantity": 120
-        }
-    ],
-    "enterprises": [
-        {
-            "id": 2,
-            "name": "Công ty Loa Việt",
-            "ownerId": 3
-        }
-    ],
-    "importOrders": [
-        {
-            "id": 1,
-            "staffId": 4,
-            "warehouseId": 1,
-            "date": "2025-06-27",
-            "note": "Nhập hàng mới"
-        }
-    ],
-    "exportOrders": [
-        {
-            "id": 2,
-            "staffId": 5,
-            "warehouseId": 1,
-            "location": "TP.HCM",
-            "date": "2025-06-27",
-            "type": "order"
-        }
-    ],
-    "orderDetails": [
-        {
-            "id": 1,
-            "orderType": "import",
-            "orderId": 1,
-            "productId": 1,
-            "quantity": 50
-        }
-    ],
-    "wholesaleOrders": [
-        {
-            "id": 3,
-            "buyerId": 7,
-            "status": "pending",
-            "totalPrice": 10000000,
-            "date": "2025-06-27"
-        }
-    ],
-    "wholesaleOrderItems": [
-        {
-            "id": 1,
-            "orderId": 3,
-            "productId": 1,
-            "quantity": 50
-        }
-    ],
-    "shipments": [
-        {
-            "id": 1,
-            "wholesaleOrderId": 3,
-            "shipperId": 8,
-            "status": "assigned",
-            "deliveryDate": null
-        }
-    ],
-    "logs": [
-        {
-            "id": 1,
-            "userId": 1,
-            "action": "created import order",
-            "timestamp": "2025-06-27T12:30:00"
-        }
-    ]
+  "users": [
+    {
+      "id": "1",
+      "username": "admin01",
+      "password": "123",
+      "role": "admin",
+      "fullName": "Nguyen Van A",
+      "email": "a@example.com",
+      "enterpriseId": null,
+      "warehouseId": null
+    },
+    {
+      "id": "3",
+      "username": "manager01",
+      "password": "123",
+      "role": "manager",
+      "fullName": "Tran Thi B",
+      "email": "b@example.com",
+      "enterpriseId": "2",
+      "warehouseId": null
+    },
+    {
+      "id": "4",
+      "username": "staff01",
+      "password": "123",
+      "role": "staff",
+      "fullName": "Le Van C",
+      "email": "c@example.com",
+      "enterpriseId": "2",
+      "warehouseId": "1"
+    },
+    {
+      "id": "5",
+      "username": "staff02",
+      "password": "123",
+      "role": "staff",
+      "fullName": "Pham Van D",
+      "email": "d@example.com",
+      "enterpriseId": "2",
+      "warehouseId": "7"
+    },
+    {
+      "id": "7",
+      "username": "buyer01",
+      "password": "123",
+      "role": "buyer",
+      "fullName": "Nguyen Thi E",
+      "email": "e@example.com",
+      "enterpriseId": null,
+      "warehouseId": null
+    },
+    {
+      "id": "8",
+      "username": "shipper01",
+      "password": "123",
+      "role": "shipper",
+      "fullName": "Ngo Van F",
+      "email": "f@example.com",
+      "enterpriseId": "2",
+      "warehouseId": null
+    },
+    {
+      "id": "9",
+      "username": "admin02",
+      "password": "123",
+      "role": "admin",
+      "fullName": "Hoang Van G",
+      "email": "g@example.com",
+      "enterpriseId": null,
+      "warehouseId": null
+    },
+    {
+      "id": "10",
+      "username": "manager02",
+      "password": "123",
+      "role": "manager",
+      "fullName": "Do Thi H",
+      "email": "h@example.com",
+      "enterpriseId": "3",
+      "warehouseId": null
+    },
+    {
+      "id": "11",
+      "username": "staff03",
+      "password": "123",
+      "role": "staff",
+      "fullName": "Vu Van I",
+      "email": "i@example.com",
+      "enterpriseId": "3",
+      "warehouseId": "2"
+    },
+    {
+      "id": "12",
+      "username": "staff04",
+      "password": "123",
+      "role": "staff",
+      "fullName": "Bui Thi K",
+      "email": "k@example.com",
+      "enterpriseId": "4",
+      "warehouseId": "3"
+    },
+    {
+      "id": "13",
+      "username": "buyer02",
+      "password": "123",
+      "role": "buyer",
+      "fullName": "Dang Van L",
+      "email": "l@example.com",
+      "enterpriseId": null,
+      "warehouseId": null
+    },
+    {
+      "id": "14",
+      "username": "shipper02",
+      "password": "123",
+      "role": "shipper",
+      "fullName": "Ho Thi M",
+      "email": "m@example.com",
+      "enterpriseId": "3",
+      "warehouseId": null
+    },
+    {
+      "id": "15",
+      "username": "staff05",
+      "password": "123",
+      "role": "staff",
+      "fullName": "Ngo Van N",
+      "email": "n@example.com",
+      "enterpriseId": "5",
+      "warehouseId": "4"
+    },
+    {
+      "id": "16",
+      "username": "buyer03",
+      "password": "123",
+      "role": "buyer",
+      "fullName": "Trinh Thi O",
+      "email": "o@example.com",
+      "enterpriseId": null,
+      "warehouseId": null
+    },
+    {
+      "id": "17",
+      "username": "shipper03",
+      "password": "123",
+      "role": "shipper",
+      "fullName": "Dinh Van P",
+      "email": "p@example.com",
+      "enterpriseId": "4",
+      "warehouseId": null
+    },
+    {
+      "id": "18",
+      "username": "manager03",
+      "password": "123",
+      "role": "manager",
+      "fullName": "Ly Thi Q",
+      "email": "q@example.com",
+      "enterpriseId": "4",
+      "warehouseId": null
+    },
+    {
+      "id": "19",
+      "username": "staff06",
+      "password": "123",
+      "role": "staff",
+      "fullName": "Mai Van R",
+      "email": "r@example.com",
+      "enterpriseId": "6",
+      "warehouseId": "5"
+    },
+    {
+      "id": "20",
+      "username": "buyer04",
+      "password": "123",
+      "role": "buyer",
+      "fullName": "Duong Thi S",
+      "email": "s@example.com",
+      "enterpriseId": null,
+      "warehouseId": null
+    },
+    {
+      "id": "21",
+      "username": "shipper04",
+      "password": "123",
+      "role": "shipper",
+      "fullName": "Phan Van T",
+      "email": "t@example.com",
+      "enterpriseId": "7",
+      "warehouseId": null
+    },
+    {
+      "id": "22",
+      "username": "staff07",
+      "password": "123",
+      "role": "staff",
+      "fullName": "Vo Thi U",
+      "email": "u@example.com",
+      "enterpriseId": "7",
+      "warehouseId": "6"
+    }
+  ],
+  "enterprises": [
+    {
+      "id": "2",
+      "name": "Công ty TNHH Âm Thanh Việt"
+    },
+    {
+      "id": "3",
+      "name": "Tập đoàn Điện tử Toàn Cầu"
+    },
+    {
+      "id": "4",
+      "name": "Nhà phân phối Gear Pro"
+    },
+    {
+      "id": "5",
+      "name": "Công ty Cổ phần Công nghệ Tương Lai"
+    },
+    {
+      "id": "6",
+      "name": "Công ty TNHH Giải pháp Hiển thị Sáng"
+    },
+    {
+      "id": "7",
+      "name": "Tập đoàn Sáng tạo Số"
+    },
+    {
+      "id": "8",
+      "name": "Nhà bán lẻ TechZone"
+    },
+    {
+      "id": "9",
+      "name": "Công ty Thiết bị Văn phòng A-Z"
+    },
+    {
+      "id": "10",
+      "name": "Công ty Smart Home Việt Nam"
+    },
+    {
+      "id": "11",
+      "name": "Tập đoàn Viễn thông Connect"
+    },
+    {
+      "id": "12",
+      "name": "Nhà phân phối Phụ kiện Năng động"
+    },
+    {
+      "id": "13",
+      "name": "Công ty Cổ phần Máy tính An Phát"
+    },
+    {
+      "id": "14",
+      "name": "Công ty TNHH Thiết bị Nghe nhìn Hoàng Gia"
+    },
+    {
+      "id": "15",
+      "name": "Tập đoàn Gaming Master"
+    },
+    {
+      "id": "16",
+      "name": "Công ty Giải pháp Lưu trữ Dữ liệu"
+    },
+    {
+      "id": "17",
+      "name": "Nhà bán lẻ Điện máy Xanh"
+    },
+    {
+      "id": "18",
+      "name": "Công ty Cổ phần FPT"
+    },
+    {
+      "id": "19",
+      "name": "Tập đoàn Vingroup"
+    },
+    {
+      "id": "20",
+      "name": "Công ty TNHH Thế Giới Di Động"
+    },
+    {
+      "id": "21",
+      "name": "Công ty Cổ phần Viettel"
+    }
+  ],
+  "warehouses": [
+    {
+      "id": "1",
+      "name": "Kho trung tâm HCM",
+      "location": "Quận 1, TP.HCM",
+      "enterpriseId": "2"
+    },
+    {
+      "id": "2",
+      "name": "Kho Hà Nội",
+      "location": "Quận Cầu Giấy, Hà Nội",
+      "enterpriseId": "3"
+    },
+    {
+      "id": "3",
+      "name": "Kho Đà Nẵng",
+      "location": "Quận Hải Châu, Đà Nẵng",
+      "enterpriseId": "4"
+    },
+    {
+      "id": "4",
+      "name": "Kho Bình Dương",
+      "location": "TP. Dĩ An, Bình Dương",
+      "enterpriseId": "5"
+    },
+    {
+      "id": "5",
+      "name": "Kho Cần Thơ",
+      "location": "Quận Ninh Kiều, Cần Thơ",
+      "enterpriseId": "6"
+    },
+    {
+      "id": "6",
+      "name": "Kho Hải Phòng",
+      "location": "Quận Ngô Quyền, Hải Phòng",
+      "enterpriseId": "7"
+    },
+    {
+      "id": "7",
+      "name": "Kho vệ tinh Thủ Đức",
+      "location": "TP. Thủ Đức, TP.HCM",
+      "enterpriseId": "2"
+    },
+    {
+      "id": "8",
+      "name": "Kho Long Biên",
+      "location": "Quận Long Biên, Hà Nội",
+      "enterpriseId": "3"
+    },
+    {
+      "id": "9",
+      "name": "Kho Đồng Nai",
+      "location": "TP. Biên Hòa, Đồng Nai",
+      "enterpriseId": "5"
+    },
+    {
+      "id": "10",
+      "name": "Kho Nha Trang",
+      "location": "TP. Nha Trang, Khánh Hòa",
+      "enterpriseId": "4"
+    },
+    {
+      "id": "11",
+      "name": "Kho Bắc Ninh",
+      "location": "TP. Bắc Ninh, Bắc Ninh",
+      "enterpriseId": "7"
+    },
+    {
+      "id": "12",
+      "name": "Kho Vũng Tàu",
+      "location": "TP. Vũng Tàu, Bà Rịa - Vũng Tàu",
+      "enterpriseId": "6"
+    },
+    {
+      "id": "13",
+      "name": "Kho Quận 7",
+      "location": "Quận 7, TP.HCM",
+      "enterpriseId": "2"
+    },
+    {
+      "id": "14",
+      "name": "Kho Hoàng Mai",
+      "location": "Quận Hoàng Mai, Hà Nội",
+      "enterpriseId": "3"
+    },
+    {
+      "id": "15",
+      "name": "Kho An Giang",
+      "location": "TP. Long Xuyên, An Giang",
+      "enterpriseId": "5"
+    },
+    {
+      "id": "16",
+      "name": "Kho Thanh Hóa",
+      "location": "TP. Thanh Hóa, Thanh Hóa",
+      "enterpriseId": "7"
+    },
+    {
+      "id": "17",
+      "name": "Kho Nghệ An",
+      "location": "TP. Vinh, Nghệ An",
+      "enterpriseId": "4"
+    },
+    {
+      "id": "18",
+      "name": "Kho Quảng Ninh",
+      "location": "TP. Hạ Long, Quảng Ninh",
+      "enterpriseId": "6"
+    },
+    {
+      "id": "20",
+      "name": "Kho Tây Hồ",
+      "location": "Quận Tây Hồ, Hà Nội",
+      "enterpriseId": "3"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Loa bluetooth Sony SRS-XB13",
+      "description": "Loa công suất lớn, chống nước IP67",
+      "price": 1290000,
+      "status": "available",
+      "warrantyExpire": "2026-06-30",
+      "warehouseId": "2"
+    },
+    {
+      "id": "2",
+      "name": "Tai nghe không dây WH-1000XM5",
+      "description": "Chống ồn chủ động hàng đầu",
+      "price": 8490000,
+      "status": "available",
+      "warrantyExpire": "2026-07-15",
+      "warehouseId": "3"
+    },
+    {
+      "id": "3",
+      "name": "Bàn phím cơ Logitech G Pro X",
+      "description": "Switch có thể thay nóng, LED RGB",
+      "price": 3200000,
+      "status": "available",
+      "warrantyExpire": "2027-01-01",
+      "warehouseId": "4"
+    },
+    {
+      "id": "4",
+      "name": "Chuột gaming Razer Viper V2 Pro",
+      "description": "Siêu nhẹ, cảm biến quang học Focus Pro 30K",
+      "price": 3500000,
+      "status": "out_of_stock",
+      "warrantyExpire": "2026-11-20",
+      "warehouseId": "5"
+    },
+    {
+      "id": "5",
+      "name": "Màn hình Dell UltraSharp U2723QE",
+      "description": "27 inch, 4K UHD, công nghệ IPS Black",
+      "price": 15500000,
+      "status": "available",
+      "warrantyExpire": "2028-03-10",
+      "warehouseId": "6"
+    },
+    {
+      "id": "6",
+      "name": "Laptop Apple MacBook Air M2",
+      "description": "Chip Apple M2, 8GB RAM, 256GB SSD",
+      "price": 28000000,
+      "status": "available",
+      "warrantyExpire": "2026-09-01",
+      "warehouseId": "7"
+    },
+    {
+      "id": "7",
+      "name": "Sạc dự phòng Anker 20000mAh",
+      "description": "Sạc nhanh PowerIQ 3.0, 2 cổng USB",
+      "price": 1100000,
+      "status": "available",
+      "warrantyExpire": "2026-05-05",
+      "warehouseId": "2"
+    },
+    {
+      "id": "8",
+      "name": "Ổ cứng SSD Samsung 980 Pro 1TB",
+      "description": "NVMe PCIe 4.0, tốc độ đọc 7000MB/s",
+      "price": 4500000,
+      "status": "available",
+      "warrantyExpire": "2029-12-31",
+      "warehouseId": "3"
+    },
+    {
+      "id": "9",
+      "name": "Router Wifi Asus RT-AX86U",
+      "description": "Chuẩn Wifi 6, tốc độ cao, chế độ Gaming",
+      "price": 6800000,
+      "status": "discontinued",
+      "warrantyExpire": "2025-10-10",
+      "warehouseId": "4"
+    },
+    {
+      "id": "10",
+      "name": "Webcam Logitech C922 Pro Stream",
+      "description": "Full HD 1080p 30fps, 720p 60fps",
+      "price": 2400000,
+      "status": "available",
+      "warrantyExpire": "2026-08-22",
+      "warehouseId": "5"
+    },
+    {
+      "id": "11",
+      "name": "Microphone Blue Yeti",
+      "description": "Micro USB chuyên nghiệp cho streaming, podcast",
+      "price": 3800000,
+      "status": "available",
+      "warrantyExpire": "2026-11-11",
+      "warehouseId": "6"
+    },
+    {
+      "id": "12",
+      "name": "Máy ảnh Sony Alpha A7 IV",
+      "description": "Full-frame, 33MP, quay video 4K 60p",
+      "price": 59990000,
+      "status": "available",
+      "warrantyExpire": "2027-04-18",
+      "warehouseId": "7"
+    },
+    {
+      "id": "13",
+      "name": "Máy tính bảng iPad Pro M2 11-inch",
+      "description": "Chip Apple M2, màn hình Liquid Retina",
+      "price": 22000000,
+      "status": "available",
+      "warrantyExpire": "2026-10-30",
+      "warehouseId": "2"
+    },
+    {
+      "id": "14",
+      "name": "Ghế công thái học Epione ErgoChair Pro",
+      "description": "Hỗ trợ cột sống, vật liệu lưới thoáng khí",
+      "price": 8990000,
+      "status": "available",
+      "warrantyExpire": "2030-01-01",
+      "warehouseId": "3"
+    },
+    {
+      "id": "15",
+      "name": "Đồng hồ thông minh Apple Watch Series 8",
+      "description": "Cảm biến nhiệt độ, phát hiện va chạm",
+      "price": 11500000,
+      "status": "out_of_stock",
+      "warrantyExpire": "2026-09-15",
+      "warehouseId": "4"
+    },
+    {
+      "id": "16",
+      "name": "Card đồ họa NVIDIA RTX 4080",
+      "description": "Kiến trúc Ada Lovelace, 16GB GDDR6X",
+      "price": 35000000,
+      "status": "available",
+      "warrantyExpire": "2028-02-28",
+      "warehouseId": "5"
+    },
+    {
+      "id": "17",
+      "name": "Máy in Canon LBP6030w",
+      "description": "In laser trắng đen, kết nối Wifi",
+      "price": 3100000,
+      "status": "available",
+      "warrantyExpire": "2026-07-20",
+      "warehouseId": "6"
+    },
+    {
+      "id": "18",
+      "name": "Bộ nhớ RAM Corsair Vengeance 32GB",
+      "description": "DDR5, bus 5600MHz, tản nhiệt nhôm",
+      "price": 4200000,
+      "status": "available",
+      "warrantyExpire": "2033-01-01",
+      "warehouseId": "7"
+    },
+    {
+      "id": "19",
+      "name": "Máy chiếu mini Wanbo T6 Max",
+      "description": "Full HD, Android TV, tự động lấy nét",
+      "price": 6500000,
+      "status": "available",
+      "warrantyExpire": "2026-04-12",
+      "warehouseId": "2"
+    },
+    {
+      "id": "20",
+      "name": "Bàn nâng hạ FlexiSpot E7",
+      "description": "Khung thép, động cơ kép, điều chỉnh độ cao",
+      "price": 9500000,
+      "status": "available",
+      "warrantyExpire": "2029-08-01",
+      "warehouseId": "3"
+    }
+  ],
+  "inventory": [
+    {
+      "id": "1",
+      "productId": "1",
+      "warehouseId": "1",
+      "quantity": 120
+    },
+    {
+      "id": "2",
+      "productId": "2",
+      "warehouseId": "2",
+      "quantity": 80
+    },
+    {
+      "id": "3",
+      "productId": "3",
+      "warehouseId": "3",
+      "quantity": 150
+    },
+    {
+      "id": "4",
+      "productId": "4",
+      "warehouseId": "4",
+      "quantity": 0
+    },
+    {
+      "id": "5",
+      "warehouseId": "5",
+      "productId": "5",
+      "quantity": 40
+    },
+    {
+      "id": "6",
+      "productId": "6",
+      "warehouseId": "6",
+      "quantity": 30
+    },
+    {
+      "id": "7",
+      "productId": "7",
+      "warehouseId": "1",
+      "quantity": 250
+    },
+    {
+      "id": "8",
+      "productId": "8",
+      "warehouseId": "2",
+      "quantity": 100
+    },
+    {
+      "id": "9",
+      "productId": "1",
+      "warehouseId": "7",
+      "quantity": 50
+    },
+    {
+      "id": "10",
+      "productId": "10",
+      "warehouseId": "4",
+      "quantity": 90
+    },
+    {
+      "id": "11",
+      "productId": "11",
+      "warehouseId": "5",
+      "quantity": 60
+    },
+    {
+      "id": "12",
+      "productId": "12",
+      "warehouseId": "6",
+      "quantity": 15
+    },
+    {
+      "id": "13",
+      "productId": "13",
+      "warehouseId": "7",
+      "quantity": 75
+    },
+    {
+      "id": "14",
+      "productId": "14",
+      "warehouseId": "8",
+      "quantity": 55
+    },
+    {
+      "id": "15",
+      "productId": "15",
+      "warehouseId": "3",
+      "quantity": 0
+    },
+    {
+      "id": "16",
+      "productId": "16",
+      "warehouseId": "9",
+      "quantity": 25
+    },
+    {
+      "id": "17",
+      "productId": "17",
+      "warehouseId": "10",
+      "quantity": 110
+    },
+    {
+      "id": "18",
+      "productId": "18",
+      "warehouseId": "11",
+      "quantity": 200
+    },
+    {
+      "id": "19",
+      "productId": "19",
+      "warehouseId": "12",
+      "quantity": 85
+    },
+    {
+      "id": "20",
+      "productId": "20",
+      "warehouseId": "13",
+      "quantity": 45
+    }
+  ],
+  "importOrders": [
+    {
+      "id": "1",
+      "staffId": "4",
+      "warehouseId": "1",
+      "date": "2025-06-27",
+      "note": "Nhập hàng mới cho tháng 7"
+    },
+    {
+      "id": "3",
+      "staffId": "11",
+      "warehouseId": "2",
+      "date": "2025-07-01",
+      "note": "Nhập hàng tai nghe WH-1000XM5"
+    },
+    {
+      "id": "5",
+      "staffId": "12",
+      "warehouseId": "3",
+      "date": "2025-07-02",
+      "note": "Bổ sung bàn phím Logitech"
+    },
+    {
+      "id": "7",
+      "staffId": "15",
+      "warehouseId": "4",
+      "date": "2025-07-03",
+      "note": "Nhập màn hình Dell 4K"
+    },
+    {
+      "id": "9",
+      "staffId": "19",
+      "warehouseId": "5",
+      "date": "2025-07-04",
+      "note": "Nhập Macbook Air M2"
+    },
+    {
+      "id": "11",
+      "staffId": "5",
+      "warehouseId": "7",
+      "date": "2025-07-05",
+      "note": "Nhập sạc dự phòng Anker"
+    },
+    {
+      "id": "13",
+      "staffId": "11",
+      "warehouseId": "8",
+      "date": "2025-07-06",
+      "note": "Nhập SSD Samsung"
+    },
+    {
+      "id": "15",
+      "staffId": "15",
+      "warehouseId": "9",
+      "date": "2025-07-08",
+      "note": "Nhập webcam Logitech"
+    },
+    {
+      "id": "17",
+      "staffId": "4",
+      "warehouseId": "13",
+      "date": "2025-07-09",
+      "note": "Nhập iPad Pro M2"
+    },
+    {
+      "id": "19",
+      "staffId": "12",
+      "warehouseId": "10",
+      "date": "2025-07-10",
+      "note": "Bổ sung ghế Epione"
+    },
+    {
+      "id": "21",
+      "staffId": "22",
+      "warehouseId": "11",
+      "date": "2025-07-11",
+      "note": "Nhập card đồ họa RTX 4080"
+    },
+    {
+      "id": "23",
+      "staffId": "19",
+      "warehouseId": "12",
+      "date": "2025-07-12",
+      "note": "Nhập máy in Canon"
+    },
+    {
+      "id": "25",
+      "staffId": "22",
+      "warehouseId": "16",
+      "date": "2025-07-13",
+      "note": "Nhập RAM Corsair"
+    },
+    {
+      "id": "27",
+      "staffId": "19",
+      "warehouseId": "18",
+      "date": "2025-07-14",
+      "note": "Nhập máy chiếu Wanbo"
+    },
+    {
+      "id": "29",
+      "staffId": "5",
+      "warehouseId": null,
+      "date": "2025-07-15",
+      "note": "Nhập bàn nâng hạ FlexiSpot"
+    },
+    {
+      "id": "31",
+      "staffId": "11",
+      "warehouseId": "14",
+      "date": "2025-07-16",
+      "note": "Nhập thêm loa Sony SRS-XB13"
+    },
+    {
+      "id": "33",
+      "staffId": "15",
+      "warehouseId": "15",
+      "date": "2025-07-17",
+      "note": "Nhập hàng cho kho mới An Giang"
+    },
+    {
+      "id": "35",
+      "staffId": "22",
+      "warehouseId": "16",
+      "date": "2025-07-18",
+      "note": "Hàng về kho Thanh Hóa"
+    },
+    {
+      "id": "37",
+      "staffId": "19",
+      "warehouseId": "18",
+      "date": "2025-07-19",
+      "note": "Nhập hàng máy ảnh Sony A7 IV"
+    },
+    {
+      "id": "39",
+      "staffId": "11",
+      "warehouseId": "20",
+      "date": "2025-07-20",
+      "note": "Nhập hàng bổ sung kho Tây Hồ"
+    }
+  ],
+  "exportOrders": [
+    {
+      "id": "2",
+      "staffId": "5",
+      "warehouseId": "1",
+      "location": "Đại lý A, Quận 3, TP.HCM",
+      "date": "2025-06-28",
+      "type": "order"
+    },
+    {
+      "id": "4",
+      "staffId": "11",
+      "warehouseId": "2",
+      "location": "Showroom B, Quận Đống Đa, Hà Nội",
+      "date": "2025-07-02",
+      "type": "order"
+    },
+    {
+      "id": "6",
+      "staffId": "4",
+      "warehouseId": "1",
+      "location": "Kho vệ tinh Thủ Đức",
+      "date": "2025-07-03",
+      "type": "transfer"
+    },
+    {
+      "id": "8",
+      "staffId": "19",
+      "warehouseId": "5",
+      "location": "Khách hàng C, Quận 10, TP.HCM",
+      "date": "2025-07-04",
+      "type": "order"
+    },
+    {
+      "id": "10",
+      "staffId": "12",
+      "warehouseId": "3",
+      "location": "Trung tâm bảo hành, Đà Nẵng",
+      "date": "2025-07-05",
+      "type": "return"
+    },
+    {
+      "id": "12",
+      "staffId": "19",
+      "warehouseId": "6",
+      "location": "Đại lý D, TP. Hạ Long",
+      "date": "2025-07-06",
+      "type": "order"
+    },
+    {
+      "id": "14",
+      "staffId": "11",
+      "warehouseId": "2",
+      "location": "Kho Long Biên",
+      "date": "2025-07-07",
+      "type": "transfer"
+    },
+    {
+      "id": "16",
+      "staffId": "11",
+      "warehouseId": "8",
+      "location": "Công ty E, KCN Sóng Thần, Bình Dương",
+      "date": "2025-07-09",
+      "type": "order"
+    },
+    {
+      "id": "18",
+      "staffId": "5",
+      "warehouseId": "1",
+      "location": "Nhà cung cấp (trả hàng lỗi)",
+      "date": "2025-07-10",
+      "type": "return"
+    },
+    {
+      "id": "20",
+      "staffId": "12",
+      "warehouseId": "10",
+      "location": "Khách sạn F, TP. Nha Trang",
+      "date": "2025-07-11",
+      "type": "order"
+    },
+    {
+      "id": "22",
+      "staffId": "19",
+      "warehouseId": "12",
+      "location": "Đại lý G, TP. Vũng Tàu",
+      "date": "2025-07-12",
+      "type": "order"
+    },
+    {
+      "id": "24",
+      "staffId": "15",
+      "warehouseId": "9",
+      "location": "Kho Đồng Nai",
+      "date": "2025-07-13",
+      "type": "transfer"
+    },
+    {
+      "id": "26",
+      "staffId": "4",
+      "warehouseId": "13",
+      "location": "Dự án H, Khu đô thị Phú Mỹ Hưng",
+      "date": "2025-07-14",
+      "type": "order"
+    },
+    {
+      "id": "28",
+      "staffId": "11",
+      "warehouseId": "14",
+      "location": "Siêu thị điện máy I, Quận Hai Bà Trưng, Hà Nội",
+      "date": "2025-07-15",
+      "type": "order"
+    },
+    {
+      "id": "30",
+      "staffId": "4",
+      "warehouseId": "1",
+      "location": "Khách hàng K, trả hàng bảo hành",
+      "date": "2025-07-16",
+      "type": "return"
+    },
+    {
+      "id": "32",
+      "staffId": "22",
+      "warehouseId": "16",
+      "location": "Trường học L, TP. Sầm Sơn",
+      "date": "2025-07-17",
+      "type": "order"
+    },
+    {
+      "id": "34",
+      "staffId": "12",
+      "warehouseId": "17",
+      "location": "Bệnh viện M, TP. Vinh",
+      "date": "2025-07-18",
+      "type": "order"
+    },
+    {
+      "id": "36",
+      "staffId": "4",
+      "warehouseId": null,
+      "location": "Kho Quận 7",
+      "date": "2025-07-19",
+      "type": "transfer"
+    },
+    {
+      "id": "38",
+      "staffId": "5",
+      "warehouseId": "1",
+      "location": "Cửa hàng N, Quận Gò Vấp, TP.HCM",
+      "date": "2025-07-20",
+      "type": "order"
+    },
+    {
+      "id": "40",
+      "staffId": "11",
+      "warehouseId": "2",
+      "location": "Đại lý O, Quận Ba Đình, Hà Nội",
+      "date": "2025-07-21",
+      "type": "order"
+    }
+  ],
+  "orderDetails": [
+    {
+      "id": "1",
+      "orderType": "import",
+      "orderId": "1",
+      "productId": "1",
+      "quantity": 100
+    },
+    {
+      "id": "2",
+      "orderType": "export",
+      "orderId": "2",
+      "productId": "1",
+      "quantity": 20
+    },
+    {
+      "id": "3",
+      "orderType": "import",
+      "orderId": "3",
+      "productId": "2",
+      "quantity": 50
+    },
+    {
+      "id": "4",
+      "orderType": "export",
+      "orderId": "4",
+      "productId": "2",
+      "quantity": 10
+    },
+    {
+      "id": "5",
+      "orderType": "import",
+      "orderId": "5",
+      "productId": "3",
+      "quantity": 80
+    },
+    {
+      "id": "6",
+      "orderType": "export",
+      "orderId": "6",
+      "productId": "1",
+      "quantity": 30
+    },
+    {
+      "id": "7",
+      "orderType": "import",
+      "orderId": "7",
+      "productId": "5",
+      "quantity": 20
+    },
+    {
+      "id": "8",
+      "orderType": "export",
+      "orderId": "8",
+      "productId": "5",
+      "quantity": 5
+    },
+    {
+      "id": "9",
+      "orderType": "import",
+      "orderId": "9",
+      "productId": "6",
+      "quantity": 15
+    },
+    {
+      "id": "10",
+      "orderType": "export",
+      "orderId": "10",
+      "productId": "9",
+      "quantity": 2
+    },
+    {
+      "id": "11",
+      "orderType": "import",
+      "orderId": "11",
+      "productId": "7",
+      "quantity": 200
+    },
+    {
+      "id": "12",
+      "orderType": "export",
+      "orderId": "12",
+      "productId": "6",
+      "quantity": 8
+    },
+    {
+      "id": "13",
+      "orderType": "import",
+      "orderId": "13",
+      "productId": "8",
+      "quantity": 70
+    },
+    {
+      "id": "14",
+      "orderType": "export",
+      "orderId": "14",
+      "productId": "8",
+      "quantity": 20
+    },
+    {
+      "id": "15",
+      "orderType": "import",
+      "orderId": "15",
+      "productId": "10",
+      "quantity": 50
+    },
+    {
+      "id": "16",
+      "orderType": "export",
+      "orderId": "16",
+      "productId": "14",
+      "quantity": 10
+    },
+    {
+      "id": "17",
+      "orderType": "import",
+      "orderId": "17",
+      "productId": "13",
+      "quantity": 40
+    },
+    {
+      "id": "18",
+      "orderType": "export",
+      "orderId": "18",
+      "productId": "7",
+      "quantity": 5
+    },
+    {
+      "id": "19",
+      "orderType": "import",
+      "orderId": "19",
+      "productId": "14",
+      "quantity": 30
+    },
+    {
+      "id": "20",
+      "orderType": "export",
+      "orderId": "20",
+      "productId": "19",
+      "quantity": 15
+    }
+  ],
+  "wholesaleOrders": [
+    {
+      "id": "3",
+      "buyerId": "7",
+      "status": "pending",
+      "totalPrice": 64500000,
+      "date": "2025-06-27"
+    },
+    {
+      "id": "4",
+      "buyerId": "13",
+      "status": "processing",
+      "totalPrice": 84900000,
+      "date": "2025-07-01"
+    },
+    {
+      "id": "5",
+      "buyerId": "16",
+      "status": "shipped",
+      "totalPrice": 47500000,
+      "date": "2025-07-03"
+    },
+    {
+      "id": "6",
+      "buyerId": "20",
+      "status": "completed",
+      "totalPrice": 155000000,
+      "date": "2025-07-04"
+    },
+    {
+      "id": "7",
+      "buyerId": "7",
+      "status": "cancelled",
+      "totalPrice": 280000000,
+      "date": "2025-07-05"
+    },
+    {
+      "id": "8",
+      "buyerId": "13",
+      "status": "pending",
+      "totalPrice": 11000000,
+      "date": "2025-07-08"
+    },
+    {
+      "id": "9",
+      "buyerId": "16",
+      "status": "processing",
+      "totalPrice": 90000000,
+      "date": "2025-07-09"
+    },
+    {
+      "id": "10",
+      "buyerId": "20",
+      "status": "shipped",
+      "totalPrice": 599900000,
+      "date": "2025-07-10"
+    },
+    {
+      "id": "11",
+      "buyerId": "7",
+      "status": "completed",
+      "totalPrice": 110000000,
+      "date": "2025-07-11"
+    },
+    {
+      "id": "12",
+      "buyerId": "13",
+      "status": "pending",
+      "totalPrice": 179800000,
+      "date": "2025-07-12"
+    },
+    {
+      "id": "13",
+      "buyerId": "16",
+      "status": "processing",
+      "totalPrice": 350000000,
+      "date": "2025-07-13"
+    },
+    {
+      "id": "14",
+      "buyerId": "20",
+      "status": "shipped",
+      "totalPrice": 31000000,
+      "date": "2025-07-14"
+    },
+    {
+      "id": "15",
+      "buyerId": "7",
+      "status": "completed",
+      "totalPrice": 42000000,
+      "date": "2025-07-15"
+    },
+    {
+      "id": "16",
+      "buyerId": "13",
+      "status": "pending",
+      "totalPrice": 130000000,
+      "date": "2025-07-16"
+    },
+    {
+      "id": "17",
+      "buyerId": "16",
+      "status": "cancelled",
+      "totalPrice": 95000000,
+      "date": "2025-07-17"
+    },
+    {
+      "id": "18",
+      "buyerId": "20",
+      "status": "processing",
+      "totalPrice": 12900000,
+      "date": "2025-07-18"
+    },
+    {
+      "id": "19",
+      "buyerId": "7",
+      "status": "shipped",
+      "totalPrice": 32000000,
+      "date": "2025-07-19"
+    },
+    {
+      "id": "20",
+      "buyerId": "13",
+      "status": "completed",
+      "totalPrice": 24000000,
+      "date": "2025-07-20"
+    },
+    {
+      "id": "21",
+      "buyerId": "16",
+      "status": "pending",
+      "totalPrice": 38000000,
+      "date": "2025-07-21"
+    },
+    {
+      "id": "22",
+      "buyerId": "20",
+      "status": "processing",
+      "totalPrice": 89900000,
+      "date": "2025-07-22"
+    }
+  ],
+  "wholesaleOrderItems": [
+    {
+      "id": "1",
+      "orderId": "3",
+      "productId": "1",
+      "quantity": 50
+    },
+    {
+      "id": "2",
+      "orderId": "4",
+      "productId": "2",
+      "quantity": 10
+    },
+    {
+      "id": "3",
+      "orderId": "5",
+      "productId": "20",
+      "quantity": 5
+    },
+    {
+      "id": "4",
+      "orderId": "6",
+      "productId": "5",
+      "quantity": 10
+    },
+    {
+      "id": "5",
+      "orderId": "7",
+      "productId": "6",
+      "quantity": 10
+    },
+    {
+      "id": "6",
+      "orderId": "8",
+      "productId": "7",
+      "quantity": 10
+    },
+    {
+      "id": "7",
+      "orderId": "9",
+      "productId": "8",
+      "quantity": 20
+    },
+    {
+      "id": "8",
+      "orderId": "10",
+      "productId": "12",
+      "quantity": 10
+    },
+    {
+      "id": "9",
+      "orderId": "11",
+      "productId": "13",
+      "quantity": 5
+    },
+    {
+      "id": "10",
+      "orderId": "12",
+      "productId": "14",
+      "quantity": 20
+    },
+    {
+      "id": "11",
+      "orderId": "13",
+      "productId": "16",
+      "quantity": 10
+    },
+    {
+      "id": "12",
+      "orderId": "14",
+      "productId": "17",
+      "quantity": 10
+    },
+    {
+      "id": "13",
+      "orderId": "15",
+      "productId": "18",
+      "quantity": 10
+    },
+    {
+      "id": "14",
+      "orderId": "16",
+      "productId": "19",
+      "quantity": 20
+    },
+    {
+      "id": "15",
+      "orderId": "17",
+      "productId": "20",
+      "quantity": 10
+    },
+    {
+      "id": "16",
+      "orderId": "18",
+      "productId": "1",
+      "quantity": 10
+    },
+    {
+      "id": "17",
+      "orderId": "19",
+      "productId": "3",
+      "quantity": 10
+    },
+    {
+      "id": "18",
+      "orderId": "20",
+      "productId": "10",
+      "quantity": 10
+    },
+    {
+      "id": "19",
+      "orderId": "21",
+      "productId": "11",
+      "quantity": 10
+    },
+    {
+      "id": "20",
+      "orderId": "22",
+      "productId": "14",
+      "quantity": 10
+    }
+  ],
+  "shipments": [
+    {
+      "id": "1",
+      "wholesaleOrderId": "3",
+      "shipperId": "8",
+      "status": "assigned",
+      "deliveryDate": null
+    },
+    {
+      "id": "2",
+      "wholesaleOrderId": "4",
+      "shipperId": "14",
+      "status": "in_transit",
+      "deliveryDate": null
+    },
+    {
+      "id": "3",
+      "wholesaleOrderId": "5",
+      "shipperId": "17",
+      "status": "delivered",
+      "deliveryDate": "2025-07-05"
+    },
+    {
+      "id": "4",
+      "wholesaleOrderId": "6",
+      "shipperId": "21",
+      "status": "delivered",
+      "deliveryDate": "2025-07-06"
+    },
+    {
+      "id": "5",
+      "wholesaleOrderId": "8",
+      "shipperId": "8",
+      "status": "assigned",
+      "deliveryDate": null
+    },
+    {
+      "id": "6",
+      "wholesaleOrderId": "9",
+      "shipperId": "14",
+      "status": "in_transit",
+      "deliveryDate": null
+    },
+    {
+      "id": "7",
+      "wholesaleOrderId": "10",
+      "shipperId": "17",
+      "status": "delivered",
+      "deliveryDate": "2025-07-12"
+    },
+    {
+      "id": "8",
+      "wholesaleOrderId": "11",
+      "shipperId": "21",
+      "status": "delivered",
+      "deliveryDate": "2025-07-13"
+    },
+    {
+      "id": "9",
+      "wholesaleOrderId": "12",
+      "shipperId": "8",
+      "status": "assigned",
+      "deliveryDate": null
+    },
+    {
+      "id": "10",
+      "wholesaleOrderId": "13",
+      "shipperId": "14",
+      "status": "in_transit",
+      "deliveryDate": null
+    },
+    {
+      "id": "11",
+      "wholesaleOrderId": "14",
+      "shipperId": "17",
+      "status": "delivered",
+      "deliveryDate": "2025-07-16"
+    },
+    {
+      "id": "12",
+      "wholesaleOrderId": "15",
+      "shipperId": "21",
+      "status": "delivered",
+      "deliveryDate": "2025-07-17"
+    },
+    {
+      "id": "13",
+      "wholesaleOrderId": "18",
+      "shipperId": "8",
+      "status": "assigned",
+      "deliveryDate": null
+    },
+    {
+      "id": "14",
+      "wholesaleOrderId": "19",
+      "shipperId": "14",
+      "status": "failed",
+      "deliveryDate": "2025-07-21"
+    },
+    {
+      "id": "15",
+      "wholesaleOrderId": "20",
+      "shipperId": "17",
+      "status": "delivered",
+      "deliveryDate": "2025-07-22"
+    },
+    {
+      "id": "16",
+      "wholesaleOrderId": "21",
+      "shipperId": "21",
+      "status": "assigned",
+      "deliveryDate": null
+    },
+    {
+      "id": "17",
+      "wholesaleOrderId": "22",
+      "shipperId": "8",
+      "status": "in_transit",
+      "deliveryDate": null
+    },
+    {
+      "id": "18",
+      "wholesaleOrderId": "5",
+      "shipperId": "14",
+      "status": "return_initiated",
+      "deliveryDate": "2025-07-25"
+    },
+    {
+      "id": "19",
+      "wholesaleOrderId": "6",
+      "shipperId": "17",
+      "status": "return_completed",
+      "deliveryDate": "2025-07-28"
+    },
+    {
+      "id": "20",
+      "wholesaleOrderId": "10",
+      "shipperId": "21",
+      "status": "delivered",
+      "deliveryDate": "2025-07-15"
+    }
+  ],
+  "logs": [
+    {
+      "id": "c7ce",
+      "userId": "3",
+      "action": "user manager01 logged in",
+      "timestamp": "2025-07-08T03:54:47.362Z"
+    },
+    {
+      "id": "09d9",
+      "userId": "3",
+      "action": "user manager01 logged in",
+      "timestamp": "2025-07-08T04:50:52.071Z"
+    },
+    {
+      "id": "11d9",
+      "userId": "3",
+      "action": "user manager01 logged in",
+      "timestamp": "2025-07-08T05:43:37.160Z"
+    },
+    {
+      "id": "6ec9",
+      "userId": "3",
+      "action": "user manager01 logged in",
+      "timestamp": "2025-07-09T15:50:30.823Z"
+    }
+  ]
 }
