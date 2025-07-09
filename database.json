@@ -50,11 +50,11 @@
     },
     {
       "id": 9,
-      "username": "buyer02",
-      "password": "$2b$10$iKPovzMNhQ5QFta3GuX8Cemxw32.5HDlJkNfwD7htCjnAL0iAClXK",
+      "username": "register",
+      "password": "$2b$10$35LTqGhUz1AA0Ov2346r2..eXcqTwpFBKheG0xahAfZI/kEJx3br6",
       "role": "buyer",
-      "fullName": "test register",
-      "email": "f@mail.com"
+      "fullName": "anh",
+      "email": "anht123@gmail.com"
     }
   ],
   "products": [

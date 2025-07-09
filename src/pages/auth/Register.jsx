@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/axiosInstance';
 
 const RegisterPage = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         fullName: '',
         username: '',
@@ -87,9 +88,21 @@ const RegisterPage = () => {
                     fullName: formData.fullName,
                     role: 'buyer'
                 })
-                if (response.status === 200) {
+                if (response.status === 201) {
                     setAlertMessage('Registration successful! Welcome aboard!');
                     setAlertVariant('success');
+                    setTimeout(() => {
+                        setFormData({
+                            fullName: '',
+                            username: '',
+                            email: '',
+                            password: '',
+                            confirmPassword: ''
+                        });
+                        setShowAlert(false);
+                        setValidated(false);
+                        navigate("/");
+                    }, 2000);
                 }
             } catch (err) {
                 console.error("Register error:", err);
@@ -102,24 +115,13 @@ const RegisterPage = () => {
                         break;
                 }
                 setAlertVariant('danger');
-                setShowAlert(true);
             }
 
             // Simulate registration process
             setShowAlert(true);
 
             // Reset form after successful registration
-            setTimeout(() => {
-                setFormData({
-                    fullName: '',
-                    username: '',
-                    email: '',
-                    password: '',
-                    confirmPassword: ''
-                });
-                setShowAlert(false);
-                setValidated(false);
-            }, 3000);
+
         }
     };
 
@@ -252,7 +254,7 @@ const RegisterPage = () => {
                                 <div className="text-center">
                                     <p className="mb-2">
                                         Already have an account?{' '}
-                                        <Link to="/login" className="text-decoration-none">
+                                        <Link to="/auth/login" className="text-decoration-none">
                                             Sign in here
                                         </Link>
                                     </p>
