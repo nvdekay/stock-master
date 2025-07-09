@@ -280,6 +280,18 @@
       "productId": 1,
       "warehouseId": 1,
       "quantity": 120
+    },
+    {
+      "productId": 2,
+      "warehouseId": 1,
+      "quantity": 2,
+      "id": 2
+    },
+    {
+      "productId": 4,
+      "warehouseId": 1,
+      "quantity": 1,
+      "id": 3
     }
   ],
   "enterprises": [
@@ -296,6 +308,13 @@
       "warehouseId": 1,
       "date": "2025-06-27",
       "note": "Nhập hàng mới"
+    },
+    {
+      "staffId": 1,
+      "warehouseId": 1,
+      "date": "2025-07-09",
+      "note": "khong",
+      "id": 2
     }
   ],
   "exportOrders": [
@@ -315,6 +334,20 @@
       "orderId": 1,
       "productId": 1,
       "quantity": 50
+    },
+    {
+      "orderType": "import",
+      "orderId": 2,
+      "productId": 4,
+      "quantity": 1,
+      "id": 2
+    },
+    {
+      "orderType": "import",
+      "orderId": 2,
+      "productId": 2,
+      "quantity": 2,
+      "id": 3
     }
   ],
   "wholesaleOrders": [

@@ -8,9 +8,9 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 
 import LoginPage from "./pages/auth/Login";
 import RegisterPage from "./pages/auth/Register";
-// import Cart from "./pages/Cart";
-// import CreateOrder from "./pages/CreateOrder";
-// import OrderTracking from "./pages/OrderTracking";
+import Cart from "./pages/Cart";
+import CreateImportOrder from "./pages/warehouse/CreateImportOrder";
+import ImportOrdersList from "./pages/warehouse/ImportOrdersList";
 
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
         {/* <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<CreateOrder />} />
         <Route path="/orders" element={<OrderTracking />} /> */}
-
+  <Route path="/cart" element={<Cart />} />
 
         {/* Authenticated Routes */}
 
@@ -56,9 +56,10 @@ function App() {
            cùng 1 trang hiển thị các chức năng khác nhau cho mỗi role riêng 
            thì chỉ cần ném nó vào mục này
         */}
-        <Route path="/staff" element={<ProtectedRoute requiredRoles={["admin", "manager", "staff"]} />}>
-          {/* route mà cần user phải có roles ADMIN/manager/... thả vào đây */}
-
+      {/* Staff Routes */}
+        <Route path="/">
+          <Route path="import" element={<CreateImportOrder />} />
+          <Route path="imports" element={<ImportOrdersList />} />
         </Route>
 
         {/* làm tương tự cho các route cần role khác */}
