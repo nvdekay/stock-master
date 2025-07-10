@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Row, Col, Card, Button, Spinner, Alert } from 'react-bootstrap';
 import api from '../../api/axiosInstance';
-import ManagerSidebar from '../../components/manager/ManagerSidebar';
 import { useAuth } from '../../auth/AuthProvider';
 
 function ManagerDashboard() {
@@ -14,9 +13,7 @@ function ManagerDashboard() {
     });
     const [dashboardLoading, setDashboardLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-    // === SỬA LOGIC FETCH DỮ LIỆU Ở ĐÂY ===
     const fetchData = useCallback(async () => {
         setDashboardLoading(true);
         setError(null);
@@ -28,8 +25,6 @@ function ManagerDashboard() {
             
             const enterpriseId = user.enterpriseId;
             
-            // --- Bước 1 & 2: Lấy Enterprise và Warehouses ---
-            // Gọi song song 2 API này trước.
             const [enterpriseRes, warehousesRes] = await Promise.all([
                 api.get(`/enterprises/${enterpriseId}`),
                 api.get(`/warehouses?enterpriseId=${enterpriseId}`)
@@ -39,21 +34,15 @@ function ManagerDashboard() {
             const warehousesData = warehousesRes.data;
 
             let allProducts = [];
-            // --- Bước 3: Dựa vào warehouses để lấy products ---
             if (warehousesData && warehousesData.length > 0) {
-                // Tạo một mảng các promise, mỗi promise là một lệnh gọi API để lấy product cho một warehouse
                 const productPromises = warehousesData.map(warehouse =>
                     api.get(`/products?warehouseId=${warehouse.id}`)
                 );
                 
-                // Thực thi tất cả các promise này song song
                 const productResults = await Promise.all(productPromises);
-                
-                // Gộp tất cả các mảng product từ các kết quả lại thành một mảng duy nhất
                 allProducts = productResults.flatMap(response => response.data);
             }
 
-            // --- Bước 4: Cập nhật state ---
             setDashboardData({
                 enterprise: enterpriseData,
                 warehouses: warehousesData,
@@ -68,7 +57,6 @@ function ManagerDashboard() {
         }
     }, [user]);
 
-    // useEffect và phần render JSX không cần thay đổi
     useEffect(() => {
         if (authLoading) return;
         if (user) {
@@ -78,33 +66,27 @@ function ManagerDashboard() {
         }
     }, [authLoading, user, fetchData]);
 
-    // ... Toàn bộ phần render JSX từ `if (authLoading)` trở xuống giữ nguyên y hệt ...
-    // ... không cần copy lại vì nó đã đúng ...
-    
-    // Ưu tiên 1: Loading của AuthProvider
     if (authLoading) {
         return (
-            <div style={{ minHeight: '100vh' }} className="d-flex align-items-center justify-content-center">
+            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
                 <Spinner animation="border" variant="primary" />
             </div>
         );
     }
     
-    // Ưu tiên 2: User không tồn tại
     if (!user) {
         return (
-            <div style={{ minHeight: '100vh' }} className="d-flex align-items-center justify-content-center">
+            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
                 <Alert variant="warning">
-                    You are not logged in. Please <a href="/login">login</a> to continue.
+                    You are not logged in. Please <a href="/auth/login">login</a> to continue.
                 </Alert>
             </div>
         );
     }
     
-    // Ưu tiên 3: Hiển thị lỗi nếu có
     if (error) {
         return (
-            <div style={{ minHeight: '100vh', background: '#f8f9fa' }} className="d-flex align-items-center justify-content-center">
+            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
                 <Alert variant="danger" className="text-center">
                     <Alert.Heading>Failed to Load Dashboard</Alert.Heading>
                     <p>{error}</p>
@@ -117,43 +99,26 @@ function ManagerDashboard() {
         );
     }
 
-    // Ưu tiên 4: Loading của Dashboard
     if (dashboardLoading) {
         return (
-            <div style={{ minHeight: '100vh' }} className="d-flex align-items-center justify-content-center">
+            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
                 <Spinner animation="border" variant="info" />
             </div>
         );
     }
     
-    // Cuối cùng: Hiển thị giao diện dashboard
     return (
-        <div style={{ minHeight: '100vh', background: '#f8f9fa' }}>
-            <ManagerSidebar
-                isCollapsed={isSidebarCollapsed}
-                setIsCollapsed={setIsSidebarCollapsed}
-            />
-            <main
-                style={{
-                    marginLeft: isSidebarCollapsed ? '0px' : '260px',
-                    transition: 'margin-left 0.3s ease-in-out'
-                }}
-                className="p-4"
-            >
-                <div style={{ background: 'white', borderRadius: '8px', marginBottom: '20px' }} className="p-4 shadow-sm">
-                    <Row className="align-items-center">
-                        <Col>
-                            <h4 className="mb-0 mt-1">Manager Dashboard</h4>
-                            <p className="text-muted mb-0">Welcome, {user?.fullName || 'Manager'}</p>
-                        </Col>
-                        <Col xs="auto">
-                            <Button variant="primary" onClick={fetchData} disabled={dashboardLoading}>
-                                <i className={`fas fa-sync-alt me-2 ${dashboardLoading ? 'fa-spin' : ''}`}></i>Refresh
-                            </Button>
-                        </Col>
-                    </Row>
-                </div>
+        <>
+            <header className="p-4 bg-white border-bottom">
+                <Row className="align-items-center">
+                    <Col>
+                        <h4 className="mb-0 mt-1">Manager Dashboard</h4>
+                        <p className="text-muted mb-0">Welcome, {user?.fullName || 'Manager'}</p>
+                    </Col>
+                </Row>
+            </header>
 
+            <div className="p-4">
                 <Row className="mb-4">
                     <Col md={4}>
                         <Card className="border-0 shadow-sm h-100">
@@ -183,8 +148,8 @@ function ManagerDashboard() {
                         </Card>
                     </Col>
                 </Row>
-            </main>
-        </div>
+            </div>
+        </>
     );
 }
 
