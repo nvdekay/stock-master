@@ -585,6 +585,276 @@
       "status": "available",
       "warrantyExpire": "2029-08-01",
       "warehouseId": "3"
+    },
+    {
+      "id": "21",
+      "name": "Giá đỡ điện thoại",
+      "description": "Giá đỡ điện thoại cao cấp, chất lượng tốt",
+      "price": 1106000,
+      "status": "expired",
+      "warrantyExpire": "2032-07-11",
+      "warehouseId": "9"
+    },
+    {
+      "id": "22",
+      "name": "Tai nghe không dây",
+      "description": "Tai nghe không dây cao cấp, chất lượng tốt",
+      "price": 1873000,
+      "status": "expired",
+      "warrantyExpire": "2032-12-28",
+      "warehouseId": "19"
+    },
+    {
+      "id": "23",
+      "name": "Bàn phím cơ",
+      "description": "Bàn phím cơ cao cấp, chất lượng tốt",
+      "price": 1037000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2028-01-21",
+      "warehouseId": "1"
+    },
+    {
+      "id": "24",
+      "name": "Chuột gaming",
+      "description": "Chuột gaming cao cấp, chất lượng tốt",
+      "price": 1563000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2032-12-18",
+      "warehouseId": "13"
+    },
+    {
+      "id": "25",
+      "name": "Loa mini",
+      "description": "Loa mini cao cấp, chất lượng tốt",
+      "price": 899000,
+      "status": "expired",
+      "warrantyExpire": "2032-12-07",
+      "warehouseId": "8"
+    },
+    {
+      "id": "26",
+      "name": "Củ sạc nhanh",
+      "description": "Củ sạc nhanh cao cấp, chất lượng tốt",
+      "price": 707000,
+      "status": "expired",
+      "warrantyExpire": "2032-12-19",
+      "warehouseId": "20"
+    },
+    {
+      "id": "27",
+      "name": "Cáp sạc USB-C",
+      "description": "Cáp sạc USB-C cao cấp, chất lượng tốt",
+      "price": 178000,
+      "status": "available",
+      "warrantyExpire": "2027-07-17",
+      "warehouseId": "1"
+    },
+    {
+      "id": "28",
+      "name": "Thẻ nhớ 64GB",
+      "description": "Thẻ nhớ 64GB cao cấp, chất lượng tốt",
+      "price": 1223000,
+      "status": "available",
+      "warrantyExpire": "2027-04-11",
+      "warehouseId": "2"
+    },
+    {
+      "id": "29",
+      "name": "USB 128GB",
+      "description": "USB 128GB cao cấp, chất lượng tốt",
+      "price": 1003000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2028-09-29",
+      "warehouseId": "18"
+    },
+    {
+      "id": "30",
+      "name": "Webcam HD",
+      "description": "Webcam HD cao cấp, chất lượng tốt",
+      "price": 1972000,
+      "status": "expired",
+      "warrantyExpire": "2030-10-27",
+      "warehouseId": "4"
+    },
+    {
+      "id": "31",
+      "name": "Đèn LED RGB",
+      "description": "Đèn LED RGB cao cấp, chất lượng tốt",
+      "price": 1552000,
+      "status": "expired",
+      "warrantyExpire": "2031-07-21",
+      "warehouseId": "18"
+    },
+    {
+      "id": "32",
+      "name": "Pin sạc dự phòng",
+      "description": "Pin sạc dự phòng cao cấp, chất lượng tốt",
+      "price": 1895000,
+      "status": "available",
+      "warrantyExpire": "2028-11-12",
+      "warehouseId": "4"
+    },
+    {
+      "id": "33",
+      "name": "Gậy chụp hình",
+      "description": "Gậy chụp hình cao cấp, chất lượng tốt",
+      "price": 1489000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2030-07-28",
+      "warehouseId": "15"
+    },
+    {
+      "id": "34",
+      "name": "Đồng hồ thông minh",
+      "description": "Đồng hồ thông minh cao cấp, chất lượng tốt",
+      "price": 986000,
+      "status": "available",
+      "warrantyExpire": "2028-02-10",
+      "warehouseId": "14"
+    },
+    {
+      "id": "35",
+      "name": "Vòng đeo tay sức khỏe",
+      "description": "Vòng đeo tay sức khỏe cao cấp, chất lượng tốt",
+      "price": 1526000,
+      "status": "expired",
+      "warrantyExpire": "2032-11-30",
+      "warehouseId": "14"
+    },
+    {
+      "id": "36",
+      "name": "Tay cầm chơi game",
+      "description": "Tay cầm chơi game cao cấp, chất lượng tốt",
+      "price": 505000,
+      "status": "available",
+      "warrantyExpire": "2031-06-30",
+      "warehouseId": "20"
+    },
+    {
+      "id": "37",
+      "name": "Loa bluetooth mini",
+      "description": "Loa bluetooth mini cao cấp, chất lượng tốt",
+      "price": 1661000,
+      "status": "available",
+      "warrantyExpire": "2032-11-01",
+      "warehouseId": "16"
+    },
+    {
+      "id": "38",
+      "name": "Bộ vệ sinh laptop",
+      "description": "Bộ vệ sinh laptop cao cấp, chất lượng tốt",
+      "price": 1182000,
+      "status": "expired",
+      "warrantyExpire": "2031-01-21",
+      "warehouseId": "15"
+    },
+    {
+      "id": "39",
+      "name": "Balo laptop",
+      "description": "Balo laptop cao cấp, chất lượng tốt",
+      "price": 993000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2031-03-23",
+      "warehouseId": "18"
+    },
+    {
+      "id": "40",
+      "name": "Kính chống ánh sáng xanh",
+      "description": "Kính chống ánh sáng xanh cao cấp, chất lượng tốt",
+      "price": 1976000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2030-08-02",
+      "warehouseId": "19"
+    },
+    {
+      "id": "41",
+      "name": "Bộ chia USB",
+      "description": "Bộ chia USB cao cấp, chất lượng tốt",
+      "price": 1520000,
+      "status": "available",
+      "warrantyExpire": "2030-11-19",
+      "warehouseId": "4"
+    },
+    {
+      "id": "42",
+      "name": "Chuột không dây",
+      "description": "Chuột không dây cao cấp, chất lượng tốt",
+      "price": 1190000,
+      "status": "available",
+      "warrantyExpire": "2026-10-06",
+      "warehouseId": "14"
+    },
+    {
+      "id": "43",
+      "name": "Đế tản nhiệt laptop",
+      "description": "Đế tản nhiệt laptop cao cấp, chất lượng tốt",
+      "price": 886000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2031-01-02",
+      "warehouseId": "3"
+    },
+    {
+      "id": "44",
+      "name": "Hub chuyển đổi Type-C",
+      "description": "Hub chuyển đổi Type-C cao cấp, chất lượng tốt",
+      "price": 321000,
+      "status": "expired",
+      "warrantyExpire": "2033-08-31",
+      "warehouseId": "12"
+    },
+    {
+      "id": "45",
+      "name": "Túi chống sốc",
+      "description": "Túi chống sốc cao cấp, chất lượng tốt",
+      "price": 291000,
+      "status": "available",
+      "warrantyExpire": "2030-03-02",
+      "warehouseId": "10"
+    },
+    {
+      "id": "46",
+      "name": "Bàn kê laptop",
+      "description": "Bàn kê laptop cao cấp, chất lượng tốt",
+      "price": 1507000,
+      "status": "available",
+      "warrantyExpire": "2033-04-17",
+      "warehouseId": "9"
+    },
+    {
+      "id": "47",
+      "name": "Micro thu âm",
+      "description": "Micro thu âm cao cấp, chất lượng tốt",
+      "price": 1734000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2031-01-06",
+      "warehouseId": "4"
+    },
+    {
+      "id": "48",
+      "name": "Ốp lưng điện thoại",
+      "description": "Ốp lưng điện thoại cao cấp, chất lượng tốt",
+      "price": 1959000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2027-12-16",
+      "warehouseId": "3"
+    },
+    {
+      "id": "49",
+      "name": "Kính cường lực",
+      "description": "Kính cường lực cao cấp, chất lượng tốt",
+      "price": 105000,
+      "status": "expired",
+      "warrantyExpire": "2028-06-07",
+      "warehouseId": "5"
+    },
+    {
+      "id": "50",
+      "name": "Loa siêu trầm",
+      "description": "Loa siêu trầm cao cấp, chất lượng tốt",
+      "price": 1245000,
+      "status": "out-of-stock",
+      "warrantyExpire": "2028-11-13",
+      "warehouseId": "9"
     }
   ],
   "inventory": [
