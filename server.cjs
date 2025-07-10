@@ -48,7 +48,10 @@ app.post("/login", (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
-        role: user.role
+        role: user.role,
+        enterpriseId: user.enterpriseId || null,
+        warehouseId: user.warehouseId || null,
+        fullName: user.fullName || null
     }
 
     res.json({ accessToken: token, user: userInfo});

@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthProvider';
 import api from '../../api/axiosInstance';
 
-
 const LoginPage = () => {
     const { login } = useAuth();
     const [formData, setFormData] = useState({

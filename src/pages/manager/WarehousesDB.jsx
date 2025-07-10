@@ -1,188 +1,283 @@
-import { useState, useEffect } from 'react';
-import { Row, Col, InputGroup, Form, Button, Alert } from 'react-bootstrap';
-import axios from 'axios';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { Row, Col, InputGroup, Form, Button, Alert, Spinner, Toast, ToastContainer } from 'react-bootstrap';
+import { useAuth } from '../../auth/AuthProvider';
+import api from '../../api/axiosInstance';
 import ManagerSidebar from '../../components/manager/ManagerSidebar';
 import WarehouseCard from '../../components/manager/WarehouseCard';
 import WarehouseModal from '../../components/manager/WarehouseModal';
 
 function WarehousesDB() {
-  const [warehouses, setWarehouses] = useState([]);
-  const [enterprise, setEnterprise] = useState(null);
-  const [editingWarehouse, setEditingWarehouse] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [error, setError] = useState('');
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [loading, setLoading] = useState(true);
+    // === PHẦN 1: STATE MANAGEMENT ===
+    
+    const { user, loading: authLoading } = useAuth();
+    
+    // State cho dữ liệu từ API
+    const [warehouses, setWarehouses] = useState([]);
+    const [enterprise, setEnterprise] = useState(null);
+    
+    // State cho trạng thái của component
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
-  const isOwner = ['manager', 'admin'].includes(currentUser.role);
+    // State cho UI interactions
+    const [editingWarehouse, setEditingWarehouse] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    
+    // Toast notifications
+    const [toast, setToast] = useState({ show: false, message: '', variant: 'success' });
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+    // === PHẦN 2: LOGIC & DATA FETCHING ===
 
-  const fetchData = async () => {
-    const { enterpriseId } = currentUser;
-    if (!enterpriseId) {
-      setError('Bạn chưa được phân công vào doanh nghiệp nào');
-      setLoading(false);
-      return;
+    const fetchData = useCallback(async () => {
+        if (!user || !user.enterpriseId) {
+            setError('User is not assigned to any enterprise.');
+            setLoading(false);
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+        try {
+            const enterpriseId = user.enterpriseId;
+            const [enterpriseRes, warehouseRes, inventoryRes, usersRes] = await Promise.all([
+                api.get(`/enterprises/${enterpriseId}`),
+                api.get(`/warehouses?enterpriseId=${enterpriseId}`),
+                api.get('/inventory'),
+                api.get('/users')
+            ]);
+            
+            const inventory = inventoryRes.data; 
+            const users = usersRes.data;
+
+            const mergedWarehouses = warehouseRes.data.map(w => ({
+                ...w,
+                productCount: new Set(inventory.filter(i => i.warehouseId === w.id).map(item => item.productId)).size,
+                totalQuantity: inventory.filter(i => i.warehouseId === w.id).reduce((sum, i) => sum + i.quantity, 0),
+                staffCount: users.filter(u => u.warehouseId === w.id && u.role === 'staff').length,
+            }));
+
+            setEnterprise(enterpriseRes.data);
+            setWarehouses(mergedWarehouses);
+        } catch (err) {
+            console.error("Failed to fetch data:", err);
+            setError('Could not fetch warehouse data. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if (authLoading) {
+            return;
+        }
+        fetchData();
+    }, [authLoading, fetchData]);
+
+    const handleSubmit = useCallback(async (formData) => {
+        if (!user?.enterpriseId) return;
+
+        try {
+            const payload = { ...formData, enterpriseId: user.enterpriseId };
+            if (editingWarehouse) {
+                await api.put(`/warehouses/${editingWarehouse.id}`, payload);
+                setToast({ show: true, message: 'Warehouse updated successfully!', variant: 'success' });
+            } else {
+                await api.post('/warehouses', payload);
+                setToast({ show: true, message: 'Warehouse created successfully!', variant: 'success' });
+            }
+            setIsModalOpen(false);
+            setEditingWarehouse(null);
+            await fetchData();
+        } catch (err) {
+            console.error("Failed to save warehouse:", err);
+            setToast({ show: true, message: 'Could not save warehouse data.', variant: 'danger' });
+        }
+    }, [user, editingWarehouse, fetchData]);
+
+    const handleDelete = useCallback(async (id) => {
+        const warehouse = warehouses.find(w => w.id === id);
+        if (!warehouse) {
+            setToast({ show: true, message: 'Warehouse not found.', variant: 'danger' });
+            return;
+        }
+
+        // Kiểm tra xem warehouse có dữ liệu liên quan không
+        if (warehouse.productCount > 0 || warehouse.staffCount > 0) {
+            if (!window.confirm(
+                `This warehouse contains ${warehouse.productCount} products and ${warehouse.staffCount} staff members. ` +
+                'Deleting it may cause data inconsistency. Are you sure you want to continue?'
+            )) {
+                return;
+            }
+        } else {
+            if (!window.confirm(`Are you sure you want to delete "${warehouse.name}"?`)) {
+                return;
+            }
+        }
+
+        try {
+            // Trước khi xóa warehouse, có thể cần xóa hoặc cập nhật dữ liệu liên quan
+            const inventoryToDelete = await api.get(`/inventory?warehouseId=${id}`);
+            const usersToUpdate = await api.get(`/users?warehouseId=${id}`);
+
+            // Xóa inventory liên quan
+            const deleteInventoryPromises = inventoryToDelete.data.map(item =>
+                api.delete(`/inventory/${item.id}`)
+            );
+
+            // Cập nhật users để loại bỏ warehouseId
+            const updateUsersPromises = usersToUpdate.data.map(user =>
+                api.put(`/users/${user.id}`, { ...user, warehouseId: null })
+            );
+
+            // Thực hiện tất cả các thao tác song song
+            await Promise.all([...deleteInventoryPromises, ...updateUsersPromises]);
+
+            // Cuối cùng xóa warehouse
+            await api.delete(`/warehouses/${id}`);
+
+            setToast({ show: true, message: 'Warehouse deleted successfully!', variant: 'success' });
+            await fetchData();
+        } catch (err) {
+            console.error("Failed to delete warehouse:", err);
+            
+            // Hiển thị thông báo lỗi chi tiết hơn
+            let errorMessage = 'Could not delete the warehouse.';
+            if (err.response?.status === 404) {
+                errorMessage = 'Warehouse not found.';
+            } else if (err.response?.status === 400) {
+                errorMessage = 'Cannot delete warehouse: it may contain related data.';
+            } else if (err.response?.data?.message) {
+                errorMessage = err.response.data.message;
+            }
+            
+            setToast({ show: true, message: errorMessage, variant: 'danger' });
+        }
+    }, [warehouses, fetchData]);
+
+    // === PHẦN 3: DERIVED STATE & UI HANDLERS ===
+    
+    const isOwner = ['manager', 'admin'].includes(user?.role);
+
+    const filteredWarehouses = useMemo(() =>
+        warehouses.filter(w =>
+            w.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            w.location?.toLowerCase().includes(searchTerm.toLowerCase())
+        ),
+    [warehouses, searchTerm]);
+
+    const openModal = (warehouse = null) => {
+        setEditingWarehouse(warehouse);
+        setIsModalOpen(true);
+    };
+
+    // === PHẦN 4: RENDER JSX ===
+    
+    if (authLoading || loading) {
+        return (
+            <div className="d-flex vh-100 align-items-center justify-content-center">
+                <Spinner animation="border" variant="primary" />
+            </div>
+        );
     }
 
-    try {
-      setLoading(true);
-      const [enterpriseRes, warehouseRes, inventoryRes, usersRes] = await Promise.all([
-        axios.get(`http://localhost:9999/enterprises/${enterpriseId}`),
-        axios.get(`http://localhost:9999/warehouses?enterpriseId=${enterpriseId}`),
-        axios.get('http://localhost:9999/inventory'), 
-        axios.get('http://localhost:9999/users')
-      ]);
-      
-      const inventory = inventoryRes.data; 
-      const users = usersRes.data;
-
-      const mergedWarehouses = warehouseRes.data.map(w => {
-        const warehouseInventory = inventory.filter(i => i.warehouseId === w.id);
-        
-        return {
-          ...w,
-          productCount: new Set(warehouseInventory.map(item => item.productId)).size,
-          totalQuantity: warehouseInventory.reduce((sum, i) => sum + i.quantity, 0),
-          staffCount: users.filter(u => u.warehouseId === w.id && u.role === 'staff').length,
-        };
-      });
-
-      setEnterprise(enterpriseRes.data);
-      setWarehouses(mergedWarehouses);
-      setError('');
-    } catch (err) {
-      console.error(err);
-      setError('Can not fetch warehouses data');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure to delete this warehouse?')) return;
-
-    try {
-      await axios.delete(`http://localhost:9999/warehouses/${id}`);
-      await fetchData();
-    } catch (err) {
-      console.error(err);
-      setError('Can not delete warehouse');
-    }
-  };
-
-  const handleSubmit = async (data) => {
-    const payload = { ...data, enterpriseId: currentUser.enterpriseId };
-
-    try {
-      if (editingWarehouse) {
-        await axios.put(`http://localhost:9999/warehouses/${editingWarehouse.id}`, payload);
-      } else {
-        await axios.post(`http://localhost:9999/warehouses`, payload);
-      }
-
-      await fetchData();
-      setShowModal(false);
-      setEditingWarehouse(null);
-    } catch (err) {
-      console.error(err);
-      setError('Can not save warehouse data');
-    }
-  };
-
-  const openModal = (warehouse = null) => {
-    setEditingWarehouse(warehouse);
-    setShowModal(true);
-  };
-
-  const handleView = (warehouse) => {
-    console.log('Viewing warehouse:', warehouse);
-  };
-
-  const filteredWarehouses = warehouses.filter(w =>
-    w.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    w.location?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  if (loading) {
     return (
-      <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '100vh', background: '#f8f9fa' }}>
-        <div className="spinner-border text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
-      </div>
+        <div style={{ minHeight: '100vh', background: '#f8f9fa' }}>
+            <ManagerSidebar isCollapsed={isSidebarCollapsed} setIsCollapsed={setIsSidebarCollapsed} />
+
+            <main style={{ marginLeft: isSidebarCollapsed ? '0px' : '260px', transition: 'margin-left 0.3s ease-in-out' }}>
+                <header className="p-4 bg-white border-bottom">
+                    <Row className="align-items-center">
+                        <Col>
+                            <h4 className="mb-1 mt-2">Warehouse Management ({filteredWarehouses.length})</h4>
+                            {enterprise && <p className="text-muted mb-0">Enterprise: {enterprise.name}</p>}
+                        </Col>
+                        <Col xs="auto" className="d-flex align-items-center gap-3">
+                            <InputGroup style={{ width: '300px' }}>
+                                <InputGroup.Text><i className="fas fa-search" /></InputGroup.Text>
+                                <Form.Control
+                                    type="search"
+                                    placeholder="Search by name or location..."
+                                    value={searchTerm}
+                                    onChange={e => setSearchTerm(e.target.value)}
+                                />
+                            </InputGroup>
+                            {isOwner && (
+                                <Button variant="primary" onClick={() => openModal()}>
+                                    <i className="fas fa-plus me-2" />Add Warehouse
+                                </Button>
+                            )}
+                        </Col>
+                    </Row>
+                </header>
+
+                <div className="p-4">
+                    {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
+                    
+                    {filteredWarehouses.length > 0 ? (
+                        <Row className="g-4">
+                            {filteredWarehouses.map(wh => (
+                                <Col key={wh.id} lg={4} md={6}>
+                                    <WarehouseCard
+                                        warehouse={wh}
+                                        onEdit={() => openModal(wh)}
+                                        onDelete={() => handleDelete(wh.id)}
+                                        isOwner={isOwner}
+                                    />
+                                </Col>
+                            ))}
+                        </Row>
+                    ) : (
+                        <div className="text-center py-5">
+                            <i className="fas fa-warehouse text-muted mb-3" style={{ fontSize: '48px' }} />
+                            <h5>No Warehouses Found</h5>
+                            <p className="text-muted">
+                                {searchTerm 
+                                    ? 'No warehouses match your search criteria.' 
+                                    : isOwner 
+                                    ? 'Create the first warehouse for your enterprise.' 
+                                    : 'No warehouses have been created yet.'}
+                            </p>
+                            {isOwner && !searchTerm && (
+                                <Button variant="primary" onClick={() => openModal()}>
+                                    <i className="fas fa-plus me-2" />Create First Warehouse
+                                </Button>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </main>
+
+            <WarehouseModal
+                show={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                warehouse={editingWarehouse}
+                onSubmit={handleSubmit}
+            />
+
+            {/* Toast Notifications */}
+            <ToastContainer position="top-end" className="p-3">
+                <Toast 
+                    show={toast.show} 
+                    onClose={() => setToast({ ...toast, show: false })}
+                    autohide
+                    delay={4000}
+                    bg={toast.variant}
+                >
+                    <Toast.Header>
+                        <strong className="me-auto">
+                            {toast.variant === 'success' ? 'Success' : 'Error'}
+                        </strong>
+                    </Toast.Header>
+                    <Toast.Body className="text-white">
+                        {toast.message}
+                    </Toast.Body>
+                </Toast>
+            </ToastContainer>
+        </div>
     );
-  }
-
-  return (
-    <div style={{ minHeight: '100vh', background: '#f8f9fa' }}>
-      <ManagerSidebar isCollapsed={isSidebarCollapsed} setIsCollapsed={setIsSidebarCollapsed} />
-
-      {isSidebarCollapsed && (
-        <button onClick={() => setIsSidebarCollapsed(false)} className="d-flex align-items-center justify-content-center" style={{ position: 'fixed', bottom: '20px', left: '20px', width: '50px', height: '50px', borderRadius: '50%', background: '#007bff', border: 'none', color: 'white', fontSize: '18px', boxShadow: '0 4px 12px rgba(0,123,255,0.4)', zIndex: 2000 }}>
-          <i className="fas fa-bars"></i>
-        </button>
-      )}
-
-      <div style={{ marginLeft: isSidebarCollapsed ? '0px' : '260px', transition: 'margin-left 0.3s ease-in-out' }}>
-        <div className="p-4 bg-white border-bottom">
-          <Row className="align-items-center">
-            <Col>
-              <div className="d-flex align-items-center">
-                <button onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)} className="btn btn-link p-0 me-3 text-muted"><i className={`fas ${isSidebarCollapsed ? 'fa-bars' : 'fa-times'}`}></i></button>
-                <i className="fas fa-home text-muted me-2" />
-                <span className="text-muted me-2">Manager</span>
-                <i className="fas fa-chevron-right text-muted me-2" style={{ fontSize: '12px' }} />
-                <span className="text-muted">Warehouses</span>
-              </div>
-              <h4 className="mb-0 mt-2">Warehouse Management ({filteredWarehouses.length})</h4>
-              {enterprise && <p className="text-muted mb-0">Enterprise: {enterprise.name}</p>}
-            </Col>
-
-            <Col xs="auto">
-              <div className="d-flex align-items-center gap-3">
-                <InputGroup style={{ width: '300px' }}>
-                  <InputGroup.Text className="bg-white"><i className="fas fa-search text-muted" /></InputGroup.Text>
-                  <Form.Control type="text" placeholder="Tìm kiếm theo tên, địa chỉ" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
-                </InputGroup>
-                {isOwner && (<Button variant="primary" onClick={() => openModal()}><i className="fas fa-plus me-2" />Add Warehouse</Button>)}
-              </div>
-            </Col>
-          </Row>
-        </div>
-
-        <div className="p-4">
-          {error && <Alert variant="danger" dismissible onClose={() => setError('')}>{error}</Alert>}
-          {!enterprise ? (
-            <div className="text-center py-5">
-              <i className="fas fa-building text-muted mb-3" style={{ fontSize: '48px' }} />
-              <h5>No enterprise</h5>
-            </div>
-          ) : filteredWarehouses.length === 0 ? (
-            <div className="text-center py-5">
-              <i className="fas fa-warehouse text-muted mb-3" style={{ fontSize: '48px' }} />
-              <h5>No warehouse</h5>
-              <p className="text-muted">{searchTerm ? 'Không có kho phù hợp với tìm kiếm.' : isOwner ? 'Hãy tạo kho đầu tiên cho doanh nghiệp.' : 'Chưa có kho nào được tạo.'}</p>
-              {isOwner && !searchTerm && (<Button variant="primary" onClick={() => openModal()}><i className="fas fa-plus me-2" />Create Warehouse</Button>)}
-            </div>
-          ) : (
-            <Row className="g-4">
-              {filteredWarehouses.map(wh => (
-                <Col key={wh.id} lg={4} md={6} sm={12}>
-                  <WarehouseCard warehouse={wh} onEdit={openModal} onDelete={handleDelete} onView={handleView} isOwner={isOwner} />
-                </Col>
-              ))}
-            </Row>
-          )}
-        </div>
-      </div>
-
-      <WarehouseModal show={showModal} onClose={() => setShowModal(false)} warehouse={editingWarehouse} enterpriseName={enterprise?.name} onSubmit={handleSubmit} />
-    </div>
-  );
 }
 
 export default WarehousesDB;
