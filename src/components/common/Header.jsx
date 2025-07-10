@@ -23,7 +23,7 @@ const Header = () => {
             <Container fluid>
                 {/* Company Name */}
                 <Navbar.Brand href="#" className="fw-bold fs-3 text-primary">
-                    BizWarehouse
+                    StockMaster
                 </Navbar.Brand>
 
                 {/* Right side items */}
