@@ -10,6 +10,8 @@ import LoginPage from "./pages/auth/Login";
 import RegisterPage from "./pages/auth/Register";
 
 import UserLayout from "./layouts/MainLayout";
+import WarehousesDB from "./pages/manager/WarehousesDB";
+import ManagerDashboard from "./pages/manager/ManagerDashboard";
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -55,7 +57,12 @@ function App() {
           </Route>
 
           {/* làm tương tự cho các route cần role khác */}
-
+          <Route path="/manager" element={<ProtectedRoute requiredRoles={["manager"]} />}>
+            {/* route mà cần user phải có roles ADMIN/manager/... thả vào đây */}
+            
+            <Route index element={<ManagerDashboard/>} />
+            <Route path="warehouse" element={<WarehousesDB/>} />
+          </Route>
 
         </Route>
         {/* Routes that requires user to have role ABC */}
