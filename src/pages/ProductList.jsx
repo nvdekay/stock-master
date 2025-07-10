@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Card, Container, Row, Col } from "react-bootstrap";
+import { Card, Container, Row, Col, Form, FormControl } from "react-bootstrap";
 import '../../public/assets/css/ProductList.css';
 import api from "../api/axiosInstance";
 
 
 function ProductList() {
     const [products, setProducts] = useState([]);
+    const [allProducts, setAllProducts] = useState([]);
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
         // axios.get("http://localhost:9999/products")
@@ -15,7 +17,10 @@ function ProductList() {
         const fetchProducts = async () => {
             try {
                 const response = await api.get("/products");
-                if (response) setProducts(response.data);
+                if (response) {
+                    setProducts(response.data);
+                    setAllProducts(response.data);
+                }
             } catch (err) {
                 console.log("Lỗi khi fetch sản phẩm:", err);
             }
@@ -23,18 +28,38 @@ function ProductList() {
         fetchProducts();
     }, []);
 
+
+    useEffect(() => {
+        if (search == "") {
+            setProducts(allProducts);
+        } else {
+            let searched_product = allProducts;
+            searched_product = searched_product.filter(product => 
+                product.name.toLowerCase().includes(search.toLowerCase())
+            )
+            setProducts(searched_product);
+        }
+    }, [search])
+
     return (
         <Container className="mt-4">
-            <h2 className="mb-4">🛒 Danh sách sản phẩm</h2>
+            <Form>
+                <FormControl placeholder="Tìm kiếm tên sản phẩm" onChange={e => setSearch(e.target.value)}></FormControl>
+            </Form>
+
+            <h2 className="mb-4">Danh sách sản phẩm</h2>
 
             <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                 {products.map((product) => (
                     <Col key={product.id}>
-                        <Card className="card-hover">
+
+
+
+                        <Card className="card-hover product-card">
                             <Card.Body>
                                 <Card.Img
                                     variant="top"
-                                    src={product.image}
+                                    src={`../../public/assets/images/products/${product.id}.jpg`}
                                     alt={product.name}
                                     style={{
                                         height: "200px",          // Chiều cao cố định
@@ -50,10 +75,14 @@ function ProductList() {
                                     {product.price?.toLocaleString()}₫
                                 </Card.Subtitle>
                                 <Card.Text>{product.description}</Card.Text>
+
+                            </Card.Body>
+
+                            <Card.Footer className="product-footer">
                                 <Card.Text>
                                     <strong>Trạng thái:</strong> {renderStatus(product.status)}
                                 </Card.Text>
-                            </Card.Body>
+                            </Card.Footer>
                         </Card>
                     </Col>
                 ))}
