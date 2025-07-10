@@ -45,13 +45,6 @@ function App() {
 
           </Route>
 
-          {/* Routes that requires user to have role ABC */}
-          <Route path="/admin" element={<ProtectedRoute requiredRoles={["admin"]} />}>
-            {/* route mà cần user phải có role ADMIN thả vào đây */}
-            <Route index element={<AdminDashboard />} />
-
-          </Route>
-
           {/* Nếu trang liến quan đến quản lí mà
            cùng 1 trang hiển thị các chức năng khác nhau cho mỗi role riêng 
            thì chỉ cần ném nó vào mục này
@@ -65,6 +58,13 @@ function App() {
 
 
         </Route>
+        {/* Routes that requires user to have role ABC */}
+        <Route path="/admin" element={<ProtectedRoute requiredRoles={["admin"]} />}>
+          {/* route mà cần user phải có role ADMIN thả vào đây */}
+          <Route index element={<AdminDashboard />} />
+
+        </Route>
+
 
       </Routes>
     </Router>
