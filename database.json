@@ -321,10 +321,10 @@
       "enterpriseId": "7"
     },
     {
-      "id": "7",
-      "name": "Kho vệ tinh Thủ Đức",
+      "name": "Kho Thủ Đức",
       "location": "TP. Thủ Đức, TP.HCM",
-      "enterpriseId": "2"
+      "enterpriseId": "2",
+      "id": "7"
     },
     {
       "id": "8",
@@ -976,6 +976,12 @@
       "id": "20",
       "productId": "20",
       "warehouseId": "13",
+      "quantity": 45
+    },
+    {
+      "id": "21",
+      "productId": "22",
+      "warehouseId": "19",
       "quantity": 45
     }
   ],
