@@ -8,7 +8,7 @@ const Footer = () => {
         <Row>
           {/* Company Info */}
           <Col md={4} className="mb-3">
-            <h5 className="text-primary fw-bold">BizWarehouse</h5>
+            <h5 className="text-primary fw-bold">StockMaster</h5>
             <p className="text-secondary">
               Your trusted partner for comprehensive warehouse management solutions. We provide efficient inventory
               tracking and logistics services.
@@ -21,7 +21,7 @@ const Footer = () => {
             <div className="d-flex align-items-center mb-2">
               <Mail size={16} className="me-2 text-primary" />
               <a href="mailto:info@bizwarehouse.com" className="text-dark text-decoration-none">
-                info@bizwarehouse.com
+                info@stockmaster.com
               </a>
             </div>
             <div className="d-flex align-items-center mb-2">
