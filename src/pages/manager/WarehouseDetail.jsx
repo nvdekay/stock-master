@@ -102,7 +102,17 @@ function WarehouseDetail() {
                 }, 0);
 
                 return {
-                    ...order,
+                    id: order.id,
+                    type: order.type,
+                    status: order.status,
+                    date: order.date,
+                    enterpriseId: order.enterpriseId,
+                    senderStaffId: order.senderStaffId,
+                    receiverStaffId: order.receiverStaffId,
+                    sendWarehouseId: order.sendWarehouseId,
+                    receiveWarehouseId: order.receiveWarehouseId,
+                    buyerId: order.buyerId,
+                    note: order.note,
                     senderStaff,
                     receiverStaff,
                     buyer,

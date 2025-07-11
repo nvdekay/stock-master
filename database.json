@@ -1135,43 +1135,7 @@
       "sendWarehouseId": "7",
       "receiveWarehouseId": "1",
       "buyerId": null,
-      "note": "Test",
-      "senderStaff": {
-        "id": "5",
-        "username": "staff022",
-        "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-        "role": "staff",
-        "fullName": "Pham Van D",
-        "email": "d@example.com",
-        "enterpriseId": "2",
-        "warehouseId": "7"
-      },
-      "receiverStaff": {
-        "id": "4",
-        "username": "staff01",
-        "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-        "role": "staff",
-        "fullName": "Le Van C",
-        "email": "c@example.com",
-        "enterpriseId": "2",
-        "warehouseId": "1"
-      },
-      "sendWarehouse": {
-        "id": "7",
-        "name": "Kho Thủ Đức",
-        "location": "TP. Thủ Đức, TP.HCM",
-        "enterpriseId": "2"
-      },
-      "receiveWarehouse": {
-        "id": "1",
-        "name": "Kho trung tâm HCM",
-        "location": "Quận 1, TP.HCM",
-        "enterpriseId": "2"
-      },
-      "shipper": null,
-      "totalPrice": 0,
-      "historyType": "import",
-      "source": "Kho Thủ Đức (TP. Thủ Đức, TP.HCM)"
+      "note": "Testt"
     },
     {
       "id": "10",
