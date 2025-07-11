@@ -7,7 +7,7 @@ import WarehouseModal from '../../components/manager/WarehouseModal';
 
 function WarehousesDB() {
     const { user, loading: authLoading } = useAuth();
-    
+
     const [warehouses, setWarehouses] = useState([]);
     const [enterprise, setEnterprise] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -33,7 +33,7 @@ function WarehousesDB() {
                 api.get(`/enterprises/${enterpriseId}`),
                 api.get(`/warehouses?enterpriseId=${enterpriseId}`)
             ]);
-            
+
             const enterpriseData = enterpriseRes.data;
             const enterpriseWarehouses = warehousesRes.data;
 
@@ -44,15 +44,15 @@ function WarehousesDB() {
                 return;
             }
             const warehouseIdQuery = enterpriseWarehouses.map(w => `warehouseId=${w.id}`).join('&');
-            
+
             const [inventoryRes, usersRes] = await Promise.all([
-                api.get(`/inventory?${warehouseIdQuery}`), 
-                api.get(`/users?${warehouseIdQuery}`) 
+                api.get(`/inventory?${warehouseIdQuery}`),
+                api.get(`/users?${warehouseIdQuery}`)
             ]);
 
             const relevantInventory = inventoryRes.data;
             const relevantUsers = usersRes.data;
-            
+
             const mergedWarehouses = enterpriseWarehouses.map(w => {
                 const warehouseInventory = relevantInventory.filter(i => i.warehouseId === w.id);
                 return {
@@ -62,7 +62,7 @@ function WarehousesDB() {
                     staffCount: relevantUsers.filter(u => u.warehouseId === w.id && u.role === 'staff').length,
                 };
             });
-            
+
             setEnterprise(enterpriseData);
             setWarehouses(mergedWarehouses);
         } catch (err) {
@@ -81,7 +81,17 @@ function WarehousesDB() {
     const handleSubmit = useCallback(async (formData) => {
         if (!user?.enterpriseId) return;
         try {
-            const payload = { ...formData, enterpriseId: user.enterpriseId };
+            let payload = { ...formData, enterpriseId: user.enterpriseId };
+            console.log("Submitting warehouse data:", payload);
+
+            if (!editingWarehouse) {
+                const res = await api.get(`/warehouses`);
+                const latest = res.data;
+                console.log("Latest warehouses fetched:", latest);
+                const maxId = Math.max(0, ...latest.map(w => parseInt(w.id) || 0));
+                payload.id = String(maxId + 1);
+            }
+
             if (editingWarehouse) {
                 await api.put(`/warehouses/${editingWarehouse.id}`, payload);
                 setToast({ show: true, message: 'Warehouse updated successfully!', variant: 'success' });
@@ -89,71 +99,48 @@ function WarehousesDB() {
                 await api.post('/warehouses', payload);
                 setToast({ show: true, message: 'Warehouse created successfully!', variant: 'success' });
             }
+
             setIsModalOpen(false);
             setEditingWarehouse(null);
             await fetchData();
         } catch (err) {
             console.error("Failed to save warehouse:", err);
-            setToast({ show: true, message: err.response?.data?.error || 'Could not save warehouse data.', variant: 'danger' });
+            setToast({
+                show: true,
+                message: err.response?.data?.error || 'Could not save warehouse data.',
+                variant: 'danger'
+            });
         }
     }, [user, editingWarehouse, fetchData]);
 
     const handleDelete = useCallback(async (id) => {
         const warehouseToDelete = warehouses.find(w => w.id === id);
-        if (!warehouseToDelete) {
-            setToast({ show: true, message: 'Warehouse not found.', variant: 'danger' });
-            return;
-        }
+        if (!warehouseToDelete) return;
 
         if (warehouseToDelete.staffCount > 0) {
-            setToast({
-                show: true,
-                message: `Cannot delete. Warehouse "${warehouseToDelete.name}" still has ${warehouseToDelete.staffCount} staff assigned.`,
-                variant: 'danger'
-            });
+            setToast({ show: true, message: `Cannot delete. Warehouse "${warehouseToDelete.name}" still has staff.`, variant: 'danger' });
             return;
         }
-        
         if (warehouseToDelete.totalQuantity > 0) {
-             setToast({
-                show: true,
-                message: `Cannot delete. Warehouse "${warehouseToDelete.name}" is not empty (contains products).`,
-                variant: 'danger'
-            });
+            setToast({ show: true, message: `Cannot delete. Warehouse "${warehouseToDelete.name}" is not empty.`, variant: 'danger' });
             return;
         }
-        
-        try {
-            const [importOrders, exportOrders] = await Promise.all([
-                api.get(`/importOrders?warehouseId=${id}`),
-                api.get(`/exportOrders?warehouseId=${id}`)
-            ]);
-            
-            if (importOrders.data.length > 0 || exportOrders.data.length > 0) {
-                setToast({
-                    show: true,
-                    message: `Cannot delete. Warehouse "${warehouseToDelete.name}" has associated import/export orders.`,
-                    variant: 'danger'
-                });
-                return;
-            }
-        } catch (checkError) {
-             setToast({ show: true, message: 'Could not verify warehouse dependencies.', variant: 'danger' });
-             return;
-        }
-
-        if (!window.confirm(`Are you sure you want to permanently delete warehouse "${warehouseToDelete.name}"? This action cannot be undone.`)) {
+        if (!window.confirm(`Are you sure you want to permanently delete warehouse "${warehouseToDelete.name}"?`)) {
             return;
         }
-
         try {
             await api.delete(`/warehouses/${id}`);
             setToast({ show: true, message: 'Warehouse deleted successfully!', variant: 'success' });
             await fetchData(); 
         } catch (err) {
             console.error("Failed to delete warehouse:", err);
-            setToast({ show: true, message: err.response?.data?.error || 'Could not delete the warehouse.', variant: 'danger' });
+            setToast({
+                show: true,
+                message: err.response?.data?.error || 'Could not delete the warehouse.',
+                variant: 'danger'
+            });
         }
+
     }, [warehouses, fetchData]);
 
     const isOwner = ['manager', 'admin'].includes(user?.role);
@@ -163,7 +150,7 @@ function WarehousesDB() {
             w.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             w.location?.toLowerCase().includes(searchTerm.toLowerCase())
         ),
-    [warehouses, searchTerm]);
+        [warehouses, searchTerm]);
 
     const openModal = (warehouse = null) => {
         setEditingWarehouse(warehouse);
@@ -177,7 +164,7 @@ function WarehousesDB() {
             </div>
         );
     }
-    
+
     return (
         <>
             <header className="p-4 bg-white border-bottom">
@@ -207,7 +194,7 @@ function WarehousesDB() {
 
             <div className="p-4">
                 {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
-                
+
                 {filteredWarehouses.length > 0 ? (
                     <Row className="g-4">
                         {filteredWarehouses.map(wh => (
@@ -226,11 +213,11 @@ function WarehousesDB() {
                         <i className="fas fa-warehouse text-muted mb-3" style={{ fontSize: '48px' }} />
                         <h5>No Warehouses Found</h5>
                         <p className="text-muted">
-                            {searchTerm 
-                                ? 'No warehouses match your search criteria.' 
-                                : isOwner 
-                                ? 'Create the first warehouse for your enterprise.' 
-                                : 'No warehouses have been created yet.'}
+                            {searchTerm
+                                ? 'No warehouses match your search criteria.'
+                                : isOwner
+                                    ? 'Create the first warehouse for your enterprise.'
+                                    : 'No warehouses have been created yet.'}
                         </p>
                         {isOwner && !searchTerm && (
                             <Button variant="primary" onClick={() => openModal()}>
@@ -249,8 +236,8 @@ function WarehousesDB() {
             />
 
             <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
-                <Toast 
-                    show={toast.show} 
+                <Toast
+                    show={toast.show}
                     onClose={() => setToast({ ...toast, show: false })}
                     autohide
                     delay={5000}
