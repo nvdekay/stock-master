@@ -1,6 +1,8 @@
 import { Card, Button, Dropdown, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 function WarehouseCard({ warehouse, onEdit, onDelete, onView, isOwner }) {
+  const navigate = useNavigate();
   return (
     <Card
       className="h-100 shadow-sm"
@@ -11,7 +13,6 @@ function WarehouseCard({ warehouse, onEdit, onDelete, onView, isOwner }) {
       }}
     >
       <Card.Body className="d-flex flex-column p-4">
-        {/* Header: Tên, Địa chỉ và Menu actions */}
         <div className="d-flex justify-content-between align-items-start mb-3">
           <div className="flex-grow-1 me-3">
             <h5 className="mb-1 fw-bold ">
@@ -46,13 +47,12 @@ function WarehouseCard({ warehouse, onEdit, onDelete, onView, isOwner }) {
           )}
         </div>
 
-        {/* Stats: Các chỉ số quan trọng */}
         <Row className="text-center my-3 py-3 bg-light rounded">
           <Col>
             <div>
               <i className="fas fa-boxes-stacked fa-lg text-info mb-2"></i>
               <h5 className="mb-0 fw-bold">{warehouse.totalQuantity || 0}</h5>
-              <p className="text-muted small mb-0" style={{fontSize: '12px'}}>Total Inventory</p>
+              <p className="text-muted small mb-0" style={{ fontSize: '12px' }}>Total Inventory</p>
             </div>
           </Col>
           <Col>
@@ -75,7 +75,7 @@ function WarehouseCard({ warehouse, onEdit, onDelete, onView, isOwner }) {
           <Button
             variant="success"
             className="w-50 fw-bold"
-            onClick={() => onView && onView(warehouse)}
+            onClick={() => navigate(`/manager/warehouse/${warehouse.id}`)}
           >
             View Details
           </Button>
