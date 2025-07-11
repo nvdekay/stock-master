@@ -929,7 +929,7 @@
     {
       "id": "5",
       "type": "wholesale",
-      "status": "processing",
+      "status": "completed",
       "date": "2025-07-01",
       "enterpriseId": "4",
       "senderStaffId": "12",
@@ -1056,8 +1056,8 @@
       "orderId": "5",
       "shipperId": "14",
       "sendWarehouseId": "3",
-      "status": "in_transit",
-      "deliveryDate": null,
+      "status": "delivered",
+      "deliveryDate": "2025-07-11",
       "note": "Giao hàng cho đơn sỉ #5"
     },
     {

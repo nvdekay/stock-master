@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Alert, Spinner, Row, Col, Card, Table } from 'react-bootstrap';
+import { Container, Alert, Spinner, Row, Button } from 'react-bootstrap';
 import { useAuth } from '../../auth/AuthProvider';
 import ApiService from '../../api/api';
-import { Link } from 'react-router-dom';
+import ShipmentCard from '../../components/shipper/ShipmentCard';
 
-const ShipperDashboard = () => {
+const DeliveryHistory = () => {
     const { user } = useAuth();
     const [shipments, setShipments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -13,7 +13,7 @@ const ShipperDashboard = () => {
 
     useEffect(() => {
         const fetchShipments = async () => {
-            console.log('Fetching shipments for user:', user);
+            console.log('Fetching delivery history for user:', user);
             if (!user || user.role !== 'shipper') {
                 setError('You are not authorized to view this page.');
                 setLoading(false);
@@ -62,7 +62,7 @@ const ShipperDashboard = () => {
                 setLoading(false);
             } catch (err) {
                 console.error('Error fetching shipments:', err);
-                setError('Failed to fetch shipments. Please try again later.');
+                setError('Failed to fetch delivery history. Please try again later.');
                 setLoading(false);
             }
         };
@@ -70,17 +70,36 @@ const ShipperDashboard = () => {
         fetchShipments();
     }, [user]);
 
-    // Thống kê số lượng shipment theo trạng thái
-    const getShipmentStats = (shipments) => {
-        return {
-            assigned: shipments.filter(s => s.status === 'assigned').length,
-            inTransit: shipments.filter(s => s.status === 'in_transit').length,
-            delivered: shipments.filter(s => s.status === 'delivered').length,
-            total: shipments.length
-        };
-    };
+    const handleStatusUpdate = async (shipmentId, newStatus) => {
+        try {
+            await ApiService.patch(`/shipments/${shipmentId}`, {
+                status: newStatus,
+                deliveryDate: newStatus === 'delivered' ? new Date().toISOString().split('T')[0] : null,
+            });
 
-    const stats = getShipmentStats(shipments);
+            const shipmentCopy = shipments.find(s => s.id === shipmentId);
+            if (newStatus === 'delivered') {
+                await ApiService.patch(`/orders/${shipmentCopy.orderId}`, { status: 'completed' });
+            }
+
+            setShipments((prev) =>
+                prev.map((s) =>
+                    s.id === shipmentId
+                        ? {
+                            ...s,
+                            status: newStatus,
+                            deliveryDate: newStatus === 'delivered' ? new Date().toISOString().split('T')[0] : s.deliveryDate,
+                        }
+                        : s
+                )
+            );
+            setSuccessMessage(`Shipment ${shipmentId} updated to ${newStatus}!`);
+            setTimeout(() => setSuccessMessage(''), 3000);
+        } catch (err) {
+            console.error('Error updating shipment:', err.response ? err.response.data : err.message);
+            setError('Failed to update shipment status. Please try again.');
+        }
+    };
 
     if (loading) {
         return (
@@ -100,63 +119,22 @@ const ShipperDashboard = () => {
 
     return (
         <Container className="my-5">
-            <h2 className="mb-4">Shipper Dashboard</h2>
+            <h2 className="mb-4">Delivery History</h2>
             {successMessage && <Alert variant="success">{successMessage}</Alert>}
-            <Row className="mb-4">
-                <Col md={3} className="mb-3">
-                    <Card className="text-center p-3 bg-primary text-white">
-                        <Card.Title>Total Shipments</Card.Title>
-                        <Card.Text>{stats.total}</Card.Text>
-                    </Card>
-                </Col>
-                <Col md={3} className="mb-3">
-                    <Card className="text-center p-3 bg-success text-white">
-                        <Card.Title>Assigned</Card.Title>
-                        <Card.Text>{stats.assigned}</Card.Text>
-                    </Card>
-                </Col>
-                <Col md={3} className="mb-3">
-                    <Card className="text-center p-3 bg-warning text-white">
-                        <Card.Title>In Transit</Card.Title>
-                        <Card.Text>{stats.inTransit}</Card.Text>
-                    </Card>
-                </Col>
-                <Col md={3} className="mb-3">
-                    <Card className="text-center p-3 bg-info text-white">
-                        <Card.Title>Delivered</Card.Title>
-                        <Card.Text>{stats.delivered}</Card.Text>
-                    </Card>
-                </Col>
-            </Row>
-            <h4 className="mb-3">Assigned Shipments Overview</h4>
             {shipments.length === 0 ? (
-                <Alert variant="info">No shipments assigned to you.</Alert>
+                <Alert variant="info">No shipments found in history.</Alert>
             ) : (
-                <Table striped bordered hover responsive>
-                    <thead>
-                        <tr>
-                            <th>Shipment ID</th>
-                            <th>Order ID</th>
-                            <th>Status</th>
-                            <th>Warehouse</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {shipments.map((shipment) => (
-                            <tr key={shipment.id}>
-                                <td><Link to={`/shipper/shipment/${shipment.id}`}>#{shipment.id}</Link></td>
-                                <td>#{shipment.orderId}</td>
-                                <td>{shipment.status}</td>
-                                <td>{shipment.warehouse.name}</td>
-                                <td><Link to={`/shipper/shipment/${shipment.id}`} className="btn btn-primary btn-sm">View Details</Link></td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                <Row>
+                    {shipments.map((shipment) => (
+                        <ShipmentCard key={shipment.id} shipment={shipment} handleStatusUpdate={handleStatusUpdate} />
+                    ))}
+                </Row>
             )}
+            <div className="text-end mt-3">
+                <Button variant="secondary" onClick={() => navigate('/shipper')}>Back to Dashboard</Button>
+            </div>
         </Container>
     );
 };
 
-export default ShipperDashboard;
+export default DeliveryHistory;

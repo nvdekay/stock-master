@@ -70,7 +70,7 @@ const Footer = () => {
         {/* Copyright */}
         <Row>
           <Col className="text-center">
-            <p className="text-secondary mb-0">&copy; {new Date().getFullYear()} BizWarehouse. All rights reserved.</p>
+            <p className="text-secondary mb-0">&copy; {new Date().getFullYear()} StockMaster. All rights reserved.</p>
           </Col>
         </Row>
       </Container>
