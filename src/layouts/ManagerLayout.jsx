@@ -1,9 +1,14 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import ManagerSidebar from '../components/manager/ManagerSidebar';
 
 function ManagerLayout() {
-    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+    const location = useLocation();
+
+    useEffect(() => {
+        setIsSidebarCollapsed(true);
+    }, [location.pathname]);
 
     return (
         <div style={{ 

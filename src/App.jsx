@@ -13,6 +13,7 @@ import UserLayout from "./layouts/MainLayout";
 import WarehousesDB from "./pages/manager/WarehousesDB";
 import ManagerDashboard from "./pages/manager/ManagerDashboard";
 import ManagerLayout from "./layouts/ManagerLayout";
+import WarehouseDetail from "./pages/manager/WarehouseDetail";
 import ShipperLayout from "./layouts/ShipperLayout";
 import ShipperDashboard from "./pages/shipper/ShipperDashboard";
 import ShipmentDetail from "./pages/shipper/ShipmentDetail";
@@ -71,11 +72,13 @@ function App() {
 
           {/* làm tương tự cho các route cần role khác */}
           <Route path="/manager" element={<ProtectedRoute requiredRoles={["manager"]} />}>
-            <Route element={<ManagerLayout />}>
-              <Route index element={<ManagerDashboard />} />
-              <Route path="warehouse" element={<WarehousesDB />} />
-              {/* Thêm các route manager khác vào đây */}
-            </Route>
+
+          <Route element={<ManagerLayout />}>
+            <Route index element={<ManagerDashboard />} />
+            <Route path="warehouse" element={<WarehousesDB />} />
+            <Route path="warehouse/:warehouseId" element={<WarehouseDetail />} />
+            {/* Thêm các route manager khác vào đây */}
+
           </Route>
 
         </Route>

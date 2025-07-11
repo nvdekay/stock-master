@@ -32,7 +32,7 @@
     },
     {
       "id": "5",
-      "username": "staff02",
+      "username": "staff022",
       "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "role": "staff",
       "fullName": "Pham Van D",
@@ -407,12 +407,12 @@
   ],
   "products": [
     {
-      "id": "1",
       "name": "Loa bluetooth Sony SRS-XB13",
       "description": "Loa công suất lớn, chống nước IP67",
       "price": 1290000,
       "status": "available",
-      "warrantyExpire": "2026-06-30"
+      "warrantyExpire": "2026-06-30",
+      "id": "1"
     },
     {
       "id": "2",
@@ -615,12 +615,12 @@
       "warrantyExpire": "2032-12-19"
     },
     {
-      "id": "27",
       "name": "Cáp sạc USB-C",
       "description": "Cáp sạc USB-C cao cấp, chất lượng tốt",
       "price": 178000,
       "status": "available",
-      "warrantyExpire": "2027-07-17"
+      "warrantyExpire": "2025-07-24",
+      "id": "27"
     },
     {
       "id": "28",
@@ -809,10 +809,10 @@
   ],
   "inventory": [
     {
-      "id": "1",
       "productId": "1",
       "warehouseId": "1",
-      "quantity": 120
+      "quantity": 12,
+      "id": "1"
     },
     {
       "id": "2",
@@ -830,7 +830,7 @@
       "id": "4",
       "productId": "4",
       "warehouseId": "4",
-      "quantity": 0
+      "quantity": 20
     },
     {
       "id": "5",
@@ -847,7 +847,7 @@
     {
       "id": "7",
       "productId": "7",
-      "warehouseId": "1",
+      "warehouseId": "13",
       "quantity": 250
     },
     {
@@ -857,15 +857,165 @@
       "quantity": 100
     },
     {
-      "id": "9",
-      "productId": "1",
-      "warehouseId": "7",
-      "quantity": 50
-    },
-    {
       "id": "10",
       "productId": "10",
       "warehouseId": "4",
+      "quantity": 90
+    },
+    {
+      "id": "11",
+      "productId": "9",
+      "warehouseId": "13",
+      "quantity": 90
+    },
+    {
+      "id": "12",
+      "productId": "11",
+      "warehouseId": "3",
+      "quantity": 90
+    },
+    {
+      "id": "13",
+      "productId": "12",
+      "warehouseId": "11",
+      "quantity": 90
+    },
+    {
+      "id": "14",
+      "productId": "13",
+      "warehouseId": "12",
+      "quantity": 90
+    },
+    {
+      "id": "15",
+      "productId": "14",
+      "warehouseId": "14",
+      "quantity": 90
+    },
+    {
+      "id": "16",
+      "productId": "15",
+      "warehouseId": "15",
+      "quantity": 90
+    },
+    {
+      "id": "17",
+      "productId": "16",
+      "warehouseId": "16",
+      "quantity": 90
+    },
+    {
+      "id": "18",
+      "productId": "17",
+      "warehouseId": "17",
+      "quantity": 90
+    },
+    {
+      "id": "19",
+      "productId": "18",
+      "warehouseId": "18",
+      "quantity": 90
+    },
+    {
+      "id": "20",
+      "productId": "19",
+      "warehouseId": "19",
+      "quantity": 90
+    },
+    {
+      "id": "21",
+      "productId": "20",
+      "warehouseId": "20",
+      "quantity": 90
+    },
+    {
+      "id": "22",
+      "productId": "21",
+      "warehouseId": "8",
+      "quantity": 90
+    },
+    {
+      "id": "23",
+      "productId": "22",
+      "warehouseId": "9",
+      "quantity": 90
+    },
+    {
+      "id": "24",
+      "productId": "23",
+      "warehouseId": "10",
+      "quantity": 90
+    },
+    {
+      "id": "25",
+      "productId": "24",
+      "warehouseId": "11",
+      "quantity": 90
+    },
+    {
+      "id": "26",
+      "productId": "25",
+      "warehouseId": "12",
+      "quantity": 90
+    },
+    {
+      "id": "27",
+      "productId": "26",
+      "warehouseId": "13",
+      "quantity": 90
+    },
+    {
+      "productId": "27",
+      "warehouseId": "1",
+      "quantity": 10,
+      "id": "28"
+    },
+    {
+      "id": "29",
+      "productId": "28",
+      "warehouseId": "14",
+      "quantity": 90
+    },
+    {
+      "id": "30",
+      "productId": "29",
+      "warehouseId": "15",
+      "quantity": 90
+    },
+    {
+      "id": "31",
+      "productId": "30",
+      "warehouseId": "2",
+      "quantity": 90
+    },
+    {
+      "id": "32",
+      "productId": "31",
+      "warehouseId": "3",
+      "quantity": 90
+    },
+    {
+      "id": "33",
+      "productId": "32",
+      "warehouseId": "4",
+      "quantity": 90
+    },
+    {
+      "id": "34",
+      "productId": "33",
+      "warehouseId": "5",
+      "quantity": 90
+    },
+    {
+      "id": "35",
+      "productId": "34",
+      "warehouseId": "6",
+      "quantity": 90
+    },
+    {
+      "id": "36",
+      "productId": "35",
+      "warehouseId": "7",
       "quantity": 90
     }
   ],
@@ -881,7 +1031,6 @@
       "sendWarehouseId": "1",
       "receiveWarehouseId": "7",
       "buyerId": null,
-      "totalPrice": null,
       "note": "Chuyển từ Kho trung tâm HCM sang Kho Thủ Đức"
     },
     {
@@ -895,7 +1044,6 @@
       "sendWarehouseId": "2",
       "receiveWarehouseId": "8",
       "buyerId": null,
-      "totalPrice": null,
       "note": "Chuyển từ Kho Hà Nội sang Kho Long Biên"
     },
     {
@@ -909,13 +1057,12 @@
       "sendWarehouseId": "9",
       "receiveWarehouseId": "4",
       "buyerId": null,
-      "totalPrice": null,
       "note": "Chuyển từ Kho Đồng Nai sang Kho Bình Dương"
     },
     {
       "id": "4",
       "type": "wholesale",
-      "status": "completed",
+      "status": "pending",
       "date": "2025-06-27",
       "enterpriseId": "3",
       "senderStaffId": "11",
@@ -923,13 +1070,12 @@
       "sendWarehouseId": "2",
       "receiveWarehouseId": null,
       "buyerId": "7",
-      "totalPrice": 64500000,
       "note": "Đơn sỉ cho buyer01"
     },
     {
       "id": "5",
       "type": "wholesale",
-      "status": "completed",
+      "status": "processing",
       "date": "2025-07-01",
       "enterpriseId": "4",
       "senderStaffId": "12",
@@ -937,7 +1083,6 @@
       "sendWarehouseId": "3",
       "receiveWarehouseId": null,
       "buyerId": "13",
-      "totalPrice": 84900000,
       "note": "Đơn sỉ cho buyer02"
     },
     {
@@ -951,7 +1096,6 @@
       "sendWarehouseId": "3",
       "receiveWarehouseId": null,
       "buyerId": "16",
-      "totalPrice": 47500000,
       "note": "Đơn sỉ cho buyer03"
     },
     {
@@ -965,13 +1109,12 @@
       "sendWarehouseId": "5",
       "receiveWarehouseId": null,
       "buyerId": "20",
-      "totalPrice": 155000000,
       "note": "Đơn sỉ cho buyer04"
     },
     {
       "id": "8",
       "type": "wholesale",
-      "status": "cancelled",
+      "status": "completed",
       "date": "2025-07-05",
       "enterpriseId": "2",
       "senderStaffId": "5",
@@ -979,8 +1122,33 @@
       "sendWarehouseId": "7",
       "receiveWarehouseId": null,
       "buyerId": "7",
-      "totalPrice": 280000000,
-      "note": "Đơn sỉ cho buyer01 đã hủy"
+      "note": "Đơn sỉ cho buyer01"
+    },
+    {
+      "id": "9",
+      "type": "import",
+      "status": "in_transit",
+      "date": "2025-07-03",
+      "enterpriseId": "2",
+      "senderStaffId": "5",
+      "receiverStaffId": "4",
+      "sendWarehouseId": "7",
+      "receiveWarehouseId": "1",
+      "buyerId": null,
+      "note": "Testt"
+    },
+    {
+      "id": "10",
+      "type": "wholesale",
+      "status": "pending",
+      "date": "2025-06-27",
+      "enterpriseId": "2",
+      "senderStaffId": "4",
+      "receiverStaffId": null,
+      "sendWarehouseId": "1",
+      "receiveWarehouseId": null,
+      "buyerId": "7",
+      "note": "Đơn sỉ cho buyer02"
     }
   ],
   "orderDetails": [
@@ -1035,7 +1203,7 @@
     },
     {
       "id": "8",
-      "orderId": "8",
+      "orderId": "10",
       "productId": "6",
       "quantity": 10,
       "price": 28000000
@@ -1047,8 +1215,8 @@
       "orderId": "4",
       "shipperId": "8",
       "sendWarehouseId": "2",
-      "status": "delivered",
-      "deliveryDate": "2025-07-11",
+      "status": "assigned",
+      "deliveryDate": null,
       "note": "Giao hàng cho đơn sỉ #4"
     },
     {
@@ -1056,8 +1224,8 @@
       "orderId": "5",
       "shipperId": "14",
       "sendWarehouseId": "3",
-      "status": "delivered",
-      "deliveryDate": "2025-07-11",
+      "status": "in_transit",
+      "deliveryDate": null,
       "note": "Giao hàng cho đơn sỉ #5"
     },
     {

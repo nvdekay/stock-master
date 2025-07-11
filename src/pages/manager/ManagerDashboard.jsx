@@ -5,7 +5,7 @@ import { useAuth } from '../../auth/AuthProvider';
 
 function ManagerDashboard() {
     const { user, loading: authLoading } = useAuth();
-    
+
     const [dashboardData, setDashboardData] = useState({
         enterprise: null,
         warehouses: [],
@@ -20,11 +20,11 @@ function ManagerDashboard() {
 
         try {
             if (!user || !user.enterpriseId) {
-                throw new Error("User data is incomplete or missing Enterprise ID.");
+                throw new Error("Dữ liệu người dùng không đầy đủ hoặc thiếu ID Doanh nghiệp.");
             }
-            
+
             const enterpriseId = user.enterpriseId;
-            
+
             const [enterpriseRes, warehousesRes] = await Promise.all([
                 api.get(`/enterprises/${enterpriseId}`),
                 api.get(`/warehouses?enterpriseId=${enterpriseId}`)
@@ -35,12 +35,20 @@ function ManagerDashboard() {
 
             let allProducts = [];
             if (warehousesData && warehousesData.length > 0) {
-                const productPromises = warehousesData.map(warehouse =>
-                    api.get(`/products?warehouseId=${warehouse.id}`)
-                );
-                
-                const productResults = await Promise.all(productPromises);
-                allProducts = productResults.flatMap(response => response.data);
+                const warehouseIds = warehousesData.map(w => w.id);
+                const inventoryQuery = warehouseIds.map(id => `warehouseId=${id}`).join('&');
+                const inventoryRes = await api.get(`/inventory?${inventoryQuery}`);
+                const enterpriseInventory = inventoryRes.data;
+
+                if (enterpriseInventory && enterpriseInventory.length > 0) {
+                    const productIds = [...new Set(enterpriseInventory.map(item => item.productId))];
+
+                    if (productIds.length > 0) {
+                        const productsQuery = productIds.map(id => `id=${id}`).join('&');
+                        const productsRes = await api.get(`/products?${productsQuery}`);
+                        allProducts = productsRes.data;
+                    }
+                }
             }
 
             setDashboardData({
@@ -50,8 +58,8 @@ function ManagerDashboard() {
             });
 
         } catch (err) {
-            console.error('Error fetching dashboard data:', err);
-            setError(err.message || 'Failed to load dashboard data');
+            console.error('Lỗi khi tải dữ liệu dashboard:', err);
+            setError(err.message || 'Không thể tải dữ liệu dashboard');
         } finally {
             setDashboardLoading(false);
         }
@@ -73,7 +81,7 @@ function ManagerDashboard() {
             </div>
         );
     }
-    
+
     if (!user) {
         return (
             <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
@@ -83,7 +91,7 @@ function ManagerDashboard() {
             </div>
         );
     }
-    
+
     if (error) {
         return (
             <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
@@ -106,7 +114,8 @@ function ManagerDashboard() {
             </div>
         );
     }
-    
+    console.log('dashboardData:', dashboardData);
+
     return (
         <>
             <header className="p-4 bg-white border-bottom">
