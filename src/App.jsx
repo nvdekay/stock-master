@@ -13,6 +13,7 @@ import UserLayout from "./layouts/MainLayout";
 import WarehousesDB from "./pages/manager/WarehousesDB";
 import ManagerDashboard from "./pages/manager/ManagerDashboard";
 import ManagerLayout from "./layouts/ManagerLayout";
+import WarehouseDetail from "./pages/manager/WarehouseDetail";
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -62,6 +63,7 @@ function App() {
           <Route element={<ManagerLayout />}>
             <Route index element={<ManagerDashboard />} />
             <Route path="warehouse" element={<WarehousesDB />} />
+            <Route path="warehouse/:warehouseId" element={<WarehouseDetail />} />
             {/* Thêm các route manager khác vào đây */}
           </Route>
         </Route>
