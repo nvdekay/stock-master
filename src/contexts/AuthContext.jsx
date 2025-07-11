@@ -32,6 +32,9 @@ export default function AuthProvider({ children }) {
                 case 'staff':
                     navigate('/staff');
                     break;
+                case 'shipper':
+                    navigate('/shipper');
+                    break;
                 default:
                     navigate('/');
             }

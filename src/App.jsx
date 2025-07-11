@@ -13,6 +13,11 @@ import UserLayout from "./layouts/MainLayout";
 import WarehousesDB from "./pages/manager/WarehousesDB";
 import ManagerDashboard from "./pages/manager/ManagerDashboard";
 import ManagerLayout from "./layouts/ManagerLayout";
+import ShipperLayout from "./layouts/ShipperLayout";
+import ShipperDashboard from "./pages/shipper/ShipperDashboard";
+import ShipmentDetail from "./pages/shipper/ShipmentDetail";
+import CompletedDeliveries from "./components/shipper/CompletedDeliveries";
+import DeliveryHistory from "./components/shipper/DelivaryHistory";
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -52,19 +57,26 @@ function App() {
            cùng 1 trang hiển thị các chức năng khác nhau cho mỗi role riêng 
            thì chỉ cần ném nó vào mục này
         */}
-          <Route path="/staff" element={<ProtectedRoute requiredRoles={["admin", "manager", "staff"]} />}>
+          <Route path="/staff" element={<ProtectedRoute requiredRoles={["admin", "manager", "staff", "shipper"]} />}>
             {/* route mà cần user phải có roles ADMIN/manager/... thả vào đây */}
 
           </Route>
 
+          <Route path="/shipper" element={<ShipperLayout />}>
+            <Route index element={<ShipperDashboard />} />
+            <Route path="shipment/:id" element={<ShipmentDetail />} />
+            <Route path="completed" element={<CompletedDeliveries />} />
+            <Route path="history" element={<DeliveryHistory />} />
+          </Route>
+
           {/* làm tương tự cho các route cần role khác */}
           <Route path="/manager" element={<ProtectedRoute requiredRoles={["manager"]} />}>
-          <Route element={<ManagerLayout />}>
-            <Route index element={<ManagerDashboard />} />
-            <Route path="warehouse" element={<WarehousesDB />} />
-            {/* Thêm các route manager khác vào đây */}
+            <Route element={<ManagerLayout />}>
+              <Route index element={<ManagerDashboard />} />
+              <Route path="warehouse" element={<WarehousesDB />} />
+              {/* Thêm các route manager khác vào đây */}
+            </Route>
           </Route>
-        </Route>
 
         </Route>
         {/* Routes that requires user to have role ABC */}
