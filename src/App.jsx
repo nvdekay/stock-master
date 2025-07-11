@@ -72,13 +72,11 @@ function App() {
 
           {/* làm tương tự cho các route cần role khác */}
           <Route path="/manager" element={<ProtectedRoute requiredRoles={["manager"]} />}>
-
-          <Route element={<ManagerLayout />}>
-            <Route index element={<ManagerDashboard />} />
-            <Route path="warehouse" element={<WarehousesDB />} />
-            <Route path="warehouse/:warehouseId" element={<WarehouseDetail />} />
-            {/* Thêm các route manager khác vào đây */}
-
+            <Route element={<ManagerLayout />}>
+              <Route index element={<ManagerDashboard />} />
+              <Route path="warehouse" element={<WarehousesDB />} />
+              <Route path="warehouse/:warehouseId" element={<WarehouseDetail />} />
+            </Route>
           </Route>
 
         </Route>
