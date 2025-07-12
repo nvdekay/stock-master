@@ -1,5 +1,6 @@
 import { Nav } from "react-bootstrap"
 import { ShoppingCart } from "lucide-react"
+
 export default function CartButton() {
     return (
         <Nav.Link href="#" className="me-3 position-relative">
