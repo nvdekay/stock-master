@@ -11,6 +11,43 @@ app.db = router.db;
 app.use(cors());
 app.use(jsonServer.bodyParser);
 
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ error: "Access token required" });
+    }
+
+    jwt.verify(token, "your-secret-key", (err, decoded) => {
+        if (err) {
+            return res.status(403).json({ error: "Invalid or expired token" });
+        }
+        req.user = decoded; // Save decoded payload (e.g., { id, email }) for later use
+        next();
+    });
+}
+
+// Auth middleware with JWT
+app.use((req, res, next) => {
+    const publicPaths = [
+        // public backend request
+        "/login",
+        "/register",
+        "/products",
+        "/product_types"
+
+    ];
+    const isPublicRoute = publicPaths.includes(req.path);
+
+    if (isPublicRoute) {
+        return next();
+    }
+
+    authenticateToken(req, res, next);
+});
+
+
 // Custom login route
 app.post("/login", (req, res) => {
     const { username, password } = req.body;
@@ -39,7 +76,7 @@ app.post("/login", (req, res) => {
 
     // Create a token
     const token = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, username: user.username, role: user.role },
         "your-secret-key",
         { expiresIn: "1h" }
     );
@@ -54,7 +91,10 @@ app.post("/login", (req, res) => {
         fullName: user.fullName || null
     }
 
-    res.json({ accessToken: token, user: userInfo });
+    res.json({
+        accessToken: token,
+        user: userInfo
+    });
 });
 
 app.post("/register", (req, res) => {
@@ -104,11 +144,11 @@ app.post("/register", (req, res) => {
     app.db.get("users").push(newUser).write();
 
     // Generate token
-    const token = jwt.sign(
-        { id: newUser.id, email: newUser.email },
-        "your-secret-key",
-        { expiresIn: "1h" }
-    );
+    // const token = jwt.sign(
+    //     { id: newUser.id, username: newUser.username, role: newUser.role },
+    //     "your-secret-key",
+    //     { expiresIn: "1h" }
+    // );
 
     const userInfo = {
         id: newId,
@@ -117,7 +157,10 @@ app.post("/register", (req, res) => {
         role
     }
 
-    res.status(201).json({ accessToken: token, user: newUser });
+    res.status(201).json({
+        "message": "Registered Successfully!",
+        user: userInfo
+    });
 
 });
 

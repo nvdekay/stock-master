@@ -31,7 +31,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Unauthenticated Routes */}
         <Route path="/auth" >
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
@@ -41,10 +40,19 @@ function App() {
 
         {/* Chuyển "/" về "/products" */}
         {/* <Route path="/" element={<Navigate to="/products" replace />} /> */}
-        <Route path="/" element={<UserLayout />}>
-          <Route index element={<ProductList />} />
-          <Route path="products" element={<ProductList />} />
-          <Route path="product/:id" element={<ProductDetail />} />
+        <Route element={<UserLayout />}>
+            <Route index element={<ProductList />} />
+
+          {/* Unauthenticated Routes */}
+          {/* route public mà không cần đăng nhập */}
+          <Route path="/public" >
+            <Route index element={<ProductList />} />
+            <Route path="products" element={<ProductList />} />
+            <Route path="product/:id" element={<ProductDetail />} />
+
+            {/* ... ném các route tương tự mà không cần đăng nhập vẫn xem được vào đây */}
+          </Route>
+
           {/* <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<CreateOrder />} />
         <Route path="/orders" element={<OrderTracking />} /> */}
@@ -67,11 +75,13 @@ function App() {
 
           </Route>
 
-          <Route path="/shipper" element={<ShipperLayout />}>
-            <Route index element={<ShipperDashboard />} />
-            <Route path="shipment/:id" element={<ShipmentDetail />} />
-            <Route path="completed" element={<CompletedDeliveries />} />
-            <Route path="history" element={<DeliveryHistory />} />
+          <Route path="/shipper" element={<ProtectedRoute requiredRoles={["shipper"]} />}>
+            <Route element={<ShipperLayout />} >
+              <Route index element={<ShipperDashboard />} />
+              <Route path="shipment/:id" element={<ShipmentDetail />} />
+              <Route path="completed" element={<CompletedDeliveries />} />
+              <Route path="history" element={<DeliveryHistory />} />
+            </Route>
           </Route>
 
           {/* làm tương tự cho các route cần role khác */}
