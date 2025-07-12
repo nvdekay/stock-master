@@ -29,7 +29,12 @@ const Header = () => {
                 {/* Right side items */}
                 <Nav className="ms-auto d-flex align-items-center">
                     {/* Cart Icon */}
-                    <CartButton />
+                    { user ? 
+                        user.role.toLowerCase().includes("buyer") ?
+                            <CartButton />
+                            : ""
+                        : ""
+                    }
 
 
                     {/* User Dropdown */}
