@@ -174,16 +174,6 @@ function AdminManageWarehouse() {
                                 </div>
                                 <p className="text-muted">Manage warehouses, location and permissions</p>
                             </div>
-                            {viewMode === 'list' && (
-                                <Button
-                                    variant="primary"
-                                    className="d-flex align-items-center rounded-pill px-4 py-2 shadow-sm"
-                                    onClick={handleAddWarehouse}
-                                >
-                                    <Plus className="me-2" size={16} />
-                                    Add New Warehouse
-                                </Button>
-                            )}
                         </div>
 
                         {/* Search and Filter Section */}
@@ -277,21 +267,6 @@ function AdminManageWarehouse() {
                                 )}
                             </>
                         )}
-
-                        {/* Form Modal for Add/Edit */}
-                        <Modal show={showFormModal} onHide={() => setShowFormModal(false)} centered>
-                            <Modal.Header closeButton>
-                                <Modal.Title>{formMode === 'add' ? 'Thêm Kho hàng mới' : 'Sửa Kho hàng'}</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <WarehouseForm
-                                    initialData={selectedWarehouse}
-                                    onSave={handleSaveWarehouse}
-                                    onCancel={() => setShowFormModal(false)}
-                                    enterprises={enterprises}
-                                />
-                            </Modal.Body>
-                        </Modal>
                     </Container>
                 </div>
             </div>
