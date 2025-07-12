@@ -8,34 +8,27 @@ const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
         username: '',
         fullName: '',
         email: '',
-        password: '', // Add password for new manager
-        role: 'manager', // Default to manager
-        enterpriseId: '',
-        warehouseId: null, // Manager should not have a warehouse
+        password: '',
+        role: 'manager',
+        enterpriseId: null, // Will be set after enterprise creation/lookup
+        warehouseId: null,
     });
+    const [enterpriseName, setEnterpriseName] = useState(''); // State for new enterprise name
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [enterprises, setEnterprises] = useState([]);
 
-    useEffect(() => {
-        const fetchEnterprises = async () => {
-            try {
-                const res = await axios.get('http://localhost:9999/enterprises');
-                setEnterprises(res.data);
-            } catch (err) {
-                console.error("Failed to fetch enterprises:", err);
-                setError("Failed to load enterprise data.");
-            }
-        };
-        fetchEnterprises();
-    }, []);
+    // No need to fetch enterprises anymore as we're creating a new one or linking by name
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: value === "" ? null : value // Convert empty string for IDs to null
+            [name]: value === "" ? null : value
         }));
+    };
+
+    const handleEnterpriseNameChange = (e) => {
+        setEnterpriseName(e.target.value);
     };
 
     const handleSubmit = async (e) => {
@@ -43,34 +36,57 @@ const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
         setLoading(true);
         setError(null);
 
-        if (!formData.enterpriseId) {
-            setError("Please select an Enterprise for the new Manager.");
+        if (!enterpriseName.trim()) {
+            setError("Tên doanh nghiệp không được để trống.");
+            setLoading(false);
+            return;
+        }
+
+        // Validation for manager role
+        if (formData.role === 'manager' && formData.warehouseId !== null) {
+            setError("Quản lý không được gán cho một Kho hàng.");
             setLoading(false);
             return;
         }
 
         try {
-            // Check if username or email already exists (optional, but good practice)
+            // Check if username or email already exists
             const usersRes = await axios.get(`http://localhost:9999/users?username=${formData.username}`);
             if (usersRes.data.length > 0) {
-                setError("Username already exists.");
+                setError("Tên người dùng đã tồn tại.");
                 setLoading(false);
                 return;
             }
             const emailRes = await axios.get(`http://localhost:9999/users?email=${formData.email}`);
             if (emailRes.data.length > 0) {
-                setError("Email already exists.");
+                setError("Email đã tồn tại.");
                 setLoading(false);
                 return;
             }
 
-            // Simple password hashing for demonstration. In a real app, use a proper backend for hashing.
-            // For json-server, we'll just store as plain text for simplicity or omit if not needed for frontend logic.
-            // If you have a backend, you'd send plain password and let backend hash it.
+            let newEnterpriseId;
+            // Check if enterprise name already exists
+            const existingEnterprisesRes = await axios.get(`http://localhost:9999/enterprises?name=${enterpriseName.trim()}`);
+
+            if (existingEnterprisesRes.data.length > 0) {
+                // If enterprise exists, use its ID
+                newEnterpriseId = existingEnterprisesRes.data[0].id;
+            } else {
+                // If enterprise does not exist, create a new one
+                const newEnterprise = {
+                    id: (Math.random() * 100000).toFixed(0).toString(),
+                    name: enterpriseName.trim(),
+                    status: 'active' // Default status to active
+                };
+                const enterprisePostRes = await axios.post('http://localhost:9999/enterprises', newEnterprise);
+                newEnterpriseId = enterprisePostRes.data.id;
+            }
+
             const newUser = {
                 ...formData,
-                id: (Math.random() * 100000).toFixed(0).toString(), // Generate a simple ID
-                warehouseId: null // Ensure manager has no warehouse
+                id: (Math.random() * 100000).toFixed(0).toString(),
+                enterpriseId: newEnterpriseId, // Assign the new/existing enterprise ID
+                warehouseId: null // Ensure warehouseId is null for managers
             };
 
             await axios.post('http://localhost:9999/users', newUser);
@@ -83,12 +99,13 @@ const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
                 email: '',
                 password: '',
                 role: 'manager',
-                enterpriseId: '',
+                enterpriseId: null,
                 warehouseId: null,
             });
+            setEnterpriseName(''); // Reset enterprise name field
         } catch (err) {
             console.error(err);
-            setError('Failed to add manager. ' + (err.response?.data || err.message));
+            setError('Thêm quản lý thất bại. ' + (err.response?.data || err.message));
         } finally {
             setLoading(false);
         }
@@ -97,39 +114,42 @@ const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
     return (
         <Modal show={isOpen} onHide={onClose} centered backdrop="static" keyboard={false}>
             <Modal.Header closeButton>
-                <Modal.Title>Add New Manager Account</Modal.Title>
+                <Modal.Title className="fw-bold text-primary">Thêm Tài khoản Quản lý Mới</Modal.Title>
             </Modal.Header>
             <Form onSubmit={handleSubmit}>
                 <Modal.Body>
-                    {error && <Alert variant="danger">{error}</Alert>}
+                    {error && <Alert variant="danger" className="py-2">{error}</Alert>}
                     <Form.Group controlId="formNewUsername" className="mb-3">
-                        <Form.Label>Username</Form.Label>
+                        <Form.Label>Tên người dùng</Form.Label>
                         <Form.Control
                             type="text"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
                             required
+                            className="rounded-pill"
                         />
                     </Form.Group>
                     <Form.Group controlId="formNewPassword" className="mb-3">
-                        <Form.Label>Password</Form.Label>
+                        <Form.Label>Mật khẩu</Form.Label>
                         <Form.Control
                             type="password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
                             required
+                            className="rounded-pill"
                         />
                     </Form.Group>
                     <Form.Group controlId="formNewFullName" className="mb-3">
-                        <Form.Label>Full Name</Form.Label>
+                        <Form.Label>Họ và tên</Form.Label>
                         <Form.Control
                             type="text"
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleChange}
                             required
+                            className="rounded-pill"
                         />
                     </Form.Group>
                     <Form.Group controlId="formNewEmail" className="mb-3">
@@ -140,43 +160,39 @@ const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
                             value={formData.email}
                             onChange={handleChange}
                             required
+                            className="rounded-pill"
                         />
                     </Form.Group>
-                    <Form.Group controlId="formNewEnterprise" className="mb-3">
-                        <Form.Label>Assign Enterprise</Form.Label>
-                        <Form.Select
-                            name="enterpriseId"
-                            value={formData.enterpriseId}
-                            onChange={handleChange}
+                    <Form.Group controlId="formNewEnterpriseName" className="mb-3">
+                        <Form.Label>Tên Doanh nghiệp</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="enterpriseName"
+                            value={enterpriseName}
+                            onChange={handleEnterpriseNameChange}
                             required
-                        >
-                            <option value="">Select Enterprise</option>
-                            {enterprises.map((enterprise) => (
-                                <option key={enterprise.id} value={enterprise.id}>
-                                    {enterprise.name}
-                                </option>
-                            ))}
-                        </Form.Select>
-                        {!formData.enterpriseId && (
-                            <Form.Text className="text-danger">Manager must be assigned to an Enterprise.</Form.Text>
+                            className="rounded-pill"
+                        />
+                        {!enterpriseName.trim() && (
+                            <Form.Text className="text-danger">Quản lý phải được gán cho một Doanh nghiệp.</Form.Text>
                         )}
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={onClose} disabled={loading}>
+                    <Button variant="secondary" onClick={onClose} disabled={loading} className="rounded-pill px-4 py-2">
                         <X size={16} className="me-2" />
-                        Cancel
+                        Hủy
                     </Button>
-                    <Button type="submit" variant="primary" disabled={loading}>
+                    <Button type="submit" variant="primary" disabled={loading} className="rounded-pill px-4 py-2">
                         {loading ? (
                             <>
                                 <Spinner animation="border" size="sm" className="me-2" />
-                                Adding...
+                                Đang thêm...
                             </>
                         ) : (
                             <>
                                 <UserPlus size={16} className="me-2" />
-                                Add Manager
+                                Thêm Quản lý
                             </>
                         )}
                     </Button>

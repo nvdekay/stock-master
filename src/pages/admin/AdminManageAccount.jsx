@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Header from '../../components/admin/Header';
 import Sidebar from '../../components/admin/Sidebar';
 import { Users, Plus } from 'lucide-react';
-import UserTable from '../../components/admin/UserTable';
-import AddManagerModal from '../../components/admin/AddManagerModal'; // Import the new modal
+import UserTable from '../../components/admin/account/UserTable';
+import AddManagerModal from '../../components/admin/account/AddManagerModal'; // Import the new modal
 
 function AdminManageAccount() {
     const [isAddManagerModalOpen, setIsAddManagerModalOpen] = useState(false);
@@ -29,16 +29,16 @@ function AdminManageAccount() {
                             <div>
                                 <div className="d-flex align-items-center mb-2">
                                     <Users className="text-primary me-2" size={28} />
-                                    <h2 className="h3 mb-0">Manage Accounts</h2>
+                                    <h2 className="h3 mb-0">Account Management</h2>
                                 </div>
-                                <p className="text-muted">Manage user accounts, roles, and permissions.</p>
+                                <p className="text-muted">Manage users, roles, and permissions.</p>
                             </div>
                             <button
-                                className="btn btn-primary d-flex align-items-center"
+                                className="btn btn-primary d-flex align-items-center rounded-pill px-4 py-2 shadow-sm"
                                 onClick={() => setIsAddManagerModalOpen(true)}
                             >
                                 <Plus className="me-2" size={16} />
-                                Add New Manager
+                                Add new manager
                             </button>
                         </div>
 

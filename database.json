@@ -2,6 +2,7 @@
   "users": [
     {
       "username": "admin",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "fullName": "Nguyễn Vũ Đăng Khánh",
       "email": "admin@fpt.com",
       "role": "admin",
@@ -11,6 +12,7 @@
     },
     {
       "username": "khanhnvd",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "fullName": "Nguyễn Vũ Đăng Khánh",
       "email": "khanhnvd@gmail.com",
       "role": "manager",
@@ -20,6 +22,7 @@
     },
     {
       "username": "minhanh123",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "fullName": "Nguyễn Thị Minh Anh",
       "email": "minhanh123@example.com",
       "role": "staff",
@@ -29,6 +32,7 @@
     },
     {
       "username": "khoind",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "fullName": "Nguyễn Đăng Khôi",
       "email": "khoind@example.com",
       "role": "shipper",
@@ -38,6 +42,7 @@
     },
     {
       "username": "thuanlv",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "fullName": "Lê Văn Thuận",
       "email": "thuanlv@gmail.com",
       "role": "manager",
@@ -156,95 +161,130 @@
       "warehouseId": null
     },
     {
-      "id": "a978",
       "username": "newmanager",
       "fullName": "Manager Test",
       "email": "manager@test.com",
       "role": "manager",
       "enterpriseId": "2",
-      "warehouseId": null
+      "warehouseId": null,
+      "id": "a978"
+    },
+    {
+      "username": "hahahihi",
+      "fullName": "Lê Minh Phương",
+      "email": "phuonglm@gmail.com",
+      "password": "123",
+      "role": "manager",
+      "enterpriseId": "36961",
+      "warehouseId": null,
+      "id": "93723"
     }
   ],
   "enterprises": [
     {
       "id": "2",
-      "name": "Công ty TNHH Âm Thanh Việt"
+      "name": "Công ty TNHH Âm Thanh Việt",
+      "status": "active"
     },
     {
       "id": "3",
-      "name": "Tập đoàn Điện tử Toàn Cầu"
+      "name": "Tập đoàn Điện tử Toàn Cầu",
+      "status": "active"
     },
     {
       "id": "4",
-      "name": "Nhà phân phối Gear Pro"
+      "name": "Nhà phân phối Gear Pro",
+      "status": "active"
     },
     {
       "id": "5",
-      "name": "Công ty Cổ phần Công nghệ Tương Lai"
+      "name": "Công ty Cổ phần Công nghệ Tương Lai",
+      "status": "active"
     },
     {
       "id": "6",
-      "name": "Công ty TNHH Giải pháp Hiển thị Sáng"
+      "name": "Công ty TNHH Giải pháp Hiển thị Sáng",
+      "status": "active"
     },
     {
       "id": "7",
-      "name": "Tập đoàn Sáng tạo Số"
+      "name": "Tập đoàn Sáng tạo Số",
+      "status": "active"
     },
     {
       "id": "8",
-      "name": "Nhà bán lẻ TechZone"
+      "name": "Nhà bán lẻ TechZone",
+      "status": "active"
     },
     {
       "id": "9",
-      "name": "Công ty Thiết bị Văn phòng A-Z"
+      "name": "Công ty Thiết bị Văn phòng A-Z",
+      "status": "active"
     },
     {
       "id": "10",
-      "name": "Công ty Smart Home Việt Nam"
+      "name": "Công ty Smart Home Việt Nam",
+      "status": "active"
     },
     {
       "id": "11",
-      "name": "Tập đoàn Viễn thông Connect"
+      "name": "Tập đoàn Viễn thông Connect",
+      "status": "active"
     },
     {
       "id": "12",
-      "name": "Nhà phân phối Phụ kiện Năng động"
+      "name": "Nhà phân phối Phụ kiện Năng động",
+      "status": "active"
     },
     {
       "id": "13",
-      "name": "Công ty Cổ phần Máy tính An Phát"
+      "name": "Công ty Cổ phần Máy tính An Phát",
+      "status": "active"
     },
     {
       "id": "14",
-      "name": "Công ty TNHH Thiết bị Nghe nhìn Hoàng Gia"
+      "name": "Công ty TNHH Thiết bị Nghe nhìn Hoàng Gia",
+      "status": "active"
     },
     {
       "id": "15",
-      "name": "Tập đoàn Gaming Master"
+      "name": "Tập đoàn Gaming Master",
+      "status": "active"
     },
     {
       "id": "16",
-      "name": "Công ty Giải pháp Lưu trữ Dữ liệu"
+      "name": "Công ty Giải pháp Lưu trữ Dữ liệu",
+      "status": "active"
     },
     {
       "id": "17",
-      "name": "Nhà bán lẻ Điện máy Xanh"
+      "name": "Nhà bán lẻ Điện máy Xanh",
+      "status": "active"
     },
     {
       "id": "18",
-      "name": "Công ty Cổ phần FPT"
+      "name": "Công ty Cổ phần FPT",
+      "status": "active"
     },
     {
       "id": "19",
-      "name": "Tập đoàn Vingroup"
+      "name": "Tập đoàn Vingroup",
+      "status": "active"
     },
     {
       "id": "20",
-      "name": "Công ty TNHH Thế Giới Di Động"
+      "name": "Công ty TNHH Thế Giới Di Động",
+      "status": "active"
     },
     {
       "id": "21",
-      "name": "Công ty Cổ phần Viettel"
+      "name": "Công ty Cổ phần Viettel",
+      "status": "active"
+    },
+    {
+      "id": "36961",
+      "name": "Công ty TNHH một mình tao",
+      "status": "active"
     }
   ],
   "warehouses": [
