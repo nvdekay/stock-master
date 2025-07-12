@@ -11,16 +11,24 @@ const ShipmentCard = ({ shipment, handleStatusUpdate }) => {
                     Status: {shipment.status} {shipment.deliveryDate && `(Delivered on ${shipment.deliveryDate})`}
                 </Card.Subtitle>
                 <Card.Text>
+                    <strong>Order Date:</strong> {shipment.order?.date}<br />
                     <strong>From Warehouse:</strong> {shipment.warehouse.name} ({shipment.warehouse.location})<br />
                     <strong>Buyer:</strong> {shipment.buyer ? `${shipment.buyer.fullName} (${shipment.buyer.email})` : 'N/A'}<br />
-                    <strong>Total Price:</strong> {(shipment.order?.totalPrice ?? 0).toLocaleString()} VND<br />
+                    <strong>Number of Items:</strong> {shipment.products.length} types - {
+                        shipment.products.reduce((sum, p) => sum + p.quantity, 0)
+                    } units<br />
+                    <strong>Total Price:</strong> {shipment.products.reduce((acc, item) => acc + (item.quantity * item.price), 0).toLocaleString()} VND
+
+                    <hr />
+
                     <strong>Products:</strong>
                     <Table striped bordered hover size="sm" className="mt-2">
                         <thead>
                             <tr>
                                 <th>Product</th>
                                 <th>Quantity</th>
-                                <th>Price</th>
+                                <th>Unit Price</th>
+                                <th>Subtotal</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,13 +36,16 @@ const ShipmentCard = ({ shipment, handleStatusUpdate }) => {
                                 <tr key={item.id}>
                                     <td>{item.product?.name || 'Unknown'}</td>
                                     <td>{item.quantity}</td>
-                                    <td>{item.price?.toLocaleString?.() || 0} VND</td>
+                                    <td>{item.price?.toLocaleString() || 0} VND</td>
+                                    <td>{(item.quantity * item.price).toLocaleString()} VND</td>
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
+
                     <strong>Note:</strong> {shipment.note || 'No note'}
                 </Card.Text>
+
 
                 {shipment.status === 'assigned' && (
                     <Button variant="primary" onClick={() => handleStatusUpdate(shipment.id, 'in_transit')}>
@@ -47,7 +58,7 @@ const ShipmentCard = ({ shipment, handleStatusUpdate }) => {
                     </Button>
                 )}
                 {(shipment.status === 'delivered' || shipment.status === 'completed') && (
-                    <Alert variant="info">No actions available for this shipment.</Alert>
+                    <Alert variant="info">This shipment has been shipped successfully.</Alert>
                 )}
             </Card.Body>
         </Card>

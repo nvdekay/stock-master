@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Alert, Spinner, Button } from 'react-bootstrap';
 import ApiService from '../../api/api';
 import ShipmentCard from '../../components/shipper/ShipmentCard';
+import DeliveryProgress from '../../components/shipper/DeliveryProgress';
 
 const ShipmentDetail = () => {
     const { id } = useParams();
@@ -113,6 +114,9 @@ const ShipmentDetail = () => {
             <h2 className="mb-4">Shipment Details</h2>
             {successMessage && <Alert variant="success">{successMessage}</Alert>}
             {error && <Alert variant="danger">{error}</Alert>}
+
+            <DeliveryProgress status={shipment.status} />
+
             <ShipmentCard shipment={shipment} handleStatusUpdate={handleStatusUpdate} />
             <div className="text-end mt-3">
                 <Button variant="secondary" onClick={() => navigate('/shipper')}>Back to Dashboard</Button>

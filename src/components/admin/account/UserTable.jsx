@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Table,
     Button,
@@ -171,13 +171,13 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
                             <Table striped bordered hover className="align-middle">
                                 <thead className="table-light">
                                     <tr>
-                                        <th>Tên người dùng</th>
-                                        <th>Họ và tên</th>
+                                        <th>Username</th>
+                                        <th>Full Name</th>
                                         <th>Email</th>
-                                        <th>Vai trò</th>
-                                        <th>Doanh nghiệp</th>
-                                        <th>Kho hàng</th>
-                                        <th className="text-center">Hành động</th>
+                                        <th>System Role</th>
+                                        <th>Enterprise</th>
+                                        <th>Warehouse</th>
+                                        <th className="text-center">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -201,7 +201,7 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
                                                         className="me-2 d-flex align-items-center rounded-pill"
                                                         onClick={() => handleEditClick(user)}
                                                     >
-                                                        <Edit size={14} className="me-1" /> Chỉnh sửa
+                                                        <Edit size={14} className="me-1" /> Edit
                                                     </Button>
                                                     <Button
                                                         variant="outline-danger"
@@ -209,7 +209,7 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
                                                         className="d-flex align-items-center rounded-pill"
                                                         onClick={() => handleDeleteClick(user)}
                                                     >
-                                                        <Trash2 size={14} className="me-1" /> Xóa
+                                                        <Trash2 size={14} className="me-1" /> Delete
                                                     </Button>
                                                 </div>
                                             </td>

@@ -1,8 +1,5 @@
 import { useState } from 'react';
 import {
-    Bell,
-    Settings,
-    User,
     LogOut,
 } from 'lucide-react';
 import {
@@ -74,10 +71,6 @@ const Header = () => {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu className="shadow-sm">
-                        <Dropdown.Item href="#" className="d-flex align-items-center gap-2">
-                            <User size={16} /> Profile
-                        </Dropdown.Item>
-                        <Dropdown.Divider />
                         <Dropdown.Item
                             href="#"
                             className="d-flex align-items-center gap-2 text-danger"
