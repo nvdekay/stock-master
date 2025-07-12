@@ -1,53 +1,83 @@
 {
   "users": [
     {
-      "username": "admin",
-      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "fullName": "Nguyễn Vũ Đăng Khánh",
-      "email": "admin@fpt.com",
-      "role": "admin",
       "id": "1",
+      "username": "admin01",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
+      "role": "admin",
+      "fullName": "Nguyen Van A",
+      "email": "a@example.com",
       "enterpriseId": null,
       "warehouseId": null
     },
     {
-      "username": "khanhnvd",
+      "id": "3",
+      "username": "manager01",
       "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "fullName": "Nguyễn Vũ Đăng Khánh",
-      "email": "khanhnvd@gmail.com",
       "role": "manager",
-      "enterpriseId": "4",
-      "warehouseId": null,
-      "id": "3"
-    },
-    {
-      "username": "minhanh123",
-      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "fullName": "Nguyễn Thị Minh Anh",
-      "email": "minhanh123@example.com",
-      "role": "staff",
-      "enterpriseId": "3",
-      "warehouseId": "14",
-      "id": "4"
-    },
-    {
-      "username": "khoind",
-      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "fullName": "Nguyễn Đăng Khôi",
-      "email": "khoind@example.com",
-      "role": "shipper",
-      "id": "5",
-      "enterpriseId": "3",
+      "fullName": "Tran Thi B",
+      "email": "b@example.com",
+      "enterpriseId": "2",
       "warehouseId": null
     },
     {
-      "username": "thuanlv",
+      "id": "4",
+      "username": "staff01",
       "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "fullName": "Lê Văn Thuận",
-      "email": "thuanlv@gmail.com",
-      "role": "manager",
+      "role": "staff",
+      "fullName": "Le Van C",
+      "email": "c@example.com",
+      "enterpriseId": "2",
+      "warehouseId": "1"
+    },
+    {
+      "id": "5",
+      "username": "staff022",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
+      "role": "staff",
+      "fullName": "Pham Van D",
+      "email": "d@example.com",
+      "enterpriseId": "2",
+      "warehouseId": "7"
+    },
+    {
+      "id": "7",
+      "username": "buyer01",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
+      "role": "buyer",
+      "fullName": "Nguyen Thi E",
+      "email": "e@example.com",
+      "enterpriseId": null,
+      "warehouseId": null
+    },
+    {
       "id": "8",
-      "enterpriseId": "4",
+      "username": "shipper01",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
+      "role": "shipper",
+      "fullName": "Ngo Van F",
+      "email": "f@example.com",
+      "enterpriseId": "2",
+      "warehouseId": null
+    },
+    {
+      "id": "9",
+      "username": "admin02",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
+      "role": "admin",
+      "fullName": "Hoang Van G",
+      "email": "g@example.com",
+      "enterpriseId": null,
+      "warehouseId": null
+    },
+    {
+      "id": "10",
+      "username": "manager02",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
+      "role": "manager",
+      "fullName": "Do Thi H",
+      "email": "h@example.com",
+      "enterpriseId": "3",
       "warehouseId": null
     },
     {
@@ -161,23 +191,14 @@
       "warehouseId": null
     },
     {
-      "username": "newmanager",
-      "fullName": "Manager Test",
-      "email": "manager@test.com",
-      "role": "manager",
-      "enterpriseId": "2",
-      "warehouseId": null,
-      "id": "a978"
-    },
-    {
-      "username": "hahahihi",
-      "fullName": "Lê Minh Phương",
-      "email": "phuonglm@gmail.com",
-      "password": "123",
-      "role": "manager",
-      "enterpriseId": "36961",
-      "warehouseId": null,
-      "id": "93723"
+      "id": "22",
+      "username": "staff07",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
+      "role": "staff",
+      "fullName": "Vo Thi U",
+      "email": "u@example.com",
+      "enterpriseId": "7",
+      "warehouseId": "6"
     }
   ],
   "enterprises": [
