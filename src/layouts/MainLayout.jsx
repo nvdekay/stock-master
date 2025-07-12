@@ -7,7 +7,7 @@ export default function UserLayout() {
     return (
         <Container fluid className="p-0">
             <Header />
-            <main className="m-5">
+            <main className="">
                 <Outlet />
             </main>
             <Footer />

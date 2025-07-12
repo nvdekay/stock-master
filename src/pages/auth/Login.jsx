@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthProvider';
 import api from '../../api/axiosInstance';
 
-
 const LoginPage = () => {
     const { login } = useAuth();
     const [formData, setFormData] = useState({
@@ -69,9 +68,13 @@ const LoginPage = () => {
             setTimeout(() => {
                 setFormData({ usernameOrEmail: '', password: '' });
                 setShowAlert(false);
-                if (user.role.toLowerCase().includes("admin"))
-                    navigate("/admin");
-                else navigate("/");
+                if (user.role.toLowerCase() === "shipper") {
+                    navigate("/shipper");
+                } else if (user.role.toLowerCase().includes("admin")) {
+                    navigate("/admin/dashboard");
+                } else {
+                    navigate("/");
+                }
             }, 1500);
 
             setAlertMessage('Login successful! Redirecting to Home Page')

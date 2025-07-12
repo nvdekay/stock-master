@@ -35,7 +35,7 @@ app.post("/login", (req, res) => {
 
     if (!isPasswordValid) {
         return res.status(400).json({ error: "Incorrect password" });
-    } 
+    }
 
     // Create a token
     const token = jwt.sign(
@@ -48,10 +48,13 @@ app.post("/login", (req, res) => {
         id: user.id,
         username: user.username,
         email: user.email,
-        role: user.role
+        role: user.role,
+        enterpriseId: user.enterpriseId || null,
+        warehouseId: user.warehouseId || null,
+        fullName: user.fullName || null
     }
 
-    res.json({ accessToken: token, user: userInfo});
+    res.json({ accessToken: token, user: userInfo });
 });
 
 app.post("/register", (req, res) => {
@@ -83,14 +86,16 @@ app.post("/register", (req, res) => {
         return res.status(400).json({ error: "This " + exist + " already exists" });
     }
 
-    // Generate new user ID
-    const newId =
-        app.db.get("users").value().reduce((maxId, user) => Math.max(user.id, maxId), 0) + 1;
+    const newId = String(
+        app.db.get("users")
+            .value()
+            .reduce((maxId, user) => Math.max(parseInt(user.id), maxId), 0) + 1
+    );
 
     const newUser = {
         id: newId,
         username,
-        password: bcrypt.hashSync(password), 
+        password: bcrypt.hashSync(password),
         role,
         fullName,
         email
@@ -109,10 +114,83 @@ app.post("/register", (req, res) => {
         id: newId,
         username,
         email,
-        role 
+        role
     }
 
-    res.status(201).json({ accessToken: token, user: userInfo });
+    res.status(201).json({ accessToken: token, user: newUser });
+
+});
+
+app.delete("/warehouses/:id", (req, res) => {
+    const { id } = req.params;
+    const db = app.db;
+
+    try {
+        const warehouseExists = db.get('warehouses').find({ id }).value();
+        if (!warehouseExists) {
+            return res.status(404).json({ error: "Warehouse not found" });
+        }
+
+        const relatedInventory = db.get('inventory').filter({ warehouseId: id }).value();
+        if (relatedInventory.length > 0) {
+            return res.status(400).json({ error: "Cannot delete. Warehouse still has inventory." });
+        }
+
+        const relatedUsers = db.get('users').filter({ warehouseId: id }).value();
+        if (relatedUsers.length > 0) {
+            return res.status(400).json({ error: "Cannot delete. Warehouse has assigned staff." });
+        }
+
+        const relatedSendingOrders = db.get('orders').filter({ sendWarehouseId: id }).value();
+        const relatedReceivingOrders = db.get('orders').filter({ receiveWarehouseId: id }).value();
+        if (relatedSendingOrders.length > 0 || relatedReceivingOrders.length > 0) {
+            return res.status(400).json({ error: "Cannot delete. Warehouse is associated with orders." });
+        }
+
+        const relatedShipments = db.get('shipments').filter({ sendWarehouseId: id }).value();
+        if (relatedShipments.length > 0) {
+            return res.status(400).json({ error: "Cannot delete. Warehouse is associated with shipments." });
+        }
+        db.get('warehouses').remove({ id }).write();
+
+        res.status(200).json({ message: "Warehouse deleted successfully" });
+
+    } catch (error) {
+        console.error("Error deleting warehouse on server:", error);
+        res.status(500).json({ error: "An internal server error occurred while deleting the warehouse." });
+    }
+});
+
+app.delete("/users/:id", (req, res) => {
+    const { id } = req.params;
+    const db = app.db;
+
+    try {
+        // Kiểm tra xem user có tồn tại không
+        const userExists = db.get('users').find({ id }).value();
+        if (!userExists) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        // Kiểm tra ràng buộc
+        const relatedSenderOrders = db.get('orders').filter({ senderStaffId: id }).value();
+        const relatedReceiverOrders = db.get('orders').filter({ receiverStaffId: id }).value();
+        if (relatedSenderOrders.length > 0 || relatedReceiverOrders.length > 0) {
+            return res.status(400).json({ error: "Cannot delete. User is associated with orders." });
+        }
+
+        const relatedShipments = db.get('shipments').filter({ shipperId: id }).value();
+        if (relatedShipments.length > 0) {
+            return res.status(400).json({ error: "Cannot delete. User is associated with shipments." });
+        }
+
+        db.get('users').remove({ id }).write();
+        res.status(200).json({ message: "User deleted successfully" });
+
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).json({ error: "Server error while deleting user." });
+    }
 });
 
 app.use(router);
