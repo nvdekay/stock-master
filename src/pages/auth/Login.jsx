@@ -68,16 +68,23 @@ const LoginPage = () => {
             setTimeout(() => {
                 setFormData({ usernameOrEmail: '', password: '' });
                 setShowAlert(false);
-                if (user.role.toLowerCase() === "shipper") {
-                    navigate("/shipper");
-                } else if (user.role.toLowerCase().includes("admin")) {
-                    navigate("/admin/dashboard");
-                } else {
-                    navigate("/");
+                switch (user.role.toLowerCase()) {
+                    case "admin": navigate("/admin/dashboard")
+                        break;
+                    case "manager": navigate("/manager")
+                        break;
+                    case "shipper": navigate("/shipper")
+                        break;
+                    // thêm các role tương tự nếu có
+                    // case "shipper": navigate("/shipper")
+                    // break;
+                    default: navigate("/");
+                        break;
                 }
+
             }, 1500);
 
-            setAlertMessage('Login successful! Redirecting to Home Page')
+            setAlertMessage('Login successful! Redirecting...')
             setAlertVariant('success');
             setShowAlert(true);
 
