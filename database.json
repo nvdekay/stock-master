@@ -289,10 +289,10 @@
   ],
   "warehouses": [
     {
-      "id": "1",
       "name": "Kho trung tâm HCM",
-      "location": "Quận 1, TP.HCM",
-      "enterpriseId": "2"
+      "location": "Quận 2, TP.HCM",
+      "enterpriseId": "36961",
+      "id": "1"
     },
     {
       "id": "2",
@@ -407,6 +407,12 @@
       "name": "Kho Tây Hồ",
       "location": "Quận Tây Hồ, Hà Nội",
       "enterpriseId": "3"
+    },
+    {
+      "name": "Kho Hòa Lạc",
+      "location": "Hòa Lạc",
+      "enterpriseId": "20",
+      "id": "LmHRxdG"
     }
   ],
   "products": [
