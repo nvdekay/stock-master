@@ -413,7 +413,8 @@
       "price": 1290000,
       "status": "available",
       "warrantyExpire": "2026-06-30",
-      "warehouseId": "2"
+      "warehouseId": "2",
+      "productTypeId": 8
     },
     {
       "id": "2",
@@ -422,7 +423,8 @@
       "price": 8490000,
       "status": "available",
       "warrantyExpire": "2026-07-15",
-      "warehouseId": "3"
+      "warehouseId": "3",
+      "productTypeId": 14
     },
     {
       "id": "3",
@@ -431,7 +433,8 @@
       "price": 3200000,
       "status": "available",
       "warrantyExpire": "2027-01-01",
-      "warehouseId": "4"
+      "warehouseId": "4",
+      "productTypeId": 2
     },
     {
       "id": "4",
@@ -440,7 +443,8 @@
       "price": 3500000,
       "status": "out_of_stock",
       "warrantyExpire": "2026-11-20",
-      "warehouseId": "5"
+      "warehouseId": "5",
+      "productTypeId": 5
     },
     {
       "id": "5",
@@ -449,7 +453,8 @@
       "price": 15500000,
       "status": "available",
       "warrantyExpire": "2028-03-10",
-      "warehouseId": "6"
+      "warehouseId": "6",
+      "productTypeId": 10
     },
     {
       "id": "6",
@@ -458,7 +463,8 @@
       "price": 28000000,
       "status": "available",
       "warrantyExpire": "2026-09-01",
-      "warehouseId": "7"
+      "warehouseId": "7",
+      "productTypeId": 7
     },
     {
       "id": "7",
@@ -467,7 +473,8 @@
       "price": 1100000,
       "status": "available",
       "warrantyExpire": "2026-05-05",
-      "warehouseId": "2"
+      "warehouseId": "2",
+      "productTypeId": 18
     },
     {
       "id": "8",
@@ -476,7 +483,8 @@
       "price": 4500000,
       "status": "available",
       "warrantyExpire": "2029-12-31",
-      "warehouseId": "3"
+      "warehouseId": "3",
+      "productTypeId": 17
     },
     {
       "id": "9",
@@ -485,7 +493,8 @@
       "price": 6800000,
       "status": "discontinued",
       "warrantyExpire": "2025-10-10",
-      "warehouseId": "4"
+      "warehouseId": "4",
+      "productTypeId": 13
     },
     {
       "id": "10",
@@ -494,7 +503,8 @@
       "price": 2400000,
       "status": "available",
       "warrantyExpire": "2026-08-22",
-      "warehouseId": "5"
+      "warehouseId": "5",
+      "productTypeId": 15
     },
     {
       "id": "11",
@@ -503,7 +513,8 @@
       "price": 3800000,
       "status": "available",
       "warrantyExpire": "2026-11-11",
-      "warehouseId": "6"
+      "warehouseId": "6",
+      "productTypeId": 9
     },
     {
       "id": "12",
@@ -512,7 +523,8 @@
       "price": 59990000,
       "status": "available",
       "warrantyExpire": "2027-04-18",
-      "warehouseId": "7"
+      "warehouseId": "7",
+      "productTypeId": 19
     },
     {
       "id": "13",
@@ -521,25 +533,29 @@
       "price": 22000000,
       "status": "available",
       "warrantyExpire": "2026-10-30",
-      "warehouseId": "2"
+      "warehouseId": "2",
+      "productTypeId": 7
     },
     {
       "id": "14",
-      "name": "Ghế công thái học Epione ErgoChair Pro",
-      "description": "Hỗ trợ cột sống, vật liệu lưới thoáng khí",
+      "name": "Loa Epione ErgoChair Pro",
+      "description": "Âm thanh cao cấp, chất lượng tốt",
       "price": 8990000,
       "status": "available",
       "warrantyExpire": "2030-01-01",
-      "warehouseId": "3"
+      "warehouseId": "3",
+      "category": "Card đồ họa",
+      "productTypeId": 8
     },
     {
       "id": "15",
-      "name": "Đồng hồ thông minh Apple Watch Series 8",
+      "name": "Webcam Apple Watch Series 8",
       "description": "Cảm biến nhiệt độ, phát hiện va chạm",
       "price": 11500000,
       "status": "out_of_stock",
       "warrantyExpire": "2026-09-15",
-      "warehouseId": "4"
+      "warehouseId": "4",
+      "productTypeId": 15
     },
     {
       "id": "16",
@@ -548,16 +564,18 @@
       "price": 35000000,
       "status": "available",
       "warrantyExpire": "2028-02-28",
-      "warehouseId": "5"
+      "warehouseId": "5",
+      "productTypeId": 4
     },
     {
       "id": "17",
-      "name": "Máy in Canon LBP6030w",
+      "name": "Máy ảnh Canon LBP6030w",
       "description": "In laser trắng đen, kết nối Wifi",
       "price": 3100000,
       "status": "available",
       "warrantyExpire": "2026-07-20",
-      "warehouseId": "6"
+      "warehouseId": "6",
+      "productTypeId": 19
     },
     {
       "id": "18",
@@ -566,7 +584,8 @@
       "price": 4200000,
       "status": "available",
       "warrantyExpire": "2033-01-01",
-      "warehouseId": "7"
+      "warehouseId": "7",
+      "productTypeId": 12
     },
     {
       "id": "19",
@@ -575,7 +594,8 @@
       "price": 6500000,
       "status": "available",
       "warrantyExpire": "2026-04-12",
-      "warehouseId": "2"
+      "warehouseId": "2",
+      "productTypeId": 20
     },
     {
       "id": "20",
@@ -584,7 +604,8 @@
       "price": 9500000,
       "status": "available",
       "warrantyExpire": "2029-08-01",
-      "warehouseId": "3"
+      "warehouseId": "3",
+      "productTypeId": 20
     },
     {
       "id": "21",
@@ -593,7 +614,8 @@
       "price": 1106000,
       "status": "expired",
       "warrantyExpire": "2032-07-11",
-      "warehouseId": "9"
+      "warehouseId": "9",
+      "productTypeId": 20
     },
     {
       "id": "22",
@@ -602,7 +624,8 @@
       "price": 1873000,
       "status": "expired",
       "warrantyExpire": "2032-12-28",
-      "warehouseId": "19"
+      "warehouseId": "19",
+      "productTypeId": 14
     },
     {
       "id": "23",
@@ -611,7 +634,8 @@
       "price": 1037000,
       "status": "out-of-stock",
       "warrantyExpire": "2028-01-21",
-      "warehouseId": "1"
+      "warehouseId": "1",
+      "productTypeId": 2
     },
     {
       "id": "24",
@@ -620,7 +644,8 @@
       "price": 1563000,
       "status": "out-of-stock",
       "warrantyExpire": "2032-12-18",
-      "warehouseId": "13"
+      "warehouseId": "13",
+      "productTypeId": 5
     },
     {
       "id": "25",
@@ -629,7 +654,8 @@
       "price": 899000,
       "status": "expired",
       "warrantyExpire": "2032-12-07",
-      "warehouseId": "8"
+      "warehouseId": "8",
+      "productTypeId": 8
     },
     {
       "id": "26",
@@ -638,7 +664,8 @@
       "price": 707000,
       "status": "expired",
       "warrantyExpire": "2032-12-19",
-      "warehouseId": "20"
+      "warehouseId": "20",
+      "productTypeId": 20
     },
     {
       "id": "27",
@@ -647,7 +674,8 @@
       "price": 178000,
       "status": "available",
       "warrantyExpire": "2027-07-17",
-      "warehouseId": "1"
+      "warehouseId": "1",
+      "productTypeId": 20
     },
     {
       "id": "28",
@@ -656,7 +684,8 @@
       "price": 1223000,
       "status": "available",
       "warrantyExpire": "2027-04-11",
-      "warehouseId": "2"
+      "warehouseId": "2",
+      "productTypeId": 20
     },
     {
       "id": "29",
@@ -665,7 +694,8 @@
       "price": 1003000,
       "status": "out-of-stock",
       "warrantyExpire": "2028-09-29",
-      "warehouseId": "18"
+      "warehouseId": "18",
+      "productTypeId": 6
     },
     {
       "id": "30",
@@ -674,7 +704,8 @@
       "price": 1972000,
       "status": "expired",
       "warrantyExpire": "2030-10-27",
-      "warehouseId": "4"
+      "warehouseId": "4",
+      "productTypeId": 15
     },
     {
       "id": "31",
@@ -683,7 +714,8 @@
       "price": 1552000,
       "status": "expired",
       "warrantyExpire": "2031-07-21",
-      "warehouseId": "18"
+      "warehouseId": "18",
+      "productTypeId": 20
     },
     {
       "id": "32",
@@ -692,7 +724,8 @@
       "price": 1895000,
       "status": "available",
       "warrantyExpire": "2028-11-12",
-      "warehouseId": "4"
+      "warehouseId": "4",
+      "productTypeId": 18
     },
     {
       "id": "33",
@@ -701,7 +734,8 @@
       "price": 1489000,
       "status": "out-of-stock",
       "warrantyExpire": "2030-07-28",
-      "warehouseId": "15"
+      "warehouseId": "15",
+      "productTypeId": 20
     },
     {
       "id": "34",
@@ -710,7 +744,8 @@
       "price": 986000,
       "status": "available",
       "warrantyExpire": "2028-02-10",
-      "warehouseId": "14"
+      "warehouseId": "14",
+      "productTypeId": 20
     },
     {
       "id": "35",
@@ -719,7 +754,8 @@
       "price": 1526000,
       "status": "expired",
       "warrantyExpire": "2032-11-30",
-      "warehouseId": "14"
+      "warehouseId": "14",
+      "productTypeId": 20
     },
     {
       "id": "36",
@@ -728,7 +764,8 @@
       "price": 505000,
       "status": "available",
       "warrantyExpire": "2031-06-30",
-      "warehouseId": "20"
+      "warehouseId": "20",
+      "productTypeId": 20
     },
     {
       "id": "37",
@@ -737,7 +774,8 @@
       "price": 1661000,
       "status": "available",
       "warrantyExpire": "2032-11-01",
-      "warehouseId": "16"
+      "warehouseId": "16",
+      "productTypeId": 8
     },
     {
       "id": "38",
@@ -746,7 +784,8 @@
       "price": 1182000,
       "status": "expired",
       "warrantyExpire": "2031-01-21",
-      "warehouseId": "15"
+      "warehouseId": "15",
+      "productTypeId": 20
     },
     {
       "id": "39",
@@ -755,7 +794,8 @@
       "price": 993000,
       "status": "out-of-stock",
       "warrantyExpire": "2031-03-23",
-      "warehouseId": "18"
+      "warehouseId": "18",
+      "productTypeId": 20
     },
     {
       "id": "40",
@@ -764,7 +804,8 @@
       "price": 1976000,
       "status": "out-of-stock",
       "warrantyExpire": "2030-08-02",
-      "warehouseId": "19"
+      "warehouseId": "19",
+      "productTypeId": 20
     },
     {
       "id": "41",
@@ -773,7 +814,8 @@
       "price": 1520000,
       "status": "available",
       "warrantyExpire": "2030-11-19",
-      "warehouseId": "4"
+      "warehouseId": "4",
+      "productTypeId": 20
     },
     {
       "id": "42",
@@ -782,7 +824,8 @@
       "price": 1190000,
       "status": "available",
       "warrantyExpire": "2026-10-06",
-      "warehouseId": "14"
+      "warehouseId": "14",
+      "productTypeId": 5
     },
     {
       "id": "43",
@@ -791,7 +834,8 @@
       "price": 886000,
       "status": "out-of-stock",
       "warrantyExpire": "2031-01-02",
-      "warehouseId": "3"
+      "warehouseId": "3",
+      "productTypeId": 20
     },
     {
       "id": "44",
@@ -800,7 +844,8 @@
       "price": 321000,
       "status": "expired",
       "warrantyExpire": "2033-08-31",
-      "warehouseId": "12"
+      "warehouseId": "12",
+      "productTypeId": 6
     },
     {
       "id": "45",
@@ -809,7 +854,8 @@
       "price": 291000,
       "status": "available",
       "warrantyExpire": "2030-03-02",
-      "warehouseId": "10"
+      "warehouseId": "10",
+      "productTypeId": 20
     },
     {
       "id": "46",
@@ -818,7 +864,8 @@
       "price": 1507000,
       "status": "available",
       "warrantyExpire": "2033-04-17",
-      "warehouseId": "9"
+      "warehouseId": "9",
+      "productTypeId": 20
     },
     {
       "id": "47",
@@ -827,7 +874,8 @@
       "price": 1734000,
       "status": "out-of-stock",
       "warrantyExpire": "2031-01-06",
-      "warehouseId": "4"
+      "warehouseId": "4",
+      "productTypeId": 9
     },
     {
       "id": "48",
@@ -836,7 +884,8 @@
       "price": 1959000,
       "status": "out-of-stock",
       "warrantyExpire": "2027-12-16",
-      "warehouseId": "3"
+      "warehouseId": "3",
+      "productTypeId": 20
     },
     {
       "id": "49",
@@ -845,7 +894,8 @@
       "price": 105000,
       "status": "expired",
       "warrantyExpire": "2028-06-07",
-      "warehouseId": "5"
+      "warehouseId": "5",
+      "productTypeId": 20
     },
     {
       "id": "50",
@@ -854,7 +904,56 @@
       "price": 1245000,
       "status": "out-of-stock",
       "warrantyExpire": "2028-11-13",
-      "warehouseId": "9"
+      "warehouseId": "9",
+      "productTypeId": 8
+    },
+    {
+      "id": "51",
+      "name": "Adapter Sạc Nhanh Baseus 20W",
+      "price": 150000,
+      "description": "Hỗ trợ sạc nhanh PD 20W cho iPhone và Android",
+      "status": "available",
+      "productTypeId": 1
+    },
+    {
+      "id": "52",
+      "name": "Adapter 3 Cổng USB Aukey 30W",
+      "price": 220000,
+      "description": "Sạc đồng thời 3 thiết bị, bảo vệ quá dòng và quá nhiệt",
+      "status": "available",
+      "productTypeId": 1
+    },
+    {
+      "id": "53",
+      "name": "Adapter Type-C Anker PowerPort III",
+      "price": 320000,
+      "description": "Cổng Type-C hỗ trợ Power Delivery, nhỏ gọn dễ mang theo",
+      "status": "available",
+      "productTypeId": 1
+    },
+    {
+      "id": "54",
+      "name": "Intel Core i5-12400F",
+      "price": 4200000,
+      "description": "CPU thế hệ 12, 6 nhân 12 luồng, hiệu năng ổn định cho gaming và làm việc",
+      "status": "available",
+      "productTypeId": 3
+    },
+    {
+      "id": "55",
+      "name": "AMD Ryzen 5 5600X",
+      "price": 4300000,
+      "description": "CPU 6 nhân 12 luồng, socket AM4, hiệu năng mạnh mẽ cho đa tác vụ",
+      "status": "available",
+      "productTypeId": 3
+    },
+    {
+      "id": "56",
+      "name": "Intel Core i7-12700K",
+      "price": 8900000,
+      "description": "CPU 12 nhân (8P + 4E), hiệu suất cao cho gaming và thiết kế đồ họa",
+      "status": "available",
+      "productTypeId": 3
     }
   ],
   "inventory": [
@@ -1855,6 +1954,88 @@
       "userId": "3",
       "action": "user manager01 logged in",
       "timestamp": "2025-07-09T15:50:30.823Z"
+    }
+  ],
+  "product_types": [
+    {
+      "id": 1,
+      "name": "Adapter"
+    },
+    {
+      "id": 2,
+      "name": "Bàn phím"
+    },
+    {
+      "id": 3,
+      "name": "CPU"
+    },
+    {
+      "id": 4,
+      "name": "Card đồ họa"
+    },
+    {
+      "id": 5,
+      "name": "Chuột"
+    },
+    {
+      "id": 6,
+      "name": "Hub USB"
+    },
+    {
+      "id": 7,
+      "name": "Laptop"
+    },
+    {
+      "id": 8,
+      "name": "Loa"
+    },
+    {
+      "id": 9,
+      "name": "Microphone"
+    },
+    {
+      "id": 10,
+      "name": "Màn hình"
+    },
+    {
+      "id": 11,
+      "name": "Quạt tản nhiệt"
+    },
+    {
+      "id": 12,
+      "name": "RAM"
+    },
+    {
+      "id": 13,
+      "name": "Router"
+    },
+    {
+      "id": 14,
+      "name": "Tai nghe"
+    },
+    {
+      "id": 15,
+      "name": "Webcam"
+    },
+    {
+      "id": 16,
+      "name": "Ổ cứng HDD"
+    },
+    {
+      "id": 17,
+      "name": "Ổ cứng SSD"
+    },
+    {
+      "id": 18,
+      "name": "Sạc dự phòng"
+    },
+    {
+      "id": 19,
+      "name": "Máy ảnh"
+    },
+    {
+      "id": 20,
+      "name": "Khác"
     }
   ]
 }
