@@ -1,50 +1,111 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Card, Container, Row, Col, Form, FormControl } from "react-bootstrap";
 import '../../public/assets/css/ProductList.css';
 import api from "../api/axiosInstance";
-
 
 function ProductList() {
     const [products, setProducts] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
     const [search, setSearch] = useState("");
+    const [productTypes, setProductTypes] = useState([]);
+    const [selectedType, setSelectedType] = useState("");
+    const [sortOrder, setSortOrder] = useState("asc"); // asc = từ thấp đến cao (mặc định)
 
     useEffect(() => {
-        // axios.get("http://localhost:9999/products")
-        //     .then(res => setProducts(res.data))
-        //     .catch(err => console.error("Lỗi khi fetch sản phẩm:", err));
-        const fetchProducts = async () => {
+        const fetchData = async () => {
             try {
-                const response = await api.get("/products");
-                if (response) {
-                    setProducts(response.data);
-                    setAllProducts(response.data);
+                const resProducts = await api.get("/products");
+                const resTypes = await api.get("/product_types");
+
+                if (resProducts && resTypes) {
+                    let fetchedProducts = resProducts.data;
+
+                    // Áp dụng sort ngay khi fetch
+                    if (sortOrder === "asc") {
+                        fetchedProducts.sort((a, b) => a.price - b.price);
+                    } else {
+                        fetchedProducts.sort((a, b) => b.price - a.price);
+                    }
+
+                    setProducts(fetchedProducts);
+                    setAllProducts(fetchedProducts);
+                    setProductTypes(resTypes.data);
                 }
             } catch (err) {
-                console.log("Lỗi khi fetch sản phẩm:", err);
+                console.error("Lỗi khi fetch sản phẩm hoặc loại sản phẩm:", err);
             }
         };
-        fetchProducts();
+        fetchData();
     }, []);
 
-
     useEffect(() => {
-        if (search == "") {
-            setProducts(allProducts);
-        } else {
-            let searched_product = allProducts;
-            searched_product = searched_product.filter(product => 
+        let filtered = [...allProducts];
+
+        if (search.trim() !== "") {
+            filtered = filtered.filter(product =>
                 product.name.toLowerCase().includes(search.toLowerCase())
-            )
-            setProducts(searched_product);
+            );
         }
-    }, [search])
+
+        if (selectedType !== "") {
+            filtered = filtered.filter(product =>
+                product.productTypeId === parseInt(selectedType)
+            );
+        }
+
+        if (sortOrder === "asc") {
+            filtered.sort((a, b) => a.price - b.price);
+        } else {
+            filtered.sort((a, b) => b.price - a.price);
+        }
+
+        setProducts(filtered);
+    }, [search, selectedType, sortOrder]);
 
     return (
         <Container className="mt-4">
-            <Form>
-                <FormControl placeholder="Tìm kiếm tên sản phẩm" onChange={e => setSearch(e.target.value)}></FormControl>
+            <Form className="mb-4">
+                <Row className="g-3">
+                    <Col md={5}>
+                        <FormControl
+                            placeholder="Tìm kiếm tên sản phẩm"
+                            onChange={e => setSearch(e.target.value)}
+                        />
+                    </Col>
+
+                    <Col md={4}>
+                        <Form.Select
+                            value={selectedType}
+                            onChange={e => setSelectedType(e.target.value)}
+                        >
+                            <option value="">-- Tất cả loại sản phẩm --</option>
+                            {productTypes.map(type => (
+                                <option key={type.id} value={type.id}>
+                                    {type.name}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    </Col>
+
+                    <Col md={3}>
+                        <Form.Check
+                            type="radio"
+                            name="sort"
+                            label="Giá tăng dần"
+                            value="asc"
+                            checked={sortOrder === "asc"}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                        />
+                        <Form.Check
+                            type="radio"
+                            name="sort"
+                            label="Giá giảm dần"
+                            value="desc"
+                            checked={sortOrder === "desc"}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                        />
+                    </Col>
+                </Row>
             </Form>
 
             <h2 className="mb-4">Danh sách sản phẩm</h2>
@@ -52,9 +113,6 @@ function ProductList() {
             <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                 {products.map((product) => (
                     <Col key={product.id}>
-
-
-
                         <Card className="card-hover product-card">
                             <Card.Body>
                                 <Card.Img
@@ -62,22 +120,19 @@ function ProductList() {
                                     src={`../../public/assets/images/products/${product.id}.jpg`}
                                     alt={product.name}
                                     style={{
-                                        height: "200px",          // Chiều cao cố định
-                                        width: "100%",            // Ngang theo thẻ cha (Card)
-                                        objectFit: "contain",     // Giữ nguyên tỉ lệ ảnh, không crop
-                                        backgroundColor: "#f8f9fa", // Màu nền làm "khung"
-                                        padding: "10px"           // Tạo khoảng cách nhẹ bên trong
+                                        height: "200px",
+                                        width: "100%",
+                                        objectFit: "contain",
+                                        backgroundColor: "#f8f9fa",
+                                        padding: "10px"
                                     }}
                                 />
-
                                 <Card.Title>{product.name}</Card.Title>
                                 <Card.Subtitle className="mb-2 text-muted">
                                     {product.price?.toLocaleString()}₫
                                 </Card.Subtitle>
                                 <Card.Text>{product.description}</Card.Text>
-
                             </Card.Body>
-
                             <Card.Footer className="product-footer">
                                 <Card.Text>
                                     <strong>Trạng thái:</strong> {renderStatus(product.status)}
@@ -91,7 +146,6 @@ function ProductList() {
     );
 }
 
-// Hàm chuyển trạng thái sang biểu tượng dễ hiểu
 function renderStatus(status) {
     switch (status) {
         case "available":
