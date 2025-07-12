@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/admin/Header';
 import Sidebar from '../../components/admin/Sidebar';
 import { Users, Plus } from 'lucide-react';
 import UserTable from '../../components/admin/UserTable';
+import AddManagerModal from '../../components/admin/AddManagerModal'; // Import the new modal
 
 function AdminManageAccount() {
+    const [isAddManagerModalOpen, setIsAddManagerModalOpen] = useState(false);
+    const [refreshUsers, setRefreshUsers] = useState(false); // State to trigger user table refresh
+
+    const handleManagerAdded = () => {
+        setRefreshUsers(prev => !prev); // Toggle to trigger re-fetch in UserTable
+    };
+
     return (
         <div className="vh-100 overflow-hidden d-flex flex-column">
             <Header />
@@ -25,17 +33,26 @@ function AdminManageAccount() {
                                 </div>
                                 <p className="text-muted">Manage user accounts, roles, and permissions.</p>
                             </div>
-                            <button className="btn btn-primary d-flex align-items-center">
+                            <button
+                                className="btn btn-primary d-flex align-items-center"
+                                onClick={() => setIsAddManagerModalOpen(true)}
+                            >
                                 <Plus className="me-2" size={16} />
-                                Add User
+                                Add New Manager
                             </button>
                         </div>
 
                         {/* User Table */}
-                        <UserTable />
+                        <UserTable refreshUsers={refreshUsers} />
                     </div>
                 </div>
             </div>
+
+            <AddManagerModal
+                isOpen={isAddManagerModalOpen}
+                onClose={() => setIsAddManagerModalOpen(false)}
+                onSuccess={handleManagerAdded}
+            />
         </div>
     );
 }

@@ -5,13 +5,17 @@
       "fullName": "Nguyễn Vũ Đăng Khánh",
       "email": "admin@fpt.com",
       "role": "admin",
-      "id": "1"
+      "id": "1",
+      "enterpriseId": null,
+      "warehouseId": null
     },
     {
       "username": "khanhnvd",
       "fullName": "Nguyễn Vũ Đăng Khánh",
       "email": "khanhnvd@gmail.com",
       "role": "manager",
+      "enterpriseId": "4",
+      "warehouseId": null,
       "id": "3"
     },
     {
@@ -19,21 +23,27 @@
       "fullName": "Nguyễn Thị Minh Anh",
       "email": "minhanh123@example.com",
       "role": "staff",
+      "enterpriseId": "3",
+      "warehouseId": "14",
       "id": "4"
     },
     {
       "username": "khoind",
       "fullName": "Nguyễn Đăng Khôi",
       "email": "khoind@example.com",
-      "role": "staff",
-      "id": "5"
+      "role": "shipper",
+      "id": "5",
+      "enterpriseId": "3",
+      "warehouseId": null
     },
     {
       "username": "thuanlv",
       "fullName": "Lê Văn Thuận",
       "email": "thuanlv@gmail.com",
-      "role": "shipper",
-      "id": "8"
+      "role": "manager",
+      "id": "8",
+      "enterpriseId": "4",
+      "warehouseId": null
     },
     {
       "id": "11",
@@ -143,6 +153,15 @@
       "fullName": "Phan Van T",
       "email": "t@example.com",
       "enterpriseId": "7",
+      "warehouseId": null
+    },
+    {
+      "id": "a978",
+      "username": "newmanager",
+      "fullName": "Manager Test",
+      "email": "manager@test.com",
+      "role": "manager",
+      "enterpriseId": "2",
       "warehouseId": null
     }
   ],
