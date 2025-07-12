@@ -63,10 +63,6 @@ const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
                 setLoading(false);
                 return;
             }
-
-            // Simple password hashing for demonstration. In a real app, use a proper backend for hashing.
-            // For json-server, we'll just store as plain text for simplicity or omit if not needed for frontend logic.
-            // If you have a backend, you'd send plain password and let backend hash it.
             const newUser = {
                 ...formData,
                 id: (Math.random() * 100000).toFixed(0).toString(), // Generate a simple ID
