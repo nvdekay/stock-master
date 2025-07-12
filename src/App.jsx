@@ -85,7 +85,7 @@ function App() {
         <Route path="/admin" element={<ProtectedRoute requiredRoles={["admin"]} />}>
           {/* route mà cần user phải có role ADMIN thả vào đây */}
           <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="manage-account" element={<AdminManageAccount />} />"
+          <Route path="manage-account" element={<AdminManageAccount />} />
 
         </Route>
 
