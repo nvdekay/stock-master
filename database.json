@@ -411,14 +411,12 @@
   ],
   "products": [
     {
-      "id": "1",
       "name": "Loa bluetooth Sony SRS-XB13",
       "description": "Loa công suất lớn, chống nước IP67",
       "price": 1290000,
       "status": "available",
       "warrantyExpire": "2026-06-30",
-      "productTypeId": 8
-
+      "id": "1"
     },
     {
       "id": "2",
@@ -426,8 +424,7 @@
       "description": "Chống ồn chủ động hàng đầu",
       "price": 8490000,
       "status": "available",
-      "warrantyExpire": "2026-07-15",
-      "productTypeId": 14
+      "warrantyExpire": "2026-07-15"
     },
     {
       "id": "3",
@@ -435,9 +432,7 @@
       "description": "Switch có thể thay nóng, LED RGB",
       "price": 3200000,
       "status": "available",
-      "warrantyExpire": "2027-01-01",
-      "productTypeId": 2
-
+      "warrantyExpire": "2027-01-01"
     },
     {
       "id": "4",
@@ -445,9 +440,7 @@
       "description": "Siêu nhẹ, cảm biến quang học Focus Pro 30K",
       "price": 3500000,
       "status": "out_of_stock",
-      "warrantyExpire": "2026-11-20",
-      "productTypeId": 5
-
+      "warrantyExpire": "2026-11-20"
     },
     {
       "id": "5",
@@ -455,9 +448,7 @@
       "description": "27 inch, 4K UHD, công nghệ IPS Black",
       "price": 15500000,
       "status": "available",
-      "warrantyExpire": "2028-03-10",
-      "productTypeId": 10
-
+      "warrantyExpire": "2028-03-10"
     },
     {
       "id": "6",
@@ -465,9 +456,7 @@
       "description": "Chip Apple M2, 8GB RAM, 256GB SSD",
       "price": 28000000,
       "status": "available",
-      "warrantyExpire": "2026-09-01",
-      "productTypeId": 7
-
+      "warrantyExpire": "2026-09-01"
     },
     {
       "id": "7",
@@ -475,8 +464,7 @@
       "description": "Sạc nhanh PowerIQ 3.0, 2 cổng USB",
       "price": 1100000,
       "status": "available",
-      "warrantyExpire": "2026-05-05",
-      "productTypeId": 18
+      "warrantyExpire": "2026-05-05"
     },
     {
       "id": "8",
@@ -484,9 +472,7 @@
       "description": "NVMe PCIe 4.0, tốc độ đọc 7000MB/s",
       "price": 4500000,
       "status": "available",
-      "warrantyExpire": "2029-12-31",
-      "productTypeId": 17
-
+      "warrantyExpire": "2029-12-31"
     },
     {
       "id": "9",
@@ -494,8 +480,7 @@
       "description": "Chuẩn Wifi 6, tốc độ cao, chế độ Gaming",
       "price": 6800000,
       "status": "discontinued",
-      "warrantyExpire": "2025-10-10",
-      "productTypeId": 13
+      "warrantyExpire": "2025-10-10"
     },
     {
       "id": "10",
@@ -503,8 +488,7 @@
       "description": "Full HD 1080p 30fps, 720p 60fps",
       "price": 2400000,
       "status": "available",
-      "warrantyExpire": "2026-08-22",
-      "productTypeId": 15
+      "warrantyExpire": "2026-08-22"
     },
     {
       "id": "11",
@@ -512,8 +496,7 @@
       "description": "Micro USB chuyên nghiệp cho streaming, podcast",
       "price": 3800000,
       "status": "available",
-      "warrantyExpire": "2026-11-11",
-      "productTypeId": 9
+      "warrantyExpire": "2026-11-11"
     },
     {
       "id": "12",
@@ -521,8 +504,7 @@
       "description": "Full-frame, 33MP, quay video 4K 60p",
       "price": 59990000,
       "status": "available",
-      "warrantyExpire": "2027-04-18",
-      "productTypeId": 19
+      "warrantyExpire": "2027-04-18"
     },
     {
       "id": "13",
@@ -530,28 +512,23 @@
       "description": "Chip Apple M2, màn hình Liquid Retina",
       "price": 22000000,
       "status": "available",
-      "warrantyExpire": "2026-10-30",
-      "productTypeId": 7
+      "warrantyExpire": "2026-10-30"
     },
     {
       "id": "14",
-      "name": "Loa Epione ErgoChair Pro",
-      "description": "Âm thanh cao cấp, chất lượng tốt",
+      "name": "Ghế công thái học Epione ErgoChair Pro",
+      "description": "Hỗ trợ cột sống, vật liệu lưới thoáng khí",
       "price": 8990000,
       "status": "available",
-      "warrantyExpire": "2030-01-01",
-      "productTypeId": 8
-
+      "warrantyExpire": "2030-01-01"
     },
     {
       "id": "15",
-      "name": "Webcam Apple Watch Series 8",
+      "name": "Đồng hồ thông minh Apple Watch Series 8",
       "description": "Cảm biến nhiệt độ, phát hiện va chạm",
       "price": 11500000,
       "status": "out_of_stock",
-      "warrantyExpire": "2026-09-15",
-      "productTypeId": 15
-
+      "warrantyExpire": "2026-09-15"
     },
     {
       "id": "16",
@@ -559,18 +536,15 @@
       "description": "Kiến trúc Ada Lovelace, 16GB GDDR6X",
       "price": 35000000,
       "status": "available",
-      "warrantyExpire": "2028-02-28",
-      "warehouseId": "5",
-      "productTypeId": 4
+      "warrantyExpire": "2028-02-28"
     },
     {
       "id": "17",
-      "name": "Máy ảnh Canon LBP6030w",
+      "name": "Máy in Canon LBP6030w",
       "description": "In laser trắng đen, kết nối Wifi",
       "price": 3100000,
       "status": "available",
-      "warrantyExpire": "2026-07-20",
-      "productTypeId": 19
+      "warrantyExpire": "2026-07-20"
     },
     {
       "id": "18",
@@ -578,8 +552,7 @@
       "description": "DDR5, bus 5600MHz, tản nhiệt nhôm",
       "price": 4200000,
       "status": "available",
-      "warrantyExpire": "2033-01-01",
-      "productTypeId": 12
+      "warrantyExpire": "2033-01-01"
     },
     {
       "id": "19",
@@ -587,8 +560,7 @@
       "description": "Full HD, Android TV, tự động lấy nét",
       "price": 6500000,
       "status": "available",
-      "warrantyExpire": "2026-04-12",
-      "productTypeId": 20
+      "warrantyExpire": "2026-04-12"
     },
     {
       "id": "20",
@@ -596,8 +568,7 @@
       "description": "Khung thép, động cơ kép, điều chỉnh độ cao",
       "price": 9500000,
       "status": "available",
-      "warrantyExpire": "2029-08-01",
-      "productTypeId": 20
+      "warrantyExpire": "2029-08-01"
     },
     {
       "id": "21",
@@ -605,8 +576,7 @@
       "description": "Giá đỡ điện thoại cao cấp, chất lượng tốt",
       "price": 1106000,
       "status": "expired",
-      "warrantyExpire": "2032-07-11",
-      "productTypeId": 20
+      "warrantyExpire": "2032-07-11"
     },
     {
       "id": "22",
@@ -614,8 +584,7 @@
       "description": "Tai nghe không dây cao cấp, chất lượng tốt",
       "price": 1873000,
       "status": "expired",
-      "warrantyExpire": "2032-12-28",
-      "productTypeId": 14
+      "warrantyExpire": "2032-12-28"
     },
     {
       "id": "23",
@@ -623,8 +592,7 @@
       "description": "Bàn phím cơ cao cấp, chất lượng tốt",
       "price": 1037000,
       "status": "out-of-stock",
-      "warrantyExpire": "2028-01-21",
-      "productTypeId": 2
+      "warrantyExpire": "2028-01-21"
     },
     {
       "id": "24",
@@ -632,9 +600,7 @@
       "description": "Chuột gaming cao cấp, chất lượng tốt",
       "price": 1563000,
       "status": "out-of-stock",
-      "warrantyExpire": "2032-12-18",
-      "productTypeId": 5
-
+      "warrantyExpire": "2032-12-18"
     },
     {
       "id": "25",
@@ -642,8 +608,7 @@
       "description": "Loa mini cao cấp, chất lượng tốt",
       "price": 899000,
       "status": "expired",
-      "warrantyExpire": "2032-12-07",
-      "productTypeId": 8
+      "warrantyExpire": "2032-12-07"
     },
     {
       "id": "26",
@@ -651,18 +616,15 @@
       "description": "Củ sạc nhanh cao cấp, chất lượng tốt",
       "price": 707000,
       "status": "expired",
-      "warrantyExpire": "2032-12-19",
-      "productTypeId": 20
-
+      "warrantyExpire": "2032-12-19"
     },
     {
-      "id": "27",
       "name": "Cáp sạc USB-C",
       "description": "Cáp sạc USB-C cao cấp, chất lượng tốt",
       "price": 178000,
       "status": "available",
-      "warrantyExpire": "2027-07-17",
-      "productTypeId": 20
+      "warrantyExpire": "2025-07-24",
+      "id": "27"
     },
     {
       "id": "28",
@@ -670,8 +632,7 @@
       "description": "Thẻ nhớ 64GB cao cấp, chất lượng tốt",
       "price": 1223000,
       "status": "available",
-      "warrantyExpire": "2027-04-11",
-      "productTypeId": 20
+      "warrantyExpire": "2027-04-11"
     },
     {
       "id": "29",
@@ -679,8 +640,7 @@
       "description": "USB 128GB cao cấp, chất lượng tốt",
       "price": 1003000,
       "status": "out-of-stock",
-      "warrantyExpire": "2028-09-29",
-      "productTypeId": 6
+      "warrantyExpire": "2028-09-29"
     },
     {
       "id": "30",
@@ -688,8 +648,7 @@
       "description": "Webcam HD cao cấp, chất lượng tốt",
       "price": 1972000,
       "status": "expired",
-      "warrantyExpire": "2030-10-27",
-      "productTypeId": 15
+      "warrantyExpire": "2030-10-27"
     },
     {
       "id": "31",
@@ -697,8 +656,7 @@
       "description": "Đèn LED RGB cao cấp, chất lượng tốt",
       "price": 1552000,
       "status": "expired",
-      "warrantyExpire": "2031-07-21",
-      "productTypeId": 20
+      "warrantyExpire": "2031-07-21"
     },
     {
       "id": "32",
@@ -706,8 +664,7 @@
       "description": "Pin sạc dự phòng cao cấp, chất lượng tốt",
       "price": 1895000,
       "status": "available",
-      "warrantyExpire": "2028-11-12",
-      "productTypeId": 18
+      "warrantyExpire": "2028-11-12"
     },
     {
       "id": "33",
@@ -715,8 +672,7 @@
       "description": "Gậy chụp hình cao cấp, chất lượng tốt",
       "price": 1489000,
       "status": "out-of-stock",
-      "warrantyExpire": "2030-07-28",
-      "productTypeId": 20
+      "warrantyExpire": "2030-07-28"
     },
     {
       "id": "34",
@@ -724,8 +680,7 @@
       "description": "Đồng hồ thông minh cao cấp, chất lượng tốt",
       "price": 986000,
       "status": "available",
-      "warrantyExpire": "2028-02-10",
-      "productTypeId": 20
+      "warrantyExpire": "2028-02-10"
     },
     {
       "id": "35",
@@ -733,9 +688,7 @@
       "description": "Vòng đeo tay sức khỏe cao cấp, chất lượng tốt",
       "price": 1526000,
       "status": "expired",
-      "warrantyExpire": "2032-11-30",
-      "warehouseId": "14",
-      "productTypeId": 20
+      "warrantyExpire": "2032-11-30"
     },
     {
       "id": "36",
@@ -743,8 +696,7 @@
       "description": "Tay cầm chơi game cao cấp, chất lượng tốt",
       "price": 505000,
       "status": "available",
-      "warrantyExpire": "2031-06-30",
-      "productTypeId": 20
+      "warrantyExpire": "2031-06-30"
     },
     {
       "id": "37",
@@ -752,8 +704,7 @@
       "description": "Loa bluetooth mini cao cấp, chất lượng tốt",
       "price": 1661000,
       "status": "available",
-      "warrantyExpire": "2032-11-01",
-      "productTypeId": 8
+      "warrantyExpire": "2032-11-01"
     },
     {
       "id": "38",
@@ -761,8 +712,7 @@
       "description": "Bộ vệ sinh laptop cao cấp, chất lượng tốt",
       "price": 1182000,
       "status": "expired",
-      "warrantyExpire": "2031-01-21",
-      "productTypeId": 20
+      "warrantyExpire": "2031-01-21"
     },
     {
       "id": "39",
@@ -770,9 +720,7 @@
       "description": "Balo laptop cao cấp, chất lượng tốt",
       "price": 993000,
       "status": "out-of-stock",
-      "warrantyExpire": "2031-03-23",
-      "productTypeId": 20
-
+      "warrantyExpire": "2031-03-23"
     },
     {
       "id": "40",
@@ -780,9 +728,7 @@
       "description": "Kính chống ánh sáng xanh cao cấp, chất lượng tốt",
       "price": 1976000,
       "status": "out-of-stock",
-      "warrantyExpire": "2030-08-02",
-      "productTypeId": 20
-
+      "warrantyExpire": "2030-08-02"
     },
     {
       "id": "41",
@@ -790,9 +736,7 @@
       "description": "Bộ chia USB cao cấp, chất lượng tốt",
       "price": 1520000,
       "status": "available",
-      "warrantyExpire": "2030-11-19",
-      "productTypeId": 20
-
+      "warrantyExpire": "2030-11-19"
     },
     {
       "id": "42",
@@ -800,9 +744,7 @@
       "description": "Chuột không dây cao cấp, chất lượng tốt",
       "price": 1190000,
       "status": "available",
-      "warrantyExpire": "2026-10-06",
-      "productTypeId": 5
-
+      "warrantyExpire": "2026-10-06"
     },
     {
       "id": "43",
@@ -810,9 +752,7 @@
       "description": "Đế tản nhiệt laptop cao cấp, chất lượng tốt",
       "price": 886000,
       "status": "out-of-stock",
-      "warrantyExpire": "2031-01-02",
-      "productTypeId": 20
-
+      "warrantyExpire": "2031-01-02"
     },
     {
       "id": "44",
@@ -820,9 +760,7 @@
       "description": "Hub chuyển đổi Type-C cao cấp, chất lượng tốt",
       "price": 321000,
       "status": "expired",
-      "warrantyExpire": "2033-08-31",
-      "productTypeId": 6
-
+      "warrantyExpire": "2033-08-31"
     },
     {
       "id": "45",
@@ -830,8 +768,7 @@
       "description": "Túi chống sốc cao cấp, chất lượng tốt",
       "price": 291000,
       "status": "available",
-      "warrantyExpire": "2030-03-02",
-      "productTypeId": 20
+      "warrantyExpire": "2030-03-02"
     },
     {
       "id": "46",
@@ -839,9 +776,7 @@
       "description": "Bàn kê laptop cao cấp, chất lượng tốt",
       "price": 1507000,
       "status": "available",
-      "warrantyExpire": "2033-04-17",
-      "productTypeId": 20
-
+      "warrantyExpire": "2033-04-17"
     },
     {
       "id": "47",
@@ -849,9 +784,7 @@
       "description": "Micro thu âm cao cấp, chất lượng tốt",
       "price": 1734000,
       "status": "out-of-stock",
-      "warrantyExpire": "2031-01-06",
-      "productTypeId": 9
-
+      "warrantyExpire": "2031-01-06"
     },
     {
       "id": "48",
@@ -859,9 +792,7 @@
       "description": "Ốp lưng điện thoại cao cấp, chất lượng tốt",
       "price": 1959000,
       "status": "out-of-stock",
-      "warrantyExpire": "2027-12-16",
-      "productTypeId": 20
-
+      "warrantyExpire": "2027-12-16"
     },
     {
       "id": "49",
@@ -869,8 +800,7 @@
       "description": "Kính cường lực cao cấp, chất lượng tốt",
       "price": 105000,
       "status": "expired",
-      "warrantyExpire": "2028-06-07",
-      "productTypeId": 20
+      "warrantyExpire": "2028-06-07"
     },
     {
       "id": "50",
@@ -878,57 +808,7 @@
       "description": "Loa siêu trầm cao cấp, chất lượng tốt",
       "price": 1245000,
       "status": "out-of-stock",
-      "warrantyExpire": "2028-11-13",
-      "productTypeId": 8
-    },
-    {
-      "id": "51",
-      "name": "Adapter Sạc Nhanh Baseus 20W",
-      "price": 150000,
-      "description": "Hỗ trợ sạc nhanh PD 20W cho iPhone và Android",
-      "status": "available",
-      "productTypeId": 1
-    },
-    {
-      "id": "52",
-      "name": "Adapter 3 Cổng USB Aukey 30W",
-      "price": 220000,
-      "description": "Sạc đồng thời 3 thiết bị, bảo vệ quá dòng và quá nhiệt",
-      "status": "available",
-      "productTypeId": 1
-    },
-    {
-      "id": "53",
-      "name": "Adapter Type-C Anker PowerPort III",
-      "price": 320000,
-      "description": "Cổng Type-C hỗ trợ Power Delivery, nhỏ gọn dễ mang theo",
-      "status": "available",
-      "productTypeId": 1
-    },
-    {
-      "id": "54",
-      "name": "Intel Core i5-12400F",
-      "price": 4200000,
-      "description": "CPU thế hệ 12, 6 nhân 12 luồng, hiệu năng ổn định cho gaming và làm việc",
-      "status": "available",
-      "productTypeId": 3
-    },
-    {
-      "id": "55",
-      "name": "AMD Ryzen 5 5600X",
-      "price": 4300000,
-      "description": "CPU 6 nhân 12 luồng, socket AM4, hiệu năng mạnh mẽ cho đa tác vụ",
-      "status": "available",
-      "productTypeId": 3
-    },
-    {
-      "id": "56",
-      "name": "Intel Core i7-12700K",
-      "price": 8900000,
-      "description": "CPU 12 nhân (8P + 4E), hiệu suất cao cho gaming và thiết kế đồ họa",
-      "status": "available",
-      "productTypeId": 3
-
+      "warrantyExpire": "2028-11-13"
     }
   ],
   "inventory": [
@@ -1199,7 +1079,7 @@
     {
       "id": "5",
       "type": "wholesale",
-      "status": "processing",
+      "status": "completed",
       "date": "2025-07-01",
       "enterpriseId": "4",
       "senderStaffId": "12",
@@ -1348,8 +1228,8 @@
       "orderId": "5",
       "shipperId": "14",
       "sendWarehouseId": "3",
-      "status": "in_transit",
-      "deliveryDate": null,
+      "status": "delivered",
+      "deliveryDate": "2025-07-12",
       "note": "Giao hàng cho đơn sỉ #5"
     },
     {
