@@ -1,3 +1,4 @@
+import { ChartColumnIncreasing } from 'lucide-react';
 import Header from '../../components/admin/Header';
 import Sidebar from '../../components/admin/Sidebar';
 
@@ -14,16 +15,21 @@ function AdminDashboard() {
         </div>
 
         {/* Content */}
-        <div
-          className="flex-grow-1 overflow-auto p-4"
-          style={{ height: 'calc(100vh - 64px)' }}
-        >
-          <h4>Dashboard Admin</h4>
-          <p>
-            {Array(1000)
-              .fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit.')
-              .join(' ')}
-          </p>
+        <div className="flex-grow-1 overflow-auto p-4">
+          <div className="container-fluid">
+            {/* Header */}
+            <div className="d-flex justify-content-between align-items-start mb-4">
+              <div>
+                <div className="d-flex align-items-center mb-2">
+                  <ChartColumnIncreasing className="text-primary me-2" size={28} />
+                  <h2 className="h3 mb-0">Dashboard</h2>
+                </div>
+                <p className="text-muted">View Dashboard</p>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

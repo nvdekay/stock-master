@@ -5,9 +5,6 @@ import {
     Package,
     Building2,
     Users,
-    ShoppingCart,
-    Truck,
-    Settings,
     ChevronRight,
 } from 'lucide-react';
 
@@ -19,13 +16,10 @@ const menuItems = [
         href: '/admin/dashboard',
     },
     {
-        id: 'inventory',
-        label: 'Inventory',
+        id: 'warehouse',
+        label: 'Manage Warehouse',
         icon: Package,
-        children: [
-            { id: 'products', label: 'Products', icon: Package, href: '/inventory/products' },
-            { id: 'categories', label: 'Categories', icon: Package, href: '/inventory/categories' },
-        ],
+        href: '/admin/manage-warehouse',
     },
     // {
     //     id: 'orders',

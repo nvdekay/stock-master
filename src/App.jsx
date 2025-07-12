@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminManageEnterprise from "./pages/admin/AdminManageEnterprise";
 import AdminManageAccount from "./pages/admin/AdminManageAccount";
+import AdminManageWarehouse from "./pages/admin/AdminManageWarehouse";
+
 
 // Products
 import ProductList from "./pages/ProductList";
@@ -90,6 +92,7 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="manage-account" element={<AdminManageAccount />} />
           <Route path="manage-enterprise" element={<AdminManageEnterprise />} />
+          <Route path="manage-warehouse" element={<AdminManageWarehouse />} />
 
         </Route>
 
