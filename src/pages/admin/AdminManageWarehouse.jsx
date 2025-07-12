@@ -1,12 +1,11 @@
 // src/pages/admin/AdminManageWarehouse.jsx
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Button, Card, Spinner, Alert, Modal, Form, Pagination } from 'react-bootstrap'; // Import Pagination
-import { Warehouse, Plus, Search } from 'lucide-react';
+import { Container, Row, Col, Card, Spinner, Alert, Form, Pagination } from 'react-bootstrap';
+import { Warehouse, Search } from 'lucide-react';
 
 // Components con
 import WarehouseList from '../../components/admin/warehouse/WarehouseList';
-import WarehouseForm from '../../components/admin/warehouse/WarehouseForm';
 import WarehouseDetail from '../../components/admin/warehouse/WarehouseDetail';
 import Header from '../../components/admin/Header';
 import Sidebar from '../../components/admin/Sidebar';
@@ -15,8 +14,6 @@ function AdminManageWarehouse() {
     const [warehouses, setWarehouses] = useState([]);
     const [enterprises, setEnterprises] = useState([]);
     const [selectedWarehouse, setSelectedWarehouse] = useState(null);
-    const [showFormModal, setShowFormModal] = useState(false);
-    const [formMode, setFormMode] = useState('add'); // 'add' or 'edit'
     const [viewMode, setViewMode] = useState('list'); // 'list' or 'detail'
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -81,68 +78,12 @@ function AdminManageWarehouse() {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const handleAddWarehouse = () => {
-        setSelectedWarehouse(null);
-        setFormMode('add');
-        setShowFormModal(true);
-    };
-
     const handleEditWarehouse = (warehouse) => {
         setSelectedWarehouse(warehouse);
         setFormMode('edit');
         setShowFormModal(true);
     };
 
-    const handleDeleteWarehouse = async (warehouseId) => {
-        if (window.confirm('Bạn có chắc chắn muốn xóa kho hàng này? Việc này có thể ảnh hưởng đến dữ liệu liên quan và không thể hoàn tác.')) {
-            try {
-                setLoading(true);
-                // Kiểm tra các ràng buộc trước khi xóa
-                const [usersRes, inventoryRes, ordersSendRes, ordersReceiveRes, shipmentsSendRes] = await Promise.all([
-                    axios.get(`http://localhost:9999/users?warehouseId=${warehouseId}`),
-                    axios.get(`http://localhost:9999/inventory?warehouseId=${warehouseId}`),
-                    axios.get(`http://localhost:9999/orders?sendWarehouseId=${warehouseId}`),
-                    axios.get(`http://localhost:9999/orders?receiveWarehouseId=${warehouseId}`),
-                    axios.get(`http://localhost:9999/shipments?sendWarehouseId=${warehouseId}`)
-                ]);
-
-                if (usersRes.data.length > 0 || inventoryRes.data.length > 0 || ordersSendRes.data.length > 0 || ordersReceiveRes.data.length > 0 || shipmentsSendRes.data.length > 0) {
-                    alert('Không thể xóa kho hàng này vì có dữ liệu liên quan (người dùng, tồn kho, đơn hàng gửi/nhận, lô hàng gửi). Vui lòng xử lý các liên kết này trước.');
-                    setLoading(false);
-                    return;
-                }
-
-                await axios.delete(`http://localhost:9999/warehouses/${warehouseId}`);
-                fetchData(); // Tải lại danh sách sau khi xóa
-                alert('Kho hàng đã được xóa thành công!');
-            } catch (err) {
-                console.error('Lỗi khi xóa kho hàng:', err);
-                setError('Đã xảy ra lỗi khi xóa kho hàng.');
-            } finally {
-                setLoading(false);
-            }
-        }
-    };
-
-    const handleSaveWarehouse = async (warehouseData) => {
-        try {
-            setLoading(true);
-            if (formMode === 'add') {
-                await axios.post('http://localhost:9999/warehouses', warehouseData);
-                alert('Thêm kho hàng thành công!');
-            } else {
-                await axios.put(`http://localhost:9999/warehouses/${warehouseData.id}`, warehouseData);
-                alert('Cập nhật kho hàng thành công!');
-            }
-            setShowFormModal(false);
-            fetchData(); // Tải lại danh sách sau khi lưu
-        } catch (err) {
-            console.error('Lỗi khi lưu kho hàng:', err);
-            setError('Đã xảy ra lỗi khi lưu kho hàng.');
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleViewDetail = (warehouse) => {
         setSelectedWarehouse(warehouse);
