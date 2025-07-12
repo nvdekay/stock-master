@@ -7,10 +7,11 @@ import {
     Pagination,
     Form,
     InputGroup,
+    Alert
 } from 'react-bootstrap';
-import { Edit, Trash2, Search, Filter } from 'lucide-react';
-import EditAccountModal from '../../components/admin/EditAccountModal';
-import DeleteAccountModal from '../../components/admin/DeleteAccountModal';
+import { Edit, Trash2, } from 'lucide-react';
+import EditAccountModal from '../account/EditAccountModal';
+import DeleteAccountModal from '../account/DeleteAccountModal';
 import axios from 'axios';
 
 const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
@@ -21,6 +22,7 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null); // State for error messages
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 5;
 
@@ -29,10 +31,11 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
 
     const fetchAllData = async () => {
         setLoading(true);
+        setError(null); // Clear previous errors
         try {
             const [usersRes, enterprisesRes, warehousesRes] = await Promise.all([
                 axios.get('http://localhost:9999/users'),
-                axios.get('http://localhost:9999/enterprises'),
+                axios.get('http://localhost:9999/enterprises'), // Fetch all enterprises to get names
                 axios.get('http://localhost:9999/warehouses')
             ]);
 
@@ -41,7 +44,7 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
             setWarehouses(warehousesRes.data);
         } catch (err) {
             console.error('Failed to fetch data:', err);
-            setError('Failed to load data.');
+            setError('Không thể tải dữ liệu người dùng, doanh nghiệp hoặc kho hàng.');
         } finally {
             setLoading(false);
         }
@@ -122,31 +125,31 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
         <>
             <div className="card shadow-sm mb-4">
                 <div className="card-body">
+                    {error && <Alert variant="danger" className="py-2">{error}</Alert>}
                     <div className="d-flex justify-content-between align-items-center mb-3">
-                        <h4 className="card-title mb-0">User Accounts</h4>
                         <div className="d-flex">
                             <InputGroup className="me-2" style={{ width: '250px' }}>
-                                <InputGroup.Text><Search size={16} /></InputGroup.Text>
                                 <Form.Control
-                                    placeholder="Search users..."
+                                    placeholder="Search user..."
                                     value={searchTerm}
                                     onChange={(e) => {
                                         setSearchTerm(e.target.value);
-                                        setCurrentPage(1); // Reset to first page on search
+                                        setCurrentPage(1);
                                     }}
+                                    className="rounded-pill"
                                 />
                             </InputGroup>
                             <Form.Group controlId="filterRole">
                                 <InputGroup>
-                                    <InputGroup.Text><Filter size={16} /></InputGroup.Text>
                                     <Form.Select
                                         value={filterRole}
                                         onChange={(e) => {
                                             setFilterRole(e.target.value);
-                                            setCurrentPage(1); // Reset to first page on filter
+                                            setCurrentPage(1);
                                         }}
+                                        className="rounded-pill"
                                     >
-                                        <option value="">All Roles</option>
+                                        <option value="">All Role</option>
                                         <option value="admin">Admin</option>
                                         <option value="manager">Manager</option>
                                         <option value="staff">Staff</option>
@@ -161,20 +164,20 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
                         {loading ? (
                             <div className="text-center py-5">
                                 <Spinner animation="border" role="status">
-                                    <span className="visually-hidden">Loading...</span>
+                                    <span className="visually-hidden">Đang tải...</span>
                                 </Spinner>
                             </div>
                         ) : (
                             <Table striped bordered hover className="align-middle">
                                 <thead className="table-light">
                                     <tr>
-                                        <th>Username</th>
-                                        <th>Full Name</th>
+                                        <th>Tên người dùng</th>
+                                        <th>Họ và tên</th>
                                         <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Enterprise</th>
-                                        <th>Warehouse</th>
-                                        <th className="text-center">Actions</th>
+                                        <th>Vai trò</th>
+                                        <th>Doanh nghiệp</th>
+                                        <th>Kho hàng</th>
+                                        <th className="text-center">Hành động</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -184,7 +187,7 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
                                             <td>{user.fullName}</td>
                                             <td>{user.email}</td>
                                             <td>
-                                                <Badge bg={getRoleVariant(user.role)}>
+                                                <Badge bg={getRoleVariant(user.role)} className="px-2 py-1 rounded-pill">
                                                     {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                                                 </Badge>
                                             </td>
@@ -195,18 +198,18 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
                                                     <Button
                                                         variant="outline-primary"
                                                         size="sm"
-                                                        className="me-2 d-flex align-items-center"
+                                                        className="me-2 d-flex align-items-center rounded-pill"
                                                         onClick={() => handleEditClick(user)}
                                                     >
-                                                        <Edit size={14} className="me-1" /> Edit
+                                                        <Edit size={14} className="me-1" /> Chỉnh sửa
                                                     </Button>
                                                     <Button
                                                         variant="outline-danger"
                                                         size="sm"
-                                                        className="d-flex align-items-center"
+                                                        className="d-flex align-items-center rounded-pill"
                                                         onClick={() => handleDeleteClick(user)}
                                                     >
-                                                        <Trash2 size={14} className="me-1" /> Delete
+                                                        <Trash2 size={14} className="me-1" /> Xóa
                                                     </Button>
                                                 </div>
                                             </td>
@@ -215,7 +218,7 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
                                     {pagedUsers.length === 0 && (
                                         <tr>
                                             <td colSpan="7" className="text-center py-3 text-muted">
-                                                No users found.
+                                                Không tìm thấy người dùng nào.
                                             </td>
                                         </tr>
                                     )}

@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import {
     Home,
     Package,
+    Building2,
     Users,
     ShoppingCart,
     Truck,
-    BarChart3,
     Settings,
-    FileText,
     ChevronRight,
 } from 'lucide-react';
 
@@ -28,45 +27,36 @@ const menuItems = [
             { id: 'categories', label: 'Categories', icon: Package, href: '/inventory/categories' },
         ],
     },
+    // {
+    //     id: 'orders',
+    //     label: 'Orders',
+    //     icon: ShoppingCart,
+    //     children: [
+    //         { id: 'all-orders', label: 'All Orders', icon: ShoppingCart, href: '/orders/all' },
+    //         { id: 'pending', label: 'Pending', icon: ShoppingCart, href: '/orders/pending' },
+    //         { id: 'completed', label: 'Completed', icon: ShoppingCart, href: '/orders/completed' },
+    //     ],
+    // },
+    // {
+    //     id: 'shipping',
+    //     label: 'Shipping',
+    //     icon: Truck,
+    //     children: [
+    //         { id: 'shipments', label: 'Shipments', icon: Truck, href: '/shipping/shipments' },
+    //         { id: 'tracking', label: 'Tracking', icon: Truck, href: '/shipping/tracking' },
+    //     ],
+    // },
     {
-        id: 'orders',
-        label: 'Orders',
-        icon: ShoppingCart,
-        children: [
-            { id: 'all-orders', label: 'All Orders', icon: ShoppingCart, href: '/orders/all' },
-            { id: 'pending', label: 'Pending', icon: ShoppingCart, href: '/orders/pending' },
-            { id: 'completed', label: 'Completed', icon: ShoppingCart, href: '/orders/completed' },
-        ],
-    },
-    {
-        id: 'shipping',
-        label: 'Shipping',
-        icon: Truck,
-        children: [
-            { id: 'shipments', label: 'Shipments', icon: Truck, href: '/shipping/shipments' },
-            { id: 'tracking', label: 'Tracking', icon: Truck, href: '/shipping/tracking' },
-        ],
-    },
-    {
-        id: 'reports',
-        label: 'Reports',
-        icon: BarChart3,
-        children: [
-            { id: 'sales', label: 'Sales Report', icon: BarChart3, href: '/reports/sales' },
-            { id: 'inventory-report', label: 'Inventory Report', icon: FileText, href: '/reports/inventory' },
-        ],
+        id: 'enterprises',
+        label: 'Manage Enterprises',
+        icon: Building2,
+        href: '/admin/manage-enterprise',
     },
     {
         id: 'accounts',
         label: 'Manage Accounts',
         icon: Users,
         href: '/admin/manage-account',
-    },
-    {
-        id: 'settings',
-        label: 'Settings',
-        icon: Settings,
-        href: '/settings',
     },
 ];
 
