@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminManageAccount from "./pages/admin/AdminManageAccount";
 
 import ProductList from "./pages/ProductList";
 import ProductDetail from "./pages/ProductDetail";
@@ -83,7 +84,8 @@ function App() {
         {/* Routes that requires user to have role ABC */}
         <Route path="/admin" element={<ProtectedRoute requiredRoles={["admin"]} />}>
           {/* route mà cần user phải có role ADMIN thả vào đây */}
-          <Route index element={<AdminDashboard />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="manage-account" element={<AdminManageAccount />} />"
 
         </Route>
 

@@ -71,7 +71,7 @@ const LoginPage = () => {
                 if (user.role.toLowerCase() === "shipper") {
                     navigate("/shipper");
                 } else if (user.role.toLowerCase().includes("admin")) {
-                    navigate("/admin");
+                    navigate("/admin/dashboard");
                 } else {
                     navigate("/");
                 }

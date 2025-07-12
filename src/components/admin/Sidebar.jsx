@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Home,
     Package,
@@ -8,7 +9,6 @@ import {
     BarChart3,
     Settings,
     FileText,
-    UserCheck,
     ChevronRight,
 } from 'lucide-react';
 
@@ -17,7 +17,7 @@ const menuItems = [
         id: 'dashboard',
         label: 'Dashboard',
         icon: Home,
-        href: '/dashboard',
+        href: '/admin/dashboard',
     },
     {
         id: 'inventory',
@@ -57,13 +57,10 @@ const menuItems = [
         ],
     },
     {
-        id: 'admin',
-        label: 'Administration',
-        icon: UserCheck,
-        children: [
-            { id: 'accounts', label: 'Accounts', icon: Users, href: '/admin/accounts', active: true },
-            { id: 'roles', label: 'Roles & Permissions', icon: UserCheck, href: '/admin/roles' },
-        ],
+        id: 'accounts',
+        label: 'Manage Accounts',
+        icon: Users,
+        href: '/admin/manage-account',
     },
     {
         id: 'settings',
@@ -74,8 +71,8 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
-    // mặc định mở nhóm 'dashboard'
     const [expandedItems, setExpandedItems] = useState(['dashboard']);
+    const navigate = useNavigate();
 
     const toggleExpanded = (itemId) => {
         setExpandedItems((prev) =>
@@ -88,6 +85,14 @@ const Sidebar = () => {
         const isExpanded = expandedItems.includes(item.id);
         const Icon = item.icon;
 
+        const handleClick = () => {
+            if (hasChildren) {
+                toggleExpanded(item.id);
+            } else if (item.href) {
+                navigate(item.href);
+            }
+        };
+
         return (
             <div key={item.id}>
                 <div
@@ -97,10 +102,10 @@ const Sidebar = () => {
                         }`}
                     style={{
                         backgroundColor: item.active ? '#1E88E5' : 'transparent',
-                        paddingLeft: level > 1 ? '20px' : undefined, // thụt lề nhóm con
+                        paddingLeft: level > 1 ? '20px' : undefined,
                         transition: 'background-color .15s',
                     }}
-                    onClick={() => (hasChildren ? toggleExpanded(item.id) : undefined)}
+                    onClick={handleClick}
                     onMouseEnter={(e) =>
                         !item.active && (e.currentTarget.style.backgroundColor = '#f8f9fa')
                     }
@@ -135,7 +140,6 @@ const Sidebar = () => {
             className="d-flex flex-column border-end bg-white"
             style={{ width: '16rem', height: '100vh', top: 0, zIndex: 1020 }}
         >
-            {/* Navigation */}
             <nav className="flex-grow-1 py-2 overflow-auto hover-overlay">
                 {menuItems.map((item) => renderMenuItem(item))}
             </nav>
