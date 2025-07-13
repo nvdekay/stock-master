@@ -61,8 +61,7 @@ function App() {
           <Route path="/public">
             <Route index element={<ProductList />} />
             <Route path="products" element={<ProductList />} />
-            <Route path="product/:id" element={<ProductDetail />} />
-
+            <Route path="product-detail/:id" element={<ProductDetail />} />
             {/* ... ném các route tương tự mà không cần đăng nhập vẫn xem được vào đây */}
           </Route>
 

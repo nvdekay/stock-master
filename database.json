@@ -443,7 +443,9 @@
       "price": 1290000,
       "status": "available",
       "warrantyExpire": "2026-06-30",
-      "id": "1"
+      "id": "1",
+      "quantity": 12,
+      "warehouseId": "1"
     },
     {
       "id": "2",
@@ -451,7 +453,9 @@
       "description": "Chống ồn chủ động hàng đầu",
       "price": 8490000,
       "status": "available",
-      "warrantyExpire": "2026-07-15"
+      "warrantyExpire": "2026-07-15",
+      "quantity": 80,
+      "warehouseId": "2"
     },
     {
       "id": "3",
@@ -459,7 +463,9 @@
       "description": "Switch có thể thay nóng, LED RGB",
       "price": 3200000,
       "status": "available",
-      "warrantyExpire": "2027-01-01"
+      "warrantyExpire": "2027-01-01",
+      "quantity": 150,
+      "warehouseId": "3"
     },
     {
       "id": "4",
@@ -467,7 +473,9 @@
       "description": "Siêu nhẹ, cảm biến quang học Focus Pro 30K",
       "price": 3500000,
       "status": "out_of_stock",
-      "warrantyExpire": "2026-11-20"
+      "warrantyExpire": "2026-11-20",
+      "quantity": 20,
+      "warehouseId": "4"
     },
     {
       "id": "5",
@@ -475,7 +483,9 @@
       "description": "27 inch, 4K UHD, công nghệ IPS Black",
       "price": 15500000,
       "status": "available",
-      "warrantyExpire": "2028-03-10"
+      "warrantyExpire": "2028-03-10",
+      "quantity": 40,
+      "warehouseId": "5"
     },
     {
       "id": "6",
@@ -483,7 +493,9 @@
       "description": "Chip Apple M2, 8GB RAM, 256GB SSD",
       "price": 28000000,
       "status": "available",
-      "warrantyExpire": "2026-09-01"
+      "warrantyExpire": "2026-09-01",
+      "quantity": 30,
+      "warehouseId": "6"
     },
     {
       "id": "7",
@@ -491,7 +503,9 @@
       "description": "Sạc nhanh PowerIQ 3.0, 2 cổng USB",
       "price": 1100000,
       "status": "available",
-      "warrantyExpire": "2026-05-05"
+      "warrantyExpire": "2026-05-05",
+      "quantity": 250,
+      "warehouseId": "13"
     },
     {
       "id": "8",
@@ -499,7 +513,9 @@
       "description": "NVMe PCIe 4.0, tốc độ đọc 7000MB/s",
       "price": 4500000,
       "status": "available",
-      "warrantyExpire": "2029-12-31"
+      "warrantyExpire": "2029-12-31",
+      "quantity": 100,
+      "warehouseId": "2"
     },
     {
       "id": "9",
@@ -507,7 +523,9 @@
       "description": "Chuẩn Wifi 6, tốc độ cao, chế độ Gaming",
       "price": 6800000,
       "status": "discontinued",
-      "warrantyExpire": "2025-10-10"
+      "warrantyExpire": "2025-10-10",
+      "quantity": 90,
+      "warehouseId": "13"
     },
     {
       "id": "10",
@@ -515,7 +533,9 @@
       "description": "Full HD 1080p 30fps, 720p 60fps",
       "price": 2400000,
       "status": "available",
-      "warrantyExpire": "2026-08-22"
+      "warrantyExpire": "2026-08-22",
+      "quantity": 90,
+      "warehouseId": "4"
     },
     {
       "id": "11",
@@ -523,7 +543,9 @@
       "description": "Micro USB chuyên nghiệp cho streaming, podcast",
       "price": 3800000,
       "status": "available",
-      "warrantyExpire": "2026-11-11"
+      "warrantyExpire": "2026-11-11",
+      "quantity": 90,
+      "warehouseId": "3"
     },
     {
       "id": "12",
@@ -531,7 +553,9 @@
       "description": "Full-frame, 33MP, quay video 4K 60p",
       "price": 59990000,
       "status": "available",
-      "warrantyExpire": "2027-04-18"
+      "warrantyExpire": "2027-04-18",
+      "quantity": 90,
+      "warehouseId": "11"
     },
     {
       "id": "13",
@@ -539,7 +563,9 @@
       "description": "Chip Apple M2, màn hình Liquid Retina",
       "price": 22000000,
       "status": "available",
-      "warrantyExpire": "2026-10-30"
+      "warrantyExpire": "2026-10-30",
+      "quantity": 90,
+      "warehouseId": "12"
     },
     {
       "id": "14",
@@ -547,7 +573,9 @@
       "description": "Hỗ trợ cột sống, vật liệu lưới thoáng khí",
       "price": 8990000,
       "status": "available",
-      "warrantyExpire": "2030-01-01"
+      "warrantyExpire": "2030-01-01",
+      "quantity": 90,
+      "warehouseId": "14"
     },
     {
       "id": "15",
@@ -555,7 +583,9 @@
       "description": "Cảm biến nhiệt độ, phát hiện va chạm",
       "price": 11500000,
       "status": "out_of_stock",
-      "warrantyExpire": "2026-09-15"
+      "warrantyExpire": "2026-09-15",
+      "quantity": 90,
+      "warehouseId": "15"
     },
     {
       "id": "16",
@@ -563,7 +593,9 @@
       "description": "Kiến trúc Ada Lovelace, 16GB GDDR6X",
       "price": 35000000,
       "status": "available",
-      "warrantyExpire": "2028-02-28"
+      "warrantyExpire": "2028-02-28",
+      "quantity": 90,
+      "warehouseId": "16"
     },
     {
       "id": "17",
@@ -571,7 +603,9 @@
       "description": "In laser trắng đen, kết nối Wifi",
       "price": 3100000,
       "status": "available",
-      "warrantyExpire": "2026-07-20"
+      "warrantyExpire": "2026-07-20",
+      "quantity": 90,
+      "warehouseId": "17"
     },
     {
       "id": "18",
@@ -579,7 +613,9 @@
       "description": "DDR5, bus 5600MHz, tản nhiệt nhôm",
       "price": 4200000,
       "status": "available",
-      "warrantyExpire": "2033-01-01"
+      "warrantyExpire": "2033-01-01",
+      "quantity": 90,
+      "warehouseId": "18"
     },
     {
       "id": "19",
@@ -587,7 +623,9 @@
       "description": "Full HD, Android TV, tự động lấy nét",
       "price": 6500000,
       "status": "available",
-      "warrantyExpire": "2026-04-12"
+      "warrantyExpire": "2026-04-12",
+      "quantity": 90,
+      "warehouseId": "19"
     },
     {
       "id": "20",
@@ -595,7 +633,9 @@
       "description": "Khung thép, động cơ kép, điều chỉnh độ cao",
       "price": 9500000,
       "status": "available",
-      "warrantyExpire": "2029-08-01"
+      "warrantyExpire": "2029-08-01",
+      "quantity": 90,
+      "warehouseId": "20"
     },
     {
       "id": "21",
@@ -603,7 +643,9 @@
       "description": "Giá đỡ điện thoại cao cấp, chất lượng tốt",
       "price": 1106000,
       "status": "expired",
-      "warrantyExpire": "2032-07-11"
+      "warrantyExpire": "2032-07-11",
+      "quantity": 90,
+      "warehouseId": "8"
     },
     {
       "id": "22",
@@ -611,7 +653,9 @@
       "description": "Tai nghe không dây cao cấp, chất lượng tốt",
       "price": 1873000,
       "status": "expired",
-      "warrantyExpire": "2032-12-28"
+      "warrantyExpire": "2032-12-28",
+      "quantity": 90,
+      "warehouseId": "9"
     },
     {
       "id": "23",
@@ -619,7 +663,9 @@
       "description": "Bàn phím cơ cao cấp, chất lượng tốt",
       "price": 1037000,
       "status": "out-of-stock",
-      "warrantyExpire": "2028-01-21"
+      "warrantyExpire": "2028-01-21",
+      "quantity": 90,
+      "warehouseId": "10"
     },
     {
       "id": "24",
@@ -627,7 +673,9 @@
       "description": "Chuột gaming cao cấp, chất lượng tốt",
       "price": 1563000,
       "status": "out-of-stock",
-      "warrantyExpire": "2032-12-18"
+      "warrantyExpire": "2032-12-18",
+      "quantity": 90,
+      "warehouseId": "11"
     },
     {
       "id": "25",
@@ -635,7 +683,9 @@
       "description": "Loa mini cao cấp, chất lượng tốt",
       "price": 899000,
       "status": "expired",
-      "warrantyExpire": "2032-12-07"
+      "warrantyExpire": "2032-12-07",
+      "quantity": 90,
+      "warehouseId": "12"
     },
     {
       "id": "26",
@@ -643,7 +693,9 @@
       "description": "Củ sạc nhanh cao cấp, chất lượng tốt",
       "price": 707000,
       "status": "expired",
-      "warrantyExpire": "2032-12-19"
+      "warrantyExpire": "2032-12-19",
+      "quantity": 90,
+      "warehouseId": "13"
     },
     {
       "name": "Cáp sạc USB-C",
@@ -651,7 +703,9 @@
       "price": 178000,
       "status": "available",
       "warrantyExpire": "2025-07-24",
-      "id": "27"
+      "id": "27",
+      "quantity": 10,
+      "warehouseId": "1"
     },
     {
       "id": "28",
@@ -659,7 +713,9 @@
       "description": "Thẻ nhớ 64GB cao cấp, chất lượng tốt",
       "price": 1223000,
       "status": "available",
-      "warrantyExpire": "2027-04-11"
+      "warrantyExpire": "2027-04-11",
+      "quantity": 90,
+      "warehouseId": "14"
     },
     {
       "id": "29",
@@ -667,7 +723,9 @@
       "description": "USB 128GB cao cấp, chất lượng tốt",
       "price": 1003000,
       "status": "out-of-stock",
-      "warrantyExpire": "2028-09-29"
+      "warrantyExpire": "2028-09-29",
+      "quantity": 90,
+      "warehouseId": "15"
     },
     {
       "id": "30",
@@ -675,7 +733,9 @@
       "description": "Webcam HD cao cấp, chất lượng tốt",
       "price": 1972000,
       "status": "expired",
-      "warrantyExpire": "2030-10-27"
+      "warrantyExpire": "2030-10-27",
+      "quantity": 90,
+      "warehouseId": "2"
     },
     {
       "id": "31",
@@ -683,7 +743,9 @@
       "description": "Đèn LED RGB cao cấp, chất lượng tốt",
       "price": 1552000,
       "status": "expired",
-      "warrantyExpire": "2031-07-21"
+      "warrantyExpire": "2031-07-21",
+      "quantity": 90,
+      "warehouseId": "3"
     },
     {
       "id": "32",
@@ -691,7 +753,9 @@
       "description": "Pin sạc dự phòng cao cấp, chất lượng tốt",
       "price": 1895000,
       "status": "available",
-      "warrantyExpire": "2028-11-12"
+      "warrantyExpire": "2028-11-12",
+      "quantity": 90,
+      "warehouseId": "4"
     },
     {
       "id": "33",
@@ -699,7 +763,9 @@
       "description": "Gậy chụp hình cao cấp, chất lượng tốt",
       "price": 1489000,
       "status": "out-of-stock",
-      "warrantyExpire": "2030-07-28"
+      "warrantyExpire": "2030-07-28",
+      "quantity": 90,
+      "warehouseId": "5"
     },
     {
       "id": "34",
@@ -707,7 +773,9 @@
       "description": "Đồng hồ thông minh cao cấp, chất lượng tốt",
       "price": 986000,
       "status": "available",
-      "warrantyExpire": "2028-02-10"
+      "warrantyExpire": "2028-02-10",
+      "quantity": 90,
+      "warehouseId": "6"
     },
     {
       "id": "35",
@@ -715,7 +783,9 @@
       "description": "Vòng đeo tay sức khỏe cao cấp, chất lượng tốt",
       "price": 1526000,
       "status": "expired",
-      "warrantyExpire": "2032-11-30"
+      "warrantyExpire": "2032-11-30",
+      "quantity": 90,
+      "warehouseId": "7"
     },
     {
       "id": "36",
@@ -723,7 +793,9 @@
       "description": "Tay cầm chơi game cao cấp, chất lượng tốt",
       "price": 505000,
       "status": "available",
-      "warrantyExpire": "2031-06-30"
+      "warrantyExpire": "2031-06-30",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "37",
@@ -731,7 +803,9 @@
       "description": "Loa bluetooth mini cao cấp, chất lượng tốt",
       "price": 1661000,
       "status": "available",
-      "warrantyExpire": "2032-11-01"
+      "warrantyExpire": "2032-11-01",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "38",
@@ -739,7 +813,9 @@
       "description": "Bộ vệ sinh laptop cao cấp, chất lượng tốt",
       "price": 1182000,
       "status": "expired",
-      "warrantyExpire": "2031-01-21"
+      "warrantyExpire": "2031-01-21",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "39",
@@ -747,7 +823,9 @@
       "description": "Balo laptop cao cấp, chất lượng tốt",
       "price": 993000,
       "status": "out-of-stock",
-      "warrantyExpire": "2031-03-23"
+      "warrantyExpire": "2031-03-23",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "40",
@@ -755,7 +833,9 @@
       "description": "Kính chống ánh sáng xanh cao cấp, chất lượng tốt",
       "price": 1976000,
       "status": "out-of-stock",
-      "warrantyExpire": "2030-08-02"
+      "warrantyExpire": "2030-08-02",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "41",
@@ -763,7 +843,9 @@
       "description": "Bộ chia USB cao cấp, chất lượng tốt",
       "price": 1520000,
       "status": "available",
-      "warrantyExpire": "2030-11-19"
+      "warrantyExpire": "2030-11-19",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "42",
@@ -771,7 +853,9 @@
       "description": "Chuột không dây cao cấp, chất lượng tốt",
       "price": 1190000,
       "status": "available",
-      "warrantyExpire": "2026-10-06"
+      "warrantyExpire": "2026-10-06",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "43",
@@ -779,7 +863,9 @@
       "description": "Đế tản nhiệt laptop cao cấp, chất lượng tốt",
       "price": 886000,
       "status": "out-of-stock",
-      "warrantyExpire": "2031-01-02"
+      "warrantyExpire": "2031-01-02",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "44",
@@ -787,7 +873,9 @@
       "description": "Hub chuyển đổi Type-C cao cấp, chất lượng tốt",
       "price": 321000,
       "status": "expired",
-      "warrantyExpire": "2033-08-31"
+      "warrantyExpire": "2033-08-31",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "45",
@@ -795,7 +883,9 @@
       "description": "Túi chống sốc cao cấp, chất lượng tốt",
       "price": 291000,
       "status": "available",
-      "warrantyExpire": "2030-03-02"
+      "warrantyExpire": "2030-03-02",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "46",
@@ -803,7 +893,9 @@
       "description": "Bàn kê laptop cao cấp, chất lượng tốt",
       "price": 1507000,
       "status": "available",
-      "warrantyExpire": "2033-04-17"
+      "warrantyExpire": "2033-04-17",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "47",
@@ -811,7 +903,9 @@
       "description": "Micro thu âm cao cấp, chất lượng tốt",
       "price": 1734000,
       "status": "out-of-stock",
-      "warrantyExpire": "2031-01-06"
+      "warrantyExpire": "2031-01-06",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "48",
@@ -819,7 +913,9 @@
       "description": "Ốp lưng điện thoại cao cấp, chất lượng tốt",
       "price": 1959000,
       "status": "out-of-stock",
-      "warrantyExpire": "2027-12-16"
+      "warrantyExpire": "2027-12-16",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "49",
@@ -827,7 +923,9 @@
       "description": "Kính cường lực cao cấp, chất lượng tốt",
       "price": 105000,
       "status": "expired",
-      "warrantyExpire": "2028-06-07"
+      "warrantyExpire": "2028-06-07",
+      "quantity": 20,
+      "warehouseId": "1"
     },
     {
       "id": "50",
@@ -835,228 +933,9 @@
       "description": "Loa siêu trầm cao cấp, chất lượng tốt",
       "price": 1245000,
       "status": "out-of-stock",
-      "warrantyExpire": "2028-11-13"
-    },
-    {
-      "name": "Sản phẩm mới",
-      "description": "nothing",
-      "price": 999999,
-      "status": "available",
-      "warrantyExpire": "2025-07-13",
-      "productTypeId": "5",
-      "id": "F8IXiox"
-    }
-  ],
-  "inventory": [
-    {
-      "productId": "1",
-      "warehouseId": "1",
-      "quantity": 12,
-      "id": "1"
-    },
-    {
-      "id": "2",
-      "productId": "2",
-      "warehouseId": "2",
-      "quantity": 80
-    },
-    {
-      "id": "3",
-      "productId": "3",
-      "warehouseId": "3",
-      "quantity": 150
-    },
-    {
-      "id": "4",
-      "productId": "4",
-      "warehouseId": "4",
-      "quantity": 20
-    },
-    {
-      "id": "5",
-      "warehouseId": "5",
-      "productId": "5",
-      "quantity": 40
-    },
-    {
-      "id": "6",
-      "productId": "6",
-      "warehouseId": "6",
-      "quantity": 30
-    },
-    {
-      "id": "7",
-      "productId": "7",
-      "warehouseId": "13",
-      "quantity": 250
-    },
-    {
-      "id": "8",
-      "productId": "8",
-      "warehouseId": "2",
-      "quantity": 100
-    },
-    {
-      "id": "10",
-      "productId": "10",
-      "warehouseId": "4",
-      "quantity": 90
-    },
-    {
-      "id": "11",
-      "productId": "9",
-      "warehouseId": "13",
-      "quantity": 90
-    },
-    {
-      "id": "12",
-      "productId": "11",
-      "warehouseId": "3",
-      "quantity": 90
-    },
-    {
-      "id": "13",
-      "productId": "12",
-      "warehouseId": "11",
-      "quantity": 90
-    },
-    {
-      "id": "14",
-      "productId": "13",
-      "warehouseId": "12",
-      "quantity": 90
-    },
-    {
-      "id": "15",
-      "productId": "14",
-      "warehouseId": "14",
-      "quantity": 90
-    },
-    {
-      "id": "16",
-      "productId": "15",
-      "warehouseId": "15",
-      "quantity": 90
-    },
-    {
-      "id": "17",
-      "productId": "16",
-      "warehouseId": "16",
-      "quantity": 90
-    },
-    {
-      "id": "18",
-      "productId": "17",
-      "warehouseId": "17",
-      "quantity": 90
-    },
-    {
-      "id": "19",
-      "productId": "18",
-      "warehouseId": "18",
-      "quantity": 90
-    },
-    {
-      "id": "20",
-      "productId": "19",
-      "warehouseId": "19",
-      "quantity": 90
-    },
-    {
-      "id": "21",
-      "productId": "20",
-      "warehouseId": "20",
-      "quantity": 90
-    },
-    {
-      "id": "22",
-      "productId": "21",
-      "warehouseId": "8",
-      "quantity": 90
-    },
-    {
-      "id": "23",
-      "productId": "22",
-      "warehouseId": "9",
-      "quantity": 90
-    },
-    {
-      "id": "24",
-      "productId": "23",
-      "warehouseId": "10",
-      "quantity": 90
-    },
-    {
-      "id": "25",
-      "productId": "24",
-      "warehouseId": "11",
-      "quantity": 90
-    },
-    {
-      "id": "26",
-      "productId": "25",
-      "warehouseId": "12",
-      "quantity": 90
-    },
-    {
-      "id": "27",
-      "productId": "26",
-      "warehouseId": "13",
-      "quantity": 90
-    },
-    {
-      "productId": "27",
-      "warehouseId": "1",
-      "quantity": 10,
-      "id": "28"
-    },
-    {
-      "id": "29",
-      "productId": "28",
-      "warehouseId": "14",
-      "quantity": 90
-    },
-    {
-      "id": "30",
-      "productId": "29",
-      "warehouseId": "15",
-      "quantity": 90
-    },
-    {
-      "id": "31",
-      "productId": "30",
-      "warehouseId": "2",
-      "quantity": 90
-    },
-    {
-      "id": "32",
-      "productId": "31",
-      "warehouseId": "3",
-      "quantity": 90
-    },
-    {
-      "id": "33",
-      "productId": "32",
-      "warehouseId": "4",
-      "quantity": 90
-    },
-    {
-      "id": "34",
-      "productId": "33",
-      "warehouseId": "5",
-      "quantity": 90
-    },
-    {
-      "id": "35",
-      "productId": "34",
-      "warehouseId": "6",
-      "quantity": 90
-    },
-    {
-      "id": "36",
-      "productId": "35",
-      "warehouseId": "7",
-      "quantity": 90
+      "warrantyExpire": "2028-11-13",
+      "quantity": 20,
+      "warehouseId": "1"
     }
   ],
   "orders": [
