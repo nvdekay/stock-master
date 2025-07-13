@@ -1,0 +1,42 @@
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-hover img {
+  transition: transform 0.3s ease;
+}
+
+.card-hover:hover img {
+  transform: scale(1.05);
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; /* Đảm bảo card cao bằng nhau trong hàng */
+  min-height: 360px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.product-card .product-image {
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.product-card .product-body {
+  flex-grow: 1;
+}
+
+.product-card .product-footer {
+  margin-top: auto;
+}

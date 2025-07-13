@@ -1,0 +1,162 @@
+import { useEffect, useState } from "react";
+import { Card, Container, Row, Col, Form, FormControl } from "react-bootstrap";
+import '../../public/assets/css/ProductList.css';
+import api from "../api/axiosInstance";
+
+function ProductList() {
+    const [products, setProducts] = useState([]);
+    const [allProducts, setAllProducts] = useState([]);
+    const [search, setSearch] = useState("");
+    const [productTypes, setProductTypes] = useState([]);
+    const [selectedType, setSelectedType] = useState("");
+    const [sortOrder, setSortOrder] = useState("asc"); // asc = từ thấp đến cao (mặc định)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const resProducts = await api.get("/products");
+                const resTypes = await api.get("/product_types");
+
+                if (resProducts && resTypes) {
+                    let fetchedProducts = resProducts.data;
+
+                    // Áp dụng sort ngay khi fetch
+                    if (sortOrder === "asc") {
+                        fetchedProducts.sort((a, b) => a.price - b.price);
+                    } else {
+                        fetchedProducts.sort((a, b) => b.price - a.price);
+                    }
+
+                    setProducts(fetchedProducts);
+                    setAllProducts(fetchedProducts);
+                    setProductTypes(resTypes.data);
+                }
+            } catch (err) {
+                console.error("Lỗi khi fetch sản phẩm hoặc loại sản phẩm:", err);
+            }
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        let filtered = [...allProducts];
+
+        if (search.trim() !== "") {
+            filtered = filtered.filter(product =>
+                product.name.toLowerCase().includes(search.toLowerCase())
+            );
+        }
+
+        if (selectedType !== "") {
+            filtered = filtered.filter(product =>
+                product.productTypeId === parseInt(selectedType)
+            );
+        }
+
+        if (sortOrder === "asc") {
+            filtered.sort((a, b) => a.price - b.price);
+        } else {
+            filtered.sort((a, b) => b.price - a.price);
+        }
+
+        setProducts(filtered);
+    }, [search, selectedType, sortOrder]);
+
+    return (
+        <Container className="mt-4">
+            <Form className="mb-4">
+                <Row className="g-3">
+                    <Col md={5}>
+                        <FormControl
+                            placeholder="Tìm kiếm tên sản phẩm"
+                            onChange={e => setSearch(e.target.value)}
+                        />
+                    </Col>
+
+                    <Col md={4}>
+                        <Form.Select
+                            value={selectedType}
+                            onChange={e => setSelectedType(e.target.value)}
+                        >
+                            <option value="">-- Tất cả loại sản phẩm --</option>
+                            {productTypes.map(type => (
+                                <option key={type.id} value={type.id}>
+                                    {type.name}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    </Col>
+
+                    <Col md={3}>
+                        <Form.Check
+                            type="radio"
+                            name="sort"
+                            label="Giá tăng dần"
+                            value="asc"
+                            checked={sortOrder === "asc"}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                        />
+                        <Form.Check
+                            type="radio"
+                            name="sort"
+                            label="Giá giảm dần"
+                            value="desc"
+                            checked={sortOrder === "desc"}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                        />
+                    </Col>
+                </Row>
+            </Form>
+
+            <h2 className="mb-4">Danh sách sản phẩm</h2>
+
+            <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+                {products.map((product) => (
+                    <Col key={product.id}>
+                        <Card className="card-hover product-card">
+                            <Card.Body>
+                                <Card.Img
+                                    variant="top"
+                                    src={`../../public/assets/images/products/${product.id}.jpg`}
+                                    alt={product.name}
+                                    style={{
+                                        height: "200px",
+                                        width: "100%",
+                                        objectFit: "contain",
+                                        backgroundColor: "#f8f9fa",
+                                        padding: "10px"
+                                    }}
+                                />
+                                <Card.Title>{product.name}</Card.Title>
+                                <Card.Subtitle className="mb-2 text-muted">
+                                    {product.price?.toLocaleString()}₫
+                                </Card.Subtitle>
+                                <Card.Text>{product.description}</Card.Text>
+                            </Card.Body>
+                            <Card.Footer className="product-footer">
+                                <Card.Text>
+                                    <strong>Trạng thái:</strong> {renderStatus(product.status)}
+                                </Card.Text>
+                            </Card.Footer>
+                        </Card>
+                    </Col>
+                ))}
+            </Row>
+        </Container>
+    );
+}
+
+function renderStatus(status) {
+    switch (status) {
+        case "available":
+            return "✅ Hàng có sẵn";
+        case "expired":
+            return "⚠️ Hết bảo hành";
+        case "out-of-stock":
+            return "❌ Hết hàng";
+        default:
+            return "Không rõ";
+    }
+}
+
+export default ProductList;
