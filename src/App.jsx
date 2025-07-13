@@ -38,6 +38,8 @@ import ShipperDashboard from "./pages/shipper/ShipperDashboard";
 import ShipmentDetail from "./pages/shipper/ShipmentDetail";
 import CompletedDeliveries from "./components/shipper/CompletedDeliveries";
 import DeliveryHistory from "./components/shipper/DelivaryHistory";
+import ExportOrderManagement from "./pages/staff/exporter/PendingOrders";
+import ExporterDashboard from "./pages/staff/exporter/Dashboard";
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -122,6 +124,13 @@ function App() {
               <Route path="logs" element={<ActivityLogs />} />
             </Route>
           </Route>
+
+          <Route path="/exporter" element={<ProtectedRoute requiredRoles={["exporter"]} />}>
+            <Route index element={<ExporterDashboard />} />
+            <Route path="export-orders" element={<ExportOrderManagement />} />
+          </Route>
+
+
 
           {/* làm tương tự cho các route cần role khác */}
           <Route

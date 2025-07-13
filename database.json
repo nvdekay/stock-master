@@ -122,7 +122,7 @@
       "id": "15",
       "username": "staff05",
       "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "role": "staff",
+      "role": "exporter",
       "fullName": "Ngo Van N",
       "email": "n@example.com",
       "enterpriseId": "5",
@@ -207,6 +207,26 @@
       "enterpriseId": "36288",
       "warehouseId": null,
       "id": "65704"
+    },
+    {
+      "id": "65705",
+      "username": "exporter01",
+      "password": "$2b$10$3798TZULTmGpzuM/ZoNB1.hPlt4./KH9ijAHPVA/iXDEGwI3.UKNO",
+      "role": "exporter",
+      "fullName": "exporter 01",
+      "email": "ep1@mail.com",
+      "warehouseId": "1",
+      "enterpriseId": "2"
+    },
+    {
+      "id": "65706",
+      "username": "warehouseman",
+      "password": "$2b$10$brzE/.D7z2TrgAqThCv7jOt6ruLgc2XDl0O2EzalVaLRoOXRX.2UG",
+      "role": "warehouseman",
+      "fullName": "warehouseman 01",
+      "email": "whm01@mail.com",
+      "warehouseId": "1",
+      "enterpriseId": "2"
     }
   ],
   "locations": [
