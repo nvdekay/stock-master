@@ -1,6 +1,6 @@
 // src/components/admin/warehouse/WarehouseDetail.jsx
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../../api/axiosInstance';
 import { Card, Button, Table, Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { ArrowLeft } from 'lucide-react';
 
@@ -19,8 +19,8 @@ const WarehouseDetail = ({ warehouse, enterprises, onBack }) => {
         setError(null);
         try {
             const [inventoryRes, productsRes] = await Promise.all([
-                axios.get(`http://localhost:9999/inventory?warehouseId=${warehouse.id}`),
-                axios.get('http://localhost:9999/products')
+                api.get(`/inventory?warehouseId=${warehouse.id}`),
+                api.get('/products')
             ]);
             setInventory(inventoryRes.data);
             setProducts(productsRes.data);

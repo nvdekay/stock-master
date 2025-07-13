@@ -1,6 +1,6 @@
 // src/pages/admin/AdminManageWarehouse.jsx
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
+import api from '../../api/axiosInstance';
 import { Container, Row, Col, Card, Spinner, Alert, Form, Pagination } from 'react-bootstrap';
 import { Warehouse, Search } from 'lucide-react';
 
@@ -35,8 +35,8 @@ function AdminManageWarehouse() {
         setError(null);
         try {
             const [warehousesRes, enterprisesRes] = await Promise.all([
-                axios.get('http://localhost:9999/warehouses'),
-                axios.get('http://localhost:9999/enterprises')
+                api.get('/warehouses'),
+                api.get('/enterprises')
             ]);
             setWarehouses(warehousesRes.data);
             setEnterprises(enterprisesRes.data);
@@ -77,13 +77,6 @@ function AdminManageWarehouse() {
     const totalPages = Math.ceil(filteredWarehouses.length / recordsPerPage);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-    const handleEditWarehouse = (warehouse) => {
-        setSelectedWarehouse(warehouse);
-        setFormMode('edit');
-        setShowFormModal(true);
-    };
-
 
     const handleViewDetail = (warehouse) => {
         setSelectedWarehouse(warehouse);
@@ -173,8 +166,6 @@ function AdminManageWarehouse() {
                                         <WarehouseList
                                             warehouses={currentRecords} // Truyền dữ liệu đã phân trang
                                             enterprises={enterprises}
-                                            onEdit={handleEditWarehouse}
-                                            onDelete={handleDeleteWarehouse}
                                             onViewDetail={handleViewDetail}
                                         />
                                         {totalPages > 1 && ( // Chỉ hiển thị phân trang nếu có nhiều hơn 1 trang

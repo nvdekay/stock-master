@@ -1,6 +1,6 @@
 import { Modal, Button, Spinner } from 'react-bootstrap';
 import { AlertTriangle, X } from 'lucide-react';
-import axios from 'axios';
+import api from '../../../api/axiosInstance';
 import { useState } from 'react';
 
 const DeleteAccountModal = ({ user, isOpen, onClose, onSuccess }) => {
@@ -10,7 +10,7 @@ const DeleteAccountModal = ({ user, isOpen, onClose, onSuccess }) => {
         if (!user) return;
         setLoading(true);
         try {
-            await axios.delete(`http://localhost:9999/users/${user.id}`);
+            await api.delete(`/users/${user.id}`);
             onSuccess();
             onClose();
         } catch (error) {

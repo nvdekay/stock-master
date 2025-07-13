@@ -1,14 +1,13 @@
 {
   "users": [
     {
-      "id": "1",
       "username": "admin01",
-      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "role": "admin",
-      "fullName": "Nguyen Van A",
+      "fullName": "Nguyen A",
       "email": "a@example.com",
+      "role": "admin",
       "enterpriseId": null,
-      "warehouseId": null
+      "warehouseId": null,
+      "id": "1"
     },
     {
       "id": "3",
@@ -31,24 +30,22 @@
       "warehouseId": "1"
     },
     {
-      "id": "5",
       "username": "staff022",
-      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "role": "staff",
       "fullName": "Pham Van D",
       "email": "d@example.com",
-      "enterpriseId": "2",
-      "warehouseId": "7"
+      "role": "buyer",
+      "enterpriseId": null,
+      "warehouseId": null,
+      "id": "5"
     },
     {
-      "id": "7",
       "username": "buyer01",
-      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "role": "buyer",
       "fullName": "Nguyen Thi E",
       "email": "e@example.com",
-      "enterpriseId": null,
-      "warehouseId": null
+      "role": "staff",
+      "enterpriseId": "5",
+      "warehouseId": "4",
+      "id": "7"
     },
     {
       "id": "8",
@@ -241,7 +238,7 @@
   "enterprises": [
     {
       "id": "2",
-      "name": "Công ty TNHH Âm Thanh Hàn Quắc",
+      "name": "Công ty TNHH Âm Thanh Hàn Quốc",
       "status": "active"
     },
     {

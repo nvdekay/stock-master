@@ -10,7 +10,7 @@ import {
     Alert
 } from 'react-bootstrap';
 import { Edit, Trash2, Plus } from 'lucide-react';
-import axios from 'axios';
+import api from '../../../api/axiosInstance';
 import EditEnterpriseModal from './EditEnterpriseModal';
 import ToggleEnterpriseStatusModal from './ToggleEnterpriseStatusModal';
 
@@ -32,7 +32,7 @@ const EnterpriseTable = ({ refreshEnterprises }) => {
         setLoading(true);
         setError(null);
         try {
-            const res = await axios.get('http://localhost:9999/enterprises');
+            const res = await api.get('/enterprises');
             setEnterprises(res.data);
         } catch (err) {
             console.error('Failed to fetch enterprises:', err);

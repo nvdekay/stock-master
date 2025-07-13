@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button, Form, Spinner, Alert } from 'react-bootstrap';
 import { UserPlus, X } from 'lucide-react';
-import axios from 'axios';
+import api from '../../../api/axiosInstance';
 
 const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
     const [formData, setFormData] = useState({
@@ -51,13 +51,13 @@ const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
 
         try {
             // Check if username or email already exists
-            const usersRes = await axios.get(`http://localhost:9999/users?username=${formData.username}`);
+            const usersRes = await api.get(`/users?username=${formData.username}`);
             if (usersRes.data.length > 0) {
                 setError("Tên người dùng đã tồn tại.");
                 setLoading(false);
                 return;
             }
-            const emailRes = await axios.get(`http://localhost:9999/users?email=${formData.email}`);
+            const emailRes = await api.get(`/users?email=${formData.email}`);
             if (emailRes.data.length > 0) {
                 setError("Email đã tồn tại.");
                 setLoading(false);
@@ -66,7 +66,7 @@ const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
 
             let newEnterpriseId;
             // Check if enterprise name already exists
-            const existingEnterprisesRes = await axios.get(`http://localhost:9999/enterprises?name=${enterpriseName.trim()}`);
+            const existingEnterprisesRes = await api.get(`/enterprises?name=${enterpriseName.trim()}`);
 
             if (existingEnterprisesRes.data.length > 0) {
                 // If enterprise exists, use its ID
@@ -78,7 +78,7 @@ const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
                     name: enterpriseName.trim(),
                     status: 'active' // Default status to active
                 };
-                const enterprisePostRes = await axios.post('http://localhost:9999/enterprises', newEnterprise);
+                const enterprisePostRes = await api.post('/enterprises', newEnterprise);
                 newEnterpriseId = enterprisePostRes.data.id;
             }
 
@@ -89,7 +89,7 @@ const AddManagerModal = ({ isOpen, onClose, onSuccess }) => {
                 warehouseId: null // Ensure warehouseId is null for managers
             };
 
-            await axios.post('http://localhost:9999/users', newUser);
+            await api.post('/users', newUser);
             onSuccess(); // Trigger refresh in parent component
             onClose();
             // Reset form

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Spinner, Alert } from 'react-bootstrap';
 import { Save, X } from 'lucide-react';
-import axios from 'axios';
+import api from '../../../api/axiosInstance';
 
 const EditEnterpriseModal = ({ enterprise, isOpen, onClose, onSuccess }) => {
     const [enterpriseName, setEnterpriseName] = useState('');
@@ -33,7 +33,7 @@ const EditEnterpriseModal = ({ enterprise, isOpen, onClose, onSuccess }) => {
 
         try {
             // Check if enterprise name already exists for other enterprises
-            const existingEnterprises = await axios.get(`http://localhost:9999/enterprises?name=${enterpriseName.trim()}`);
+            const existingEnterprises = await api.get(`/enterprises?name=${enterpriseName.trim()}`);
             if (existingEnterprises.data.some(e => e.id !== enterprise.id)) {
                 setError("Tên doanh nghiệp đã tồn tại.");
                 setLoading(false);
@@ -41,7 +41,7 @@ const EditEnterpriseModal = ({ enterprise, isOpen, onClose, onSuccess }) => {
             }
 
             const updatedEnterprise = { ...enterprise, name: enterpriseName.trim() };
-            await axios.put(`http://localhost:9999/enterprises/${enterprise.id}`, updatedEnterprise);
+            await api.put(`/enterprises/${enterprise.id}`, updatedEnterprise);
             onSuccess();
             onClose();
         } catch (err) {

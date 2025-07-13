@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Spinner, Alert } from 'react-bootstrap';
 import { Plus, Trash2, X } from 'lucide-react';
-import axios from 'axios';
+import api from '../../../api/axiosInstance';
 
 const ToggleEnterpriseStatusModal = ({ enterprise, isOpen, onClose, onSuccess }) => {
     const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const ToggleEnterpriseStatusModal = ({ enterprise, isOpen, onClose, onSuccess })
 
         const newStatus = enterprise.status === 'active' ? 'banned' : 'active';
         try {
-            await axios.put(`http://localhost:9999/enterprises/${enterprise.id}`, { ...enterprise, status: newStatus });
+            await api.put(`/enterprises/${enterprise.id}`, { ...enterprise, status: newStatus });
             onSuccess();
             onClose();
         } catch (err) {

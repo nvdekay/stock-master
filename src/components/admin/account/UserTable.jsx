@@ -12,7 +12,7 @@ import {
 import { Edit, Trash2, } from 'lucide-react';
 import EditAccountModal from '../account/EditAccountModal';
 import DeleteAccountModal from '../account/DeleteAccountModal';
-import axios from 'axios';
+import api from '../../../api/axiosInstance';
 
 const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
     const [users, setUsers] = useState([]);
@@ -34,9 +34,9 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
         setError(null); // Clear previous errors
         try {
             const [usersRes, enterprisesRes, warehousesRes] = await Promise.all([
-                axios.get('http://localhost:9999/users'),
-                axios.get('http://localhost:9999/enterprises'), // Fetch all enterprises to get names
-                axios.get('http://localhost:9999/warehouses')
+                api.get('/users'),
+                api.get('/enterprises'), 
+                api.get('/warehouses')
             ]);
 
             setUsers(usersRes.data);

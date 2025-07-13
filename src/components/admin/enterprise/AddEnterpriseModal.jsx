@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Spinner, Alert } from 'react-bootstrap';
 import { Plus, X } from 'lucide-react';
-import axios from 'axios';
+import api from '../../../api/axiosInstance';
 
 const AddEnterpriseModal = ({ isOpen, onClose, onSuccess }) => {
     const [enterpriseName, setEnterpriseName] = useState('');
@@ -21,7 +21,7 @@ const AddEnterpriseModal = ({ isOpen, onClose, onSuccess }) => {
 
         try {
             // Check if enterprise name already exists
-            const existingEnterprises = await axios.get(`http://localhost:9999/enterprises?name=${enterpriseName.trim()}`);
+            const existingEnterprises = await api.get(`/enterprises?name=${enterpriseName.trim()}`);
             if (existingEnterprises.data.length > 0) {
                 setError("Tên doanh nghiệp đã tồn tại.");
                 setLoading(false);
@@ -33,7 +33,7 @@ const AddEnterpriseModal = ({ isOpen, onClose, onSuccess }) => {
                 name: enterpriseName.trim(),
                 status: 'active' // Default status to active
             };
-            await axios.post('http://localhost:9999/enterprises', newEnterprise);
+            await api.post('/enterprises', newEnterprise);
             onSuccess();
             onClose();
             setEnterpriseName(''); // Reset form

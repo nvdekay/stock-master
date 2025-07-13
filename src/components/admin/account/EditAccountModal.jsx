@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Modal, Button, Form, Spinner, Alert } from 'react-bootstrap';
 import { Save, X } from 'lucide-react';
-import axios from 'axios';
+import api from '../../../api/axiosInstance';
 
 const EditAccountModal = ({ user, isOpen, onClose, onSuccess }) => {
     const [formData, setFormData] = useState({
@@ -22,8 +22,8 @@ const EditAccountModal = ({ user, isOpen, onClose, onSuccess }) => {
             try {
                 // Fetch only active enterprises
                 const [enterprisesRes, warehousesRes] = await Promise.all([
-                    axios.get('http://localhost:9999/enterprises?status=active'),
-                    axios.get('http://localhost:9999/warehouses')
+                    api.get('/enterprises?status=active'),
+                    api.get('/warehouses')
                 ]);
                 setEnterprises(enterprisesRes.data);
                 setWarehouses(warehousesRes.data);
@@ -90,7 +90,7 @@ const EditAccountModal = ({ user, isOpen, onClose, onSuccess }) => {
         }
 
         try {
-            await axios.put(`http://localhost:9999/users/${user.id}`, updatedFormData);
+            await api.put(`/users/${user.id}`, updatedFormData);
             onSuccess();
             onClose();
         } catch (err) {
