@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Button, Table, Alert } from 'react-bootstrap';
+import { FaArrowRight, FaCheckCircle } from 'react-icons/fa';
 
 const ShipmentCard = ({ shipment, handleStatusUpdate }) => {
     console.log('Rendering ShipmentCard with shipment:', shipment);
@@ -49,16 +50,18 @@ const ShipmentCard = ({ shipment, handleStatusUpdate }) => {
 
                 {shipment.status === 'assigned' && (
                     <Button variant="primary" onClick={() => handleStatusUpdate(shipment.id, 'in_transit')}>
-                        Start Delivery
+                        <FaArrowRight className="me-2" /> Start Delivery
                     </Button>
                 )}
                 {shipment.status === 'in_transit' && (
                     <Button variant="success" onClick={() => handleStatusUpdate(shipment.id, 'delivered')} className="ms-2">
-                        Mark as Delivered
+                        <FaCheckCircle className="me-2" /> Mark as Delivered
                     </Button>
                 )}
                 {(shipment.status === 'delivered' || shipment.status === 'completed') && (
-                    <Alert variant="info">This shipment has been shipped successfully.</Alert>
+                    <Alert variant="success" className="d-flex align-items-center mt-3">
+                        <FaCheckCircle className="me-2" /> This shipment has been shipped successfully.
+                    </Alert>
                 )}
             </Card.Body>
         </Card>
