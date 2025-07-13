@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Card, Container, Row, Col, Form, FormControl } from "react-bootstrap";
 import '../../public/assets/css/ProductList.css';
 import api from "../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from '../auth/AuthProvider';
+import axios from "axios";
 
 function ProductList() {
     const [products, setProducts] = useState([]);
@@ -61,6 +64,56 @@ function ProductList() {
 
         setProducts(filtered);
     }, [search, selectedType, sortOrder]);
+
+    const { user, token } = useAuth();
+    const navigate = useNavigate();
+
+    const handleAddToCart = async (productId) => {
+        if (!user) {
+            navigate("/auth/login", { state: { from: location.pathname } });
+            return;
+        }
+
+        try {
+            // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+            const checkRes = await axios.get(
+                `http://localhost:9999/carts?userId=${user.id}&productId=${productId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (checkRes.data.length > 0) {
+                // Nếu đã có, tăng quantity
+                const existingItem = checkRes.data[0];
+                await axios.patch(`http://localhost:9999/carts/${existingItem.id}`, {
+                    quantity: existingItem.quantity + 1
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                alert("Đã cập nhật số lượng sản phẩm có sẵn trong giỏ hàng");
+            } else {
+                // Nếu chưa có, thêm mới
+                await axios.post("http://localhost:9999/carts", {
+                    userId: user.id,
+                    productId: productId,
+                    quantity: 1
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                alert("Đã thêm sản phẩm vào giỏ hàng");
+            }
+        } catch (err) {
+            console.error("Lỗi khi thêm/cập nhật giỏ hàng:", err);
+            alert("Có lỗi xảy ra khi thêm vào giỏ hàng");
+        }
+    };
 
     return (
         <Container className="mt-4">
@@ -135,7 +188,7 @@ function ProductList() {
                             </Card.Body>
                             <Card.Footer className="product-footer">
                                 <Card.Text>
-                                    <strong>Trạng thái:</strong> {renderStatus(product.status)}
+                                    <button onClick={() => handleAddToCart(product.id)} className="btn btn-success">Thêm vào giỏ hàng</button>
                                 </Card.Text>
                             </Card.Footer>
                         </Card>
