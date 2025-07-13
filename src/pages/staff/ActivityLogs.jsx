@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { FaSearch, FaCalendarAlt } from "react-icons/fa";
 import { useAuth } from "../../auth/AuthProvider";
-import api from "../../api/api";
+import api from "../../api/axiosInstance";
 
 const ActivityLogs = () => {
   const [logs, setLogs] = useState([]);

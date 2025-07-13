@@ -13,7 +13,7 @@ import {
 import { FaSearch, FaFilter, FaEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthProvider";
-import api from "../../api/api";
+import api from "../../api/axiosInstance";
 
 const ImportsList = () => {
   const [imports, setImports] = useState([]);

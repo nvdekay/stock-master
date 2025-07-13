@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Alert, Spinner, Row, Button } from 'react-bootstrap';
 import { useAuth } from '../../auth/AuthProvider';
-import ApiService from '../../api/api';
+import api from '../../api/axiosInstance';
 import ShipmentCard from '../../components/shipper/ShipmentCard';
 
 const CompletedDeliveries = () => {
@@ -21,7 +21,7 @@ const CompletedDeliveries = () => {
             }
 
             try {
-                const response = await ApiService.get(`/shipments?shipperId=${user.id}`);
+                const response = await api.get(`/shipments?shipperId=${user.id}`);
                 console.log('API response:', response.data);
                 const shipmentsData = response.data;
 
@@ -34,25 +34,25 @@ const CompletedDeliveries = () => {
                         .filter(shipment => ['delivered', 'completed'].includes(shipment.status))
                         .map(async (shipment) => {
                             console.log('Processing shipment:', shipment.id);
-                            const orderResponse = await ApiService.get(`/orders/${shipment.orderId}`);
+                            const orderResponse = await api.get(`/orders/${shipment.orderId}`);
                             const order = orderResponse.data;
 
-                            const orderDetailsResponse = await ApiService.get(`/orderDetails?orderId=${shipment.orderId}`);
+                            const orderDetailsResponse = await api.get(`/orderDetails?orderId=${shipment.orderId}`);
                             const orderDetails = orderDetailsResponse.data;
 
                             const products = await Promise.all(
                                 orderDetails.map(async (detail) => {
-                                    const productResponse = await ApiService.get(`/products/${detail.productId}`);
+                                    const productResponse = await api.get(`/products/${detail.productId}`);
                                     return { ...detail, product: productResponse.data };
                                 })
                             );
 
-                            const warehouseResponse = await ApiService.get(`/warehouses/${shipment.sendWarehouseId}`);
+                            const warehouseResponse = await api.get(`/warehouses/${shipment.sendWarehouseId}`);
                             const warehouse = warehouseResponse.data;
 
                             let buyer = null;
                             if (order.buyerId) {
-                                const buyerResponse = await ApiService.get(`/users/${order.buyerId}`);
+                                const buyerResponse = await api.get(`/users/${order.buyerId}`);
                                 buyer = buyerResponse.data;
                             }
 
@@ -74,14 +74,14 @@ const CompletedDeliveries = () => {
 
     const handleStatusUpdate = async (shipmentId, newStatus) => {
         try {
-            await ApiService.patch(`/shipments/${shipmentId}`, {
+            await api.patch(`/shipments/${shipmentId}`, {
                 status: newStatus,
                 deliveryDate: newStatus === 'delivered' ? new Date().toISOString().split('T')[0] : null,
             });
 
             const shipmentCopy = shipments.find(s => s.id === shipmentId);
             if (newStatus === 'delivered') {
-                await ApiService.patch(`/orders/${shipmentCopy.orderId}`, { status: 'completed' });
+                await api.patch(`/orders/${shipmentCopy.orderId}`, { status: 'completed' });
             }
 
             setShipments((prev) =>

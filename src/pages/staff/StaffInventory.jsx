@@ -20,7 +20,7 @@ import {
 } from "react-icons/fa";
 import { useAuth } from "../../auth/AuthProvider";
 
-import api from "../../api/api";
+import api from "../../api/axiosInstance";
 
 const StaffInventory = () => {
   const [inventory, setInventory] = useState([]);

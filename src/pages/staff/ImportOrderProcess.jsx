@@ -14,7 +14,7 @@ import {
   Col,
 } from "react-bootstrap";
 import { FaCheck, FaTimes, FaArrowLeft } from "react-icons/fa";
-import api from "../../api/api";
+import api from "../../api/axiosInstance";
 import { useAuth } from "../../auth/AuthProvider";
 
 const ImportOrderProcess = () => {

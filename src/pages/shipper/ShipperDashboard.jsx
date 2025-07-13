@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Alert, Spinner, Row, Col, Card, Table } from 'react-bootstrap';
 import { useAuth } from '../../auth/AuthProvider';
-import ApiService from '../../api/api';
+import api from '../../api/axiosInstance';
 import { Link } from 'react-router-dom';
 
 const ShipperDashboard = () => {
@@ -21,7 +21,7 @@ const ShipperDashboard = () => {
             }
 
             try {
-                const response = await ApiService.get(`/shipments?shipperId=${user.id}`);
+                const response = await api.get(`/shipments?shipperId=${user.id}`);
                 console.log('API response:', response.data);
                 const shipmentsData = response.data;
 
@@ -32,25 +32,25 @@ const ShipperDashboard = () => {
                 const enrichedShipments = await Promise.all(
                     shipmentsData.map(async (shipment) => {
                         console.log('Processing shipment:', shipment.id);
-                        const orderResponse = await ApiService.get(`/orders/${shipment.orderId}`);
+                        const orderResponse = await api.get(`/orders/${shipment.orderId}`);
                         const order = orderResponse.data;
 
-                        const orderDetailsResponse = await ApiService.get(`/orderDetails?orderId=${shipment.orderId}`);
+                        const orderDetailsResponse = await api.get(`/orderDetails?orderId=${shipment.orderId}`);
                         const orderDetails = orderDetailsResponse.data;
 
                         const products = await Promise.all(
                             orderDetails.map(async (detail) => {
-                                const productResponse = await ApiService.get(`/products/${detail.productId}`);
+                                const productResponse = await api.get(`/products/${detail.productId}`);
                                 return { ...detail, product: productResponse.data };
                             })
                         );
 
-                        const warehouseResponse = await ApiService.get(`/warehouses/${shipment.sendWarehouseId}`);
+                        const warehouseResponse = await api.get(`/warehouses/${shipment.sendWarehouseId}`);
                         const warehouse = warehouseResponse.data;
 
                         let buyer = null;
                         if (order.buyerId) {
-                            const buyerResponse = await ApiService.get(`/users/${order.buyerId}`);
+                            const buyerResponse = await api.get(`/users/${order.buyerId}`);
                             buyer = buyerResponse.data;
                         }
 

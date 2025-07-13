@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import { useAuth } from "../../auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import api from "../../api/api";
+import api from "../../api/axiosInstance";
 import "./CreateImport.css";
 
 const CreateImport = () => {
