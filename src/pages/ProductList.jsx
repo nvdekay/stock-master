@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Card, Container, Row, Col, Form, FormControl } from "react-bootstrap";
 import '../../public/assets/css/ProductList.css';
 import api from "../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from '../auth/AuthProvider';
 
 function ProductList() {
     const [products, setProducts] = useState([]);
@@ -11,9 +13,11 @@ function ProductList() {
     const [selectedType, setSelectedType] = useState("");
     const [sortOrder, setSortOrder] = useState("asc"); // asc = từ thấp đến cao (mặc định)
 
+
     useEffect(() => {
         const fetchData = async () => {
             try {
+
                 const resProducts = await api.get("/products");
                 const resTypes = await api.get("/product_types");
 
@@ -61,6 +65,31 @@ function ProductList() {
 
         setProducts(filtered);
     }, [search, selectedType, sortOrder]);
+
+    const { user, token } = useAuth();
+    const navigate = useNavigate();
+    const handleAddToCart = async (productId) => {
+        if (!user) {
+            // Nếu chưa login → chuyển đến trang login
+            navigate("/auth/login", { state: { from: location.pathname } });
+            return;
+        }
+        console.log("p: ", productId)
+        try {
+            // Nếu đã login → Gửi API thêm vào giỏ
+            const product = await api.post("/carts", {
+                userId: user.id,
+                productId: productId,
+                quantity: 1,
+            })
+
+        }
+        // if(user) alert(`${product.name} đã được thêm vào giỏ hàng của ${user.username}`);
+        catch (err) {
+            console.error("Lỗi khi thêm vào giỏ hàng:", err);
+            alert("Lỗi khi thêm vào giỏ hàng");
+        }
+    };
 
     return (
         <Container className="mt-4">
@@ -134,9 +163,7 @@ function ProductList() {
                                 <Card.Text>{product.description}</Card.Text>
                             </Card.Body>
                             <Card.Footer className="product-footer">
-                                <Card.Text>
-                                    <strong>Trạng thái:</strong> {renderStatus(product.status)}
-                                </Card.Text>
+                                <button onClick={() => handleAddToCart(product.id)} className="btn btn-success">Thêm vào giỏ hàng</button>
                             </Card.Footer>
                         </Card>
                     </Col>
@@ -146,17 +173,5 @@ function ProductList() {
     );
 }
 
-function renderStatus(status) {
-    switch (status) {
-        case "available":
-            return "✅ Hàng có sẵn";
-        case "expired":
-            return "⚠️ Hết bảo hành";
-        case "out-of-stock":
-            return "❌ Hết hàng";
-        default:
-            return "Không rõ";
-    }
-}
 
 export default ProductList;
