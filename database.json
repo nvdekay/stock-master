@@ -836,6 +836,15 @@
       "price": 1245000,
       "status": "out-of-stock",
       "warrantyExpire": "2028-11-13"
+    },
+    {
+      "name": "Sản phẩm mới",
+      "description": "nothing",
+      "price": 999999,
+      "status": "available",
+      "warrantyExpire": "2025-07-13",
+      "productTypeId": "5",
+      "id": "F8IXiox"
     }
   ],
   "inventory": [
@@ -1180,6 +1189,34 @@
       "receiveWarehouseId": null,
       "buyerId": "7",
       "note": "Đơn sỉ cho buyer02"
+    },
+    {
+      "type": "import",
+      "status": "completed",
+      "date": "2025-07-13",
+      "enterpriseId": "2",
+      "senderStaffId": null,
+      "receiverStaffId": "4",
+      "sendWarehouseId": "3",
+      "receiveWarehouseId": "1",
+      "buyerId": null,
+      "note": "nothing",
+      "expectedDeliveryDate": "2025-07-18",
+      "id": "XVWButc",
+      "completedDate": "2025-07-13T05:54:23.904Z"
+    },
+    {
+      "type": "import",
+      "status": "pending",
+      "date": "2025-07-13",
+      "enterpriseId": "2",
+      "senderStaffId": null,
+      "receiverStaffId": "4",
+      "sendWarehouseId": "2",
+      "receiveWarehouseId": "1",
+      "buyerId": null,
+      "note": "nothing",
+      "id": "Wjpe-tR"
     }
   ],
   "orderDetails": [
@@ -1238,6 +1275,28 @@
       "productId": "6",
       "quantity": 10,
       "price": 28000000
+    },
+    {
+      "orderId": "XVWButc",
+      "productId": "1",
+      "quantity": 1,
+      "price": 1290000,
+      "id": "rVe8KI2",
+      "status": "refunded"
+    },
+    {
+      "orderId": "Wjpe-tR",
+      "productId": "1",
+      "quantity": 1,
+      "price": 1290000,
+      "id": "HNBkRZ_"
+    },
+    {
+      "orderId": "Wjpe-tR",
+      "productId": "F8IXiox",
+      "quantity": 4,
+      "price": 999999,
+      "id": "JrZIj6o"
     }
   ],
   "shipments": [
@@ -1308,6 +1367,12 @@
       "userId": "3",
       "action": "user manager01 logged in",
       "timestamp": "2025-07-08T04:50:52.071Z"
+    },
+    {
+      "id": "1752386063905",
+      "userId": "4",
+      "action": "Import order #XVWButc processed. 0 items accepted, 1 items refunded",
+      "timestamp": "2025-07-13T05:54:23.904Z"
     }
   ],
   "product_types": [
