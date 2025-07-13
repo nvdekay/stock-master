@@ -197,6 +197,16 @@
       "email": "u@example.com",
       "enterpriseId": "7",
       "warehouseId": "6"
+    },
+    {
+      "username": "khanhnvd",
+      "fullName": "Nguyễn Vũ Đăng Khánh",
+      "email": "dangkhanha1@gmail.com",
+      "password": "123",
+      "role": "manager",
+      "enterpriseId": "36288",
+      "warehouseId": null,
+      "id": "65704"
     }
   ],
   "locations": [
@@ -239,7 +249,7 @@
   "enterprises": [
     {
       "id": "2",
-      "name": "Công ty TNHH Âm Thanh Hàn Quốc",
+      "name": "Công ty TNHH Âm Thanh Việt Nam",
       "status": "active"
     },
     {
@@ -340,6 +350,11 @@
     {
       "id": "36961",
       "name": "Công ty TNHH một mình tao",
+      "status": "active"
+    },
+    {
+      "id": "36288",
+      "name": "Công ty của tao",
       "status": "active"
     }
   ],

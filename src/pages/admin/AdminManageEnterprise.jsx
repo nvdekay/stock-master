@@ -9,10 +9,6 @@ function AdminManageEnterprise() {
   const [isAddEnterpriseModalOpen, setIsAddEnterpriseModalOpen] = useState(false);
   const [refreshEnterprises, setRefreshEnterprises] = useState(false);
 
-  const handleEnterpriseAdded = () => {
-    setRefreshEnterprises(prev => !prev);
-  };
-
   return (
     <div className="vh-100 overflow-hidden d-flex flex-column">
       <Header />
@@ -33,13 +29,6 @@ function AdminManageEnterprise() {
                 </div>
                 <p className="text-muted">Manage enterprises, status, and permissions</p>
               </div>
-              <button
-                className="btn btn-primary d-flex align-items-center rounded-pill px-4 py-2 shadow-sm"
-                onClick={() => setIsAddEnterpriseModalOpen(true)}
-              >
-                <Plus className="me-2" size={16} />
-                Add New Enterprise
-              </button>
             </div>
 
             {/* Enterprise Table */}
@@ -48,11 +37,6 @@ function AdminManageEnterprise() {
         </div>
       </div>
 
-      <AddEnterpriseModal
-        isOpen={isAddEnterpriseModalOpen}
-        onClose={() => setIsAddEnterpriseModalOpen(false)}
-        onSuccess={handleEnterpriseAdded}
-      />
     </div>
   );
 }
