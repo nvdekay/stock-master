@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "username": "admin01",
+      "username": "admin",
       "fullName": "Nguyen Văn Admin",
       "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "email": "a@example.com",
@@ -56,16 +56,6 @@
       "fullName": "Ngo Van F",
       "email": "f@example.com",
       "enterpriseId": "2",
-      "warehouseId": null
-    },
-    {
-      "id": "9",
-      "username": "admin02",
-      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "role": "admin",
-      "fullName": "Hoang Van G",
-      "email": "g@example.com",
-      "enterpriseId": null,
       "warehouseId": null
     },
     {
