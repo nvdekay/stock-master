@@ -15,7 +15,7 @@ const ShipperDashboard = () => {
         const fetchShipments = async () => {
             console.log('Fetching shipments for user:', user);
             if (!user || user.role !== 'shipper') {
-                setError('You are not authorized to view this page.');
+                setError('Bạn không có quyền truy cập trang này.');
                 setLoading(false);
                 return;
             }
@@ -26,7 +26,7 @@ const ShipperDashboard = () => {
                 const shipmentsData = response.data;
 
                 if (shipmentsData.length === 0) {
-                    console.log('No shipments found for shipper:', user.id);
+                    console.log('Không tìm thấy shipment nào cho shipper:', user.id);
                 }
 
                 const enrichedShipments = await Promise.all(
@@ -61,8 +61,8 @@ const ShipperDashboard = () => {
                 setShipments(enrichedShipments);
                 setLoading(false);
             } catch (err) {
-                console.error('Error fetching shipments:', err);
-                setError('Failed to fetch shipments. Please try again later.');
+                console.error('Lỗi khi lấy danh sách shipment:', err);
+                setError('Không thể lấy danh sách shipment. Vui lòng thử lại sau.');
                 setLoading(false);
             }
         };
@@ -70,7 +70,6 @@ const ShipperDashboard = () => {
         fetchShipments();
     }, [user]);
 
-    // Thống kê số lượng shipment theo trạng thái
     const getShipmentStats = (shipments) => {
         return {
             assigned: shipments.filter(s => s.status === 'assigned').length,
@@ -81,6 +80,17 @@ const ShipperDashboard = () => {
     };
 
     const stats = getShipmentStats(shipments);
+
+    const getStatusText = (status) => {
+        switch (status) {
+            case 'in_transit':
+                return 'Đang giao';
+            case 'delivered':
+                return 'Đã giao';
+            default:
+                return status;
+        }
+    };
 
     if (loading) {
         return (
@@ -105,7 +115,7 @@ const ShipperDashboard = () => {
             <Row className="mb-4">
                 <Col md={3} className="mb-3">
                     <Card className="text-center p-3 bg-primary text-white">
-                        <Card.Title>Total Shipments</Card.Title>
+                        <Card.Title>Tổng Shipment</Card.Title>
                         <Card.Text>{stats.total}</Card.Text>
                     </Card>
                 </Col>
@@ -117,29 +127,29 @@ const ShipperDashboard = () => {
                 </Col>
                 <Col md={3} className="mb-3">
                     <Card className="text-center p-3 bg-warning text-white">
-                        <Card.Title>In Transit</Card.Title>
+                        <Card.Title>Đang Giao</Card.Title>
                         <Card.Text>{stats.inTransit}</Card.Text>
                     </Card>
                 </Col>
                 <Col md={3} className="mb-3">
                     <Card className="text-center p-3 bg-info text-white">
-                        <Card.Title>Delivered</Card.Title>
+                        <Card.Title>Đã Giao</Card.Title>
                         <Card.Text>{stats.delivered}</Card.Text>
                     </Card>
                 </Col>
             </Row>
-            <h4 className="mb-3">Assigned Shipments Overview</h4>
+            <h4 className="mb-3">Tổng Quan Shipment Được Giao</h4>
             {shipments.length === 0 ? (
-                <Alert variant="info">No shipments assigned to you.</Alert>
+                <Alert variant="info">Không có shipment nào được giao cho bạn.</Alert>
             ) : (
                 <Table striped bordered hover responsive>
                     <thead>
                         <tr>
                             <th>Shipment ID</th>
                             <th>Order ID</th>
-                            <th>Status</th>
-                            <th>Warehouse</th>
-                            <th>Action</th>
+                            <th>Trạng Thái</th>
+                            <th>Kho</th>
+                            <th>Hành Động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -147,9 +157,9 @@ const ShipperDashboard = () => {
                             <tr key={shipment.id}>
                                 <td><Link to={`/shipper/shipment/${shipment.id}`}>#{shipment.id}</Link></td>
                                 <td>#{shipment.orderId}</td>
-                                <td>{shipment.status}</td>
+                                <td>{getStatusText(shipment.status)}</td>
                                 <td>{shipment.warehouse.name}</td>
-                                <td><Link to={`/shipper/shipment/${shipment.id}`} className="btn btn-primary btn-sm">View Details</Link></td>
+                                <td><Link to={`/shipper/shipment/${shipment.id}`} className="btn btn-primary btn-sm">Xem Chi Tiết</Link></td>
                             </tr>
                         ))}
                     </tbody>

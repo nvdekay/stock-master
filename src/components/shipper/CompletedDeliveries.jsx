@@ -133,7 +133,9 @@ const CompletedDeliveries = () => {
                 </Row>
             )}
             <div className="text-end mt-3">
-                <Button variant="secondary" onClick={() => navigate('/shipper')}>Back to Dashboard</Button>
+                <Button variant="secondary" onClick={() => navigate('/shipper')}>
+                    Quay Lại Dashboard
+                </Button>
             </div>
         </Container>
     );

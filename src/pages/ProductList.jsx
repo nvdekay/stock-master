@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { Card, Container, Row, Col, Form, FormControl } from "react-bootstrap";
 import '../../public/assets/css/ProductList.css';
 import api from "../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from '../auth/AuthProvider';
+import e from "cors";
 
 function ProductList() {
     const [products, setProducts] = useState([]);
@@ -10,6 +13,8 @@ function ProductList() {
     const [productTypes, setProductTypes] = useState([]);
     const [selectedType, setSelectedType] = useState("");
     const [sortOrder, setSortOrder] = useState("asc"); // asc = từ thấp đến cao (mặc định)
+
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,6 +56,14 @@ function ProductList() {
             filtered = filtered.filter(product =>
                 product.productTypeId === parseInt(selectedType)
             );
+            if(filtered.length === 0) {
+                setMessage("Không có sản phẩm nào thuộc loại này");
+            }
+            else {
+                setMessage("");
+            }
+        }else {
+            setMessage("");
         }
 
         if (sortOrder === "asc") {
@@ -61,6 +74,63 @@ function ProductList() {
 
         setProducts(filtered);
     }, [search, selectedType, sortOrder]);
+
+    const { user, token } = useAuth();
+    const navigate = useNavigate();
+
+    const handleAddToCart = async (productId) => {
+        if (!user) {
+            navigate("/auth/login", { state: { from: location.pathname } });
+            return;
+        }
+        try {
+            // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+            const checkRes = await api.get(
+                `/carts?userId=${user.id}&productId=${productId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            if (checkRes.data.length > 0) {
+                // Nếu đã có, tăng quantity
+                const existingItem = checkRes.data[0];
+                await api.patch(`/carts/${existingItem.id}`, {
+                    quantity: existingItem.quantity + 1
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                alert("Đã cập nhật số lượng sản phẩm có sẵn trong giỏ hàng");
+            } else {
+                // Nếu chưa có, thêm mới
+                await api.post("/carts", {
+                    userId: user.id,
+                    productId: productId,
+                    quantity: 1
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                alert("Đã thêm sản phẩm vào giỏ hàng");
+            }
+        } catch (err) {
+            console.error("Lỗi khi thêm/cập nhật giỏ hàng:", err);
+            alert("Có lỗi xảy ra khi thêm vào giỏ hàng");
+        }
+    };
+
+    const handleProductDetail = (id) => {
+        if (!user) {
+            navigate("/auth/login", { state: { from: location.pathname } });
+            return;
+        }
+        navigate(`/product/${id}`)
+    }
 
     return (
         <Container className="mt-4">
@@ -109,12 +179,15 @@ function ProductList() {
             </Form>
 
             <h2 className="mb-4">Danh sách sản phẩm</h2>
-
+            {message && <div className="alert alert-warning">{message}</div>}
+            <br/>
             <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                 {products.map((product) => (
                     <Col key={product.id}>
-                        <Card className="card-hover product-card">
-                            <Card.Body>
+                        <Card
+                            className="card-hover product-card"
+                            style={{ cursor: "pointer" }}>
+                            <Card.Body onClick={() => handleProductDetail(product.id)}>
                                 <Card.Img
                                     variant="top"
                                     src={`../../public/assets/images/products/${product.id}.jpg`}
@@ -135,28 +208,16 @@ function ProductList() {
                             </Card.Body>
                             <Card.Footer className="product-footer">
                                 <Card.Text>
-                                    <strong>Trạng thái:</strong> {renderStatus(product.status)}
+                                    <button onClick={() => handleAddToCart(product.id)} className="btn btn-success">Thêm vào giỏ hàng</button>
                                 </Card.Text>
                             </Card.Footer>
                         </Card>
                     </Col>
                 ))}
             </Row>
-        </Container>
+        </Container >
     );
 }
 
-function renderStatus(status) {
-    switch (status) {
-        case "available":
-            return "✅ Hàng có sẵn";
-        case "expired":
-            return "⚠️ Hết bảo hành";
-        case "out-of-stock":
-            return "❌ Hết hàng";
-        default:
-            return "Không rõ";
-    }
-}
 
 export default ProductList;

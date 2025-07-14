@@ -149,13 +149,13 @@ const EditAccountModal = ({ user, isOpen, onClose, onSuccess }) => {
                         />
                     </Form.Group>
                     <Form.Group controlId="formRole" className="mb-3">
-                        <Form.Label>Vai trò</Form.Label>
+                        <Form.Label>Role</Form.Label>
                         <Form.Select name="role" value={formData.role} onChange={handleChange} required className="rounded-pill">
-                            <option value="admin">Quản trị viên</option>
-                            <option value="manager">Quản lý</option>
-                            <option value="staff">Nhân viên</option>
-                            <option value="buyer">Người mua</option>
-                            <option value="shipper">Người giao hàng</option>
+                            <option value="admin">Admin</option>
+                            <option value="manager">Manager</option>
+                            <option value="staff">Staff</option>
+                            <option value="buyer">Buyer</option>
+                            <option value="shipper">Shipper</option>
                         </Form.Select>
                     </Form.Group>
 

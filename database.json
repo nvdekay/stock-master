@@ -2,8 +2,7 @@
   "users": [
     {
       "username": "admin01",
-      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "fullName": "Nguyen A",
+      "fullName": "Nguyen Văn Admin",
       "email": "a@example.com",
       "role": "admin",
       "enterpriseId": null,
@@ -264,6 +263,24 @@
       "userId": "11",
       "productId": "11",
       "quantity": 1
+    },
+    {
+      "userId": "13",
+      "productId": "49",
+      "quantity": 8,
+      "id": 4
+    },
+    {
+      "userId": "13",
+      "productId": "45",
+      "quantity": 4,
+      "id": 5
+    },
+    {
+      "userId": "13",
+      "productId": "44",
+      "quantity": 3,
+      "id": 6
     }
   ],
   "enterprises": [
@@ -1367,7 +1384,7 @@
     {
       "id": "7",
       "type": "wholesale",
-      "status": "completed",
+      "status": "in_transit",
       "date": "2025-07-04",
       "enterpriseId": "6",
       "senderStaffId": "19",
@@ -1586,6 +1603,23 @@
       "status": "in_transit",
       "deliveryDate": null,
       "note": "Vận chuyển nội bộ"
+    },
+    {
+      "orderId": "1",
+      "shipperId": "14",
+      "sendWarehouseId": "1",
+      "status": "delivered",
+      "note": "Giao hàng cho đơn #1",
+      "id": "liem_oL",
+      "deliveryDate": "2025-07-14"
+    },
+    {
+      "orderId": "7",
+      "shipperId": "14",
+      "sendWarehouseId": "5",
+      "status": "in_transit",
+      "note": "Giao hàng cho đơn #7",
+      "id": "-wXLwF_"
     }
   ],
   "logs": [

@@ -38,6 +38,8 @@ import ShipperDashboard from "./pages/shipper/ShipperDashboard";
 import ShipmentDetail from "./pages/shipper/ShipmentDetail";
 import CompletedDeliveries from "./components/shipper/CompletedDeliveries";
 import DeliveryHistory from "./components/shipper/DelivaryHistory";
+import AvailableOrders from "./components/shipper/AvailableOrders";
+import InTransitShipments from "./components/shipper/InTransitShipments";
 import ExportOrderManagement from "./pages/staff/exporter/PendingOrders";
 import ExporterDashboard from "./pages/staff/exporter/Dashboard";
 // import Cart from "./pages/Cart";
@@ -57,14 +59,14 @@ function App() {
         {/* <Route path="/" element={<Navigate to="/products" replace />} /> */}
         <Route element={<UserLayout />}>
           <Route index element={<ProductList />} />
+          <Route path="product/:id" element={<ProductDetail />} /> 
 
           {/* Unauthenticated Routes */}
           {/* route public mà không cần đăng nhập */}
           <Route path="/public">
             <Route index element={<ProductList />} />
             <Route path="products" element={<ProductList />} />
-            <Route path="product/:id" element={<ProductDetail />} />
-
+             <Route path="product/:id" element={<ProductDetail />} /> 
             {/* ... ném các route tương tự mà không cần đăng nhập vẫn xem được vào đây */}
           </Route>
 
@@ -94,13 +96,12 @@ function App() {
             {/* route mà cần user phải có roles ADMIN/manager/... thả vào đây */}
           </Route>
 
-          <Route
-            path="/shipper"
-            element={<ProtectedRoute requiredRoles={["shipper"]} />}
-          >
+          <Route path="/shipper" element={<ProtectedRoute requiredRoles={["shipper"]} />}>
             <Route element={<ShipperLayout />}>
               <Route index element={<ShipperDashboard />} />
               <Route path="shipment/:id" element={<ShipmentDetail />} />
+              <Route path="available-orders" element={<AvailableOrders />} />
+              <Route path="in-transit" element={<InTransitShipments />} />
               <Route path="completed" element={<CompletedDeliveries />} />
               <Route path="history" element={<DeliveryHistory />} />
             </Route>
