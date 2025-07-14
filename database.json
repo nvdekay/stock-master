@@ -388,10 +388,10 @@
   ],
   "warehouses": [
     {
+      "id": "1",
       "name": "Kho trung tâm HCM",
       "location": "Quận 2, TP.HCM",
-      "enterpriseId": "36961",
-      "id": "1"
+      "enterpriseId": "2"
     },
     {
       "id": "2",
@@ -791,15 +791,14 @@
       "productTypeId": 8
     },
     {
-      "id": "26",
       "name": "Củ sạc nhanh",
-      "description": "Củ sạc nhanh cao cấp, chất lượng tốt",
+      "description": "Củ sạc nhanh cao cấp, chất lượng tố",
       "price": 707000,
-      "status": "expired",
+      "status": "available",
       "warrantyExpire": "2032-12-19",
       "quantity": 90,
       "warehouseId": "13",
-      "productTypeId": 20
+      "id": "26"
     },
     {
       "name": "Cáp sạc USB-C",
