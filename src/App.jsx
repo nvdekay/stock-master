@@ -40,6 +40,9 @@ import CompletedDeliveries from "./components/shipper/CompletedDeliveries";
 import DeliveryHistory from "./components/shipper/DelivaryHistory";
 import AvailableOrders from "./components/shipper/AvailableOrders";
 import InTransitShipments from "./components/shipper/InTransitShipments";
+import WarehousemanLayout from "./layouts/WarehousemanLayout";
+import WarehousemanDashboard from "./pages/warehouseman/WarehousemanDashboard";
+import ImportProducts from "./pages/warehouseman/ImportProducts";
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -136,6 +139,15 @@ function App() {
                 path="warehouse/:warehouseId"
                 element={<WarehouseDetail />}
               />
+            </Route>
+          </Route>
+          <Route
+            path="/warehouseman"
+            element={<ProtectedRoute requiredRoles={["warehouseman"]} />}
+          >
+            <Route element={<WarehousemanLayout />}>
+              <Route index element={<WarehousemanDashboard />} />
+              <Route path="import" element={<ImportProducts />} />
             </Route>
           </Route>
         </Route>
