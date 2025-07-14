@@ -35,7 +35,7 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
         try {
             const [usersRes, enterprisesRes, warehousesRes] = await Promise.all([
                 api.get('/users'),
-                api.get('/enterprises'), 
+                api.get('/enterprises'),
                 api.get('/warehouses')
             ]);
 
@@ -155,6 +155,7 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
                                         <option value="staff">Staff</option>
                                         <option value="buyer">Buyer</option>
                                         <option value="shipper">Shipper</option>
+                                        <option value="warehouseman">Warehouse Man</option>
                                     </Form.Select>
                                 </InputGroup>
                             </Form.Group>
