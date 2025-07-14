@@ -1275,7 +1275,7 @@
     {
       "id": "1",
       "type": "transfer",
-      "status": "in_transit",
+      "status": "completed",
       "date": "2025-07-03",
       "enterpriseId": "2",
       "senderStaffId": "4",
@@ -1577,9 +1577,10 @@
       "orderId": "1",
       "shipperId": "14",
       "sendWarehouseId": "1",
-      "status": "in_transit",
+      "status": "delivered",
       "note": "Giao hàng cho đơn #1",
-      "id": "liem_oL"
+      "id": "liem_oL",
+      "deliveryDate": "2025-07-14"
     },
     {
       "orderId": "7",
