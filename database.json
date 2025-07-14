@@ -2,8 +2,7 @@
   "users": [
     {
       "username": "admin01",
-      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "fullName": "Nguyen A",
+      "fullName": "Nguyen Văn Admin",
       "email": "a@example.com",
       "role": "admin",
       "enterpriseId": null,
