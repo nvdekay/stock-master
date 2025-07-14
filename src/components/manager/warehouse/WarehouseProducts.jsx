@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { Table, Form, InputGroup, Badge, Button, Row, Col, Card } from 'react-bootstrap';
 import ProductEditModal from './products/ProductEditModal';
 
-function WarehouseProducts({ warehouse, products, inventory, onRefresh }) {
+function WarehouseProducts({ warehouse, products, onRefresh }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('name');
     const [sortOrder, setSortOrder] = useState('asc');
@@ -11,21 +11,8 @@ function WarehouseProducts({ warehouse, products, inventory, onRefresh }) {
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-    const productsWithInventory = useMemo(() => {
-    return products.map(product => {
-        const items = inventory.filter(item => item.productId === product.id);
-        const totalQuantity = items.reduce((sum, i) => sum + i.quantity, 0);
-        return {
-            ...product,
-            quantity: totalQuantity,
-            inventoryId: items[0]?.id || null 
-        };
-    });
-}, [products, inventory]);
-    
-
     const filteredProducts = useMemo(() => {
-        let filtered = productsWithInventory.filter(product =>
+        let filtered = products.filter(product =>
             product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             product.description.toLowerCase().includes(searchTerm.toLowerCase())
         );
@@ -60,7 +47,7 @@ function WarehouseProducts({ warehouse, products, inventory, onRefresh }) {
         });
 
         return filtered;
-    }, [productsWithInventory, searchTerm, sortBy, sortOrder, filterStatus]);
+    }, [products, searchTerm, sortBy, sortOrder, filterStatus]);
 
     const getProductStatusBadge = (quantity) => {
         if (quantity > 0) {
@@ -173,10 +160,10 @@ function WarehouseProducts({ warehouse, products, inventory, onRefresh }) {
                                             </span>
                                         </td>
                                         <td>
-                                            <span className="fw-bold">{product.quantity}</span>
+                                            <span className="fw-bold">{product.quantity || 0}</span>
                                         </td>
                                         <td>
-                                            {getProductStatusBadge(product.quantity)}
+                                            {getProductStatusBadge(product.quantity || 0)}
                                         </td>
                                         <td>
                                             <div>

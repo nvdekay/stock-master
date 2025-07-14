@@ -30,14 +30,17 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
     });
 
     const filteredByTab = activeTab === 'all' ? filteredEmployees :
-        activeTab === 'staff' ? filteredEmployees.filter(e => e.role === 'staff') :
+        activeTab === 'staff' ? filteredEmployees.filter(e => ['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(e.role)) :
             filteredEmployees.filter(e => e.role === 'shipper');
 
     const getRoleBadge = (role) => {
         const roleConfig = {
             manager: { bg: 'primary', text: 'Manager' },
-            staff: { bg: 'info', text: 'Warehouse Staff' },
-            shipper: { bg: 'success', text: 'Shipper' },
+            staff: { bg: 'info', text: 'General Staff' },
+            importstaff: { bg: 'success', text: 'Import Staff' },
+            exportstaff: { bg: 'primary', text: 'Export Staff' },
+            warehouseman: { bg: 'dark', text: 'Warehouseman' },
+            shipper: { bg: 'warning', text: 'Shipper' },
             admin: { bg: 'danger', text: 'Admin' }
         };
 
@@ -46,7 +49,7 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
     };
 
     const getWorkLocationBadge = (employee) => {
-        if (employee.role === 'staff') {
+        if (['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(employee.role)) {
             return <Badge bg="light" text="dark">Warehouse: {warehouse.name}</Badge>;
         } else if (employee.role === 'shipper') {
             return <Badge bg="light" text="dark">Enterprise-wide</Badge>;
@@ -89,7 +92,6 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
             setDeleteLoading(false);
         }
     };
-
 
     const handleCloseModals = () => {
         setShowCreateModal(false);
@@ -222,9 +224,9 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
                                         <td>
                                             <div className="d-flex align-items-center">
                                                 <div className="me-3">
-                                                    <div className={`bg-${member.role === 'staff' ? 'info' : 'success'} rounded-circle d-flex align-items-center justify-content-center`}
+                                                    <div className={`bg-${['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(member.role) ? 'info' : 'warning'} rounded-circle d-flex align-items-center justify-content-center`}
                                                         style={{ width: '40px', height: '40px' }}>
-                                                        <i className={`fas fa-${member.role === 'staff' ? 'user' : 'truck'} text-white`}></i>
+                                                        <i className={`fas fa-${['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(member.role) ? 'user' : 'truck'} text-white`}></i>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -337,9 +339,9 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
 
                             <div className="border rounded p-3 bg-light mb-3">
                                 <div className="d-flex align-items-center">
-                                    <div className={`bg-${selectedStaff.role === 'staff' ? 'info' : 'success'} rounded-circle d-flex align-items-center justify-content-center me-3`}
+                                    <div className={`bg-${['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(selectedStaff.role) ? 'info' : 'warning'} rounded-circle d-flex align-items-center justify-content-center me-3`}
                                         style={{ width: '40px', height: '40px' }}>
-                                        <i className={`fas fa-${selectedStaff.role === 'staff' ? 'user' : 'truck'} text-white`}></i>
+                                        <i className={`fas fa-${['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(selectedStaff.role) ? 'user' : 'truck'} text-white`}></i>
                                     </div>
                                     <div>
                                         <div className="fw-bold">{selectedStaff.fullName}</div>
