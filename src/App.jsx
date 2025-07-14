@@ -41,7 +41,10 @@ import DeliveryHistory from "./components/shipper/DelivaryHistory";
 import AvailableOrders from "./components/shipper/AvailableOrders";
 import InTransitShipments from "./components/shipper/InTransitShipments";
 import ExportOrderManagement from "./pages/staff/exporter/PendingOrders";
-import ExporterDashboard from "./pages/staff/exporter/Dashboard";
+import ExporterDashboard from "./pages/staff/exporter/ExporterDashboard";
+import ExporterLayout from "./layouts/ExporterLayout";
+import PendingOrders from "./pages/staff/exporter/PendingOrders";
+import ExportHistory from "./pages/staff/exporter/ExportHistory";
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -59,14 +62,14 @@ function App() {
         {/* <Route path="/" element={<Navigate to="/products" replace />} /> */}
         <Route element={<UserLayout />}>
           <Route index element={<ProductList />} />
-          <Route path="product/:id" element={<ProductDetail />} /> 
+          <Route path="product/:id" element={<ProductDetail />} />
 
           {/* Unauthenticated Routes */}
           {/* route public mà không cần đăng nhập */}
           <Route path="/public">
             <Route index element={<ProductList />} />
             <Route path="products" element={<ProductList />} />
-             <Route path="product/:id" element={<ProductDetail />} /> 
+            <Route path="product/:id" element={<ProductDetail />} />
             {/* ... ném các route tương tự mà không cần đăng nhập vẫn xem được vào đây */}
           </Route>
 
@@ -127,8 +130,12 @@ function App() {
           </Route>
 
           <Route path="/exporter" element={<ProtectedRoute requiredRoles={["exporter"]} />}>
-            <Route index element={<ExporterDashboard />} />
-            <Route path="export-orders" element={<ExportOrderManagement />} />
+            <Route element={<ExporterLayout />} >
+              <Route index element={<ExporterDashboard />} />
+              <Route path="dashboard" element={<ExporterDashboard />} />
+              <Route path="pending-orders" element={<PendingOrders />} />
+              <Route path="history" element={<ExportHistory />} />
+            </Route>
           </Route>
 
 
@@ -160,7 +167,7 @@ function App() {
           <Route path="manage-warehouse" element={<AdminManageWarehouse />} />
         </Route>
       </Routes>
-    </Router>
+    </Router >
   );
 }
 
