@@ -4,7 +4,6 @@ import '../../public/assets/css/ProductList.css';
 import api from "../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../auth/AuthProvider';
-import axios from "axios";
 
 function ProductList() {
     const [products, setProducts] = useState([]);
@@ -73,11 +72,10 @@ function ProductList() {
             navigate("/auth/login", { state: { from: location.pathname } });
             return;
         }
-
         try {
             // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-            const checkRes = await axios.get(
-                `http://localhost:9999/carts?userId=${user.id}&productId=${productId}`,
+            const checkRes = await api.get(
+                `/carts?userId=${user.id}&productId=${productId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -88,7 +86,7 @@ function ProductList() {
             if (checkRes.data.length > 0) {
                 // Nếu đã có, tăng quantity
                 const existingItem = checkRes.data[0];
-                await axios.patch(`http://localhost:9999/carts/${existingItem.id}`, {
+                await api.patch(`/carts/${existingItem.id}`, {
                     quantity: existingItem.quantity + 1
                 }, {
                     headers: {
@@ -98,7 +96,7 @@ function ProductList() {
                 alert("Đã cập nhật số lượng sản phẩm có sẵn trong giỏ hàng");
             } else {
                 // Nếu chưa có, thêm mới
-                await axios.post("http://localhost:9999/carts", {
+                await api.post("/carts", {
                     userId: user.id,
                     productId: productId,
                     quantity: 1
@@ -114,6 +112,14 @@ function ProductList() {
             alert("Có lỗi xảy ra khi thêm vào giỏ hàng");
         }
     };
+
+    const handleProductDetail = (id) => {
+        if (!user) {
+            navigate("/auth/login", { state: { from: location.pathname } });
+            return;
+        }
+        navigate(`/product/${id}`)
+    }
 
     return (
         <Container className="mt-4">
@@ -166,8 +172,10 @@ function ProductList() {
             <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                 {products.map((product) => (
                     <Col key={product.id}>
-                        <Card className="card-hover product-card">
-                            <Card.Body>
+                        <Card
+                            className="card-hover product-card"
+                            style={{ cursor: "pointer" }}>
+                            <Card.Body onClick={() => handleProductDetail(product.id)}>
                                 <Card.Img
                                     variant="top"
                                     src={`../../public/assets/images/products/${product.id}.jpg`}
@@ -195,21 +203,9 @@ function ProductList() {
                     </Col>
                 ))}
             </Row>
-        </Container>
+        </Container >
     );
 }
 
-function renderStatus(status) {
-    switch (status) {
-        case "available":
-            return "✅ Hàng có sẵn";
-        case "expired":
-            return "⚠️ Hết bảo hành";
-        case "out-of-stock":
-            return "❌ Hết hàng";
-        default:
-            return "Không rõ";
-    }
-}
 
 export default ProductList;

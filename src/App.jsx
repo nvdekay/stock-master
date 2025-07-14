@@ -57,14 +57,14 @@ function App() {
         {/* <Route path="/" element={<Navigate to="/products" replace />} /> */}
         <Route element={<UserLayout />}>
           <Route index element={<ProductList />} />
+          <Route path="product/:id" element={<ProductDetail />} /> 
 
           {/* Unauthenticated Routes */}
           {/* route public mà không cần đăng nhập */}
           <Route path="/public">
             <Route index element={<ProductList />} />
             <Route path="products" element={<ProductList />} />
-            <Route path="product/:id" element={<ProductDetail />} />
-
+             <Route path="product/:id" element={<ProductDetail />} /> 
             {/* ... ném các route tương tự mà không cần đăng nhập vẫn xem được vào đây */}
           </Route>
 
