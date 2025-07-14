@@ -1,12 +1,12 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-function ManagerSidebar({ isCollapsed, setIsCollapsed }) {
+function WarehousemanSidebar({ isCollapsed, setIsCollapsed }) {
     const location = useLocation();
     const navigate = useNavigate();
 
     const menuItems = [
-        { icon: 'fas fa-tachometer-alt', label: 'Dashboard', path: '/manager' },
-        { icon: 'fas fa-warehouse', label: 'Quản lý kho', path: '/manager/warehouse' }
+        { icon: 'fas fa-warehouse', label: 'Warehouse Detail', path: '/warehouseman' },
+        { icon: 'fas fa-box', label: 'Import Product', path: '/warehouseman/import' }
     ];
 
     return (
@@ -86,4 +86,4 @@ function ManagerSidebar({ isCollapsed, setIsCollapsed }) {
     );
 }
 
-export default ManagerSidebar;
+export default WarehousemanSidebar;

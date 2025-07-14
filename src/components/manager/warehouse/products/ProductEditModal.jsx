@@ -13,7 +13,6 @@ const calculateStatus = (warrantyDate, quantity) => {
     return 'available';
 };
 
-
 function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
     const [editForm, setEditForm] = useState({});
     const [loading, setLoading] = useState(false);
@@ -86,21 +85,16 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
         setError('');
 
         try {
+            // Update product with new quantity directly in products table
             await api.put(`/products/${product.id}`, {
                 name: editForm.name,
                 description: editForm.description,
                 price: Number(editForm.price),
                 status: editForm.status,
-                warrantyExpire: editForm.warrantyExpire 
+                warrantyExpire: editForm.warrantyExpire,
+                quantity: Number(editForm.quantity),
+                warehouseId: warehouse.id
             });
-
-            if (product.inventoryId && editForm.quantity !== product.quantity) {
-                await api.put(`/inventory/${product.inventoryId}`, {
-                    productId: product.id,
-                    warehouseId: warehouse.id,
-                    quantity: Number(editForm.quantity)
-                });
-            }
 
             setSuccess('Product updated successfully');
             setTimeout(() => {
@@ -136,11 +130,9 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
         }
     };
 
-
     if (!product) return null;
 
     const statusInfo = getStatusInfo(editForm.status);
-
 
     return (
         <Modal show={show} onHide={handleClose} size="lg">

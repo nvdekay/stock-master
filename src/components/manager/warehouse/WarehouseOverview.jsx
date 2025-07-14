@@ -2,15 +2,15 @@ import { useMemo } from 'react';
 import { Row, Col, Card, ListGroup, ProgressBar } from 'react-bootstrap';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-function WarehouseOverview({ warehouse, enterprise, manager, staff, shippers, products, inventory, exportOrders = [], importOrders = [], wholesaleOrders = [] }) {
-    const totalQuantity = inventory.reduce((sum, item) => sum + item.quantity, 0);
+function WarehouseOverview({ warehouse, enterprise, manager, staff, shippers, products, exportOrders = [], importOrders = [], wholesaleOrders = [] }) {
+    const totalQuantity = products.reduce((sum, product) => sum + (product.quantity || 0), 0);
     const totalProducts = products.length;
     const totalStaff = staff.length;
     const totalShippers = shippers.length;
     const totalEmployees = totalStaff + totalShippers;
 
-    const lowStockItems = inventory.filter(item => item.quantity <= 10 && item.quantity > 0);
-    const outOfStockItems = inventory.filter(item => item.quantity === 0);
+    const lowStockItems = products.filter(product => (product.quantity || 0) <= 10 && (product.quantity || 0) > 0);
+    const outOfStockItems = products.filter(product => (product.quantity || 0) === 0);
 
     const statistics = useMemo(() => {
         const allUniqueOrders = Array.from(
@@ -18,21 +18,13 @@ function WarehouseOverview({ warehouse, enterprise, manager, staff, shippers, pr
                 .reduce((map, order) => map.set(order.id, order), new Map())
                 .values()
         );
-        const totalValue = inventory.reduce((sum, item) => {
-            const product = products.find(p => p.id === item.productId);
-            return sum + (product?.price || 0) * item.quantity;
+        const totalValue = products.reduce((sum, product) => {
+            return sum + (product?.price || 0) * (product.quantity || 0);
         }, 0);
 
-        const productQuantityMap = products.map(product => {
-            const totalQty = inventory
-                .filter(i => i.productId === product.id)
-                .reduce((sum, i) => sum + i.quantity, 0);
-            return { productId: product.id, quantity: totalQty };
-        });
-
-        const inStockCount = productQuantityMap.filter(p => p.quantity > 10).length;
-        const lowStockCount = productQuantityMap.filter(p => p.quantity > 0 && p.quantity <= 10).length;
-        const outOfStockCount = productQuantityMap.filter(p => p.quantity === 0).length;
+        const inStockCount = products.filter(p => (p.quantity || 0) > 10).length;
+        const lowStockCount = products.filter(p => (p.quantity || 0) > 0 && (p.quantity || 0) <= 10).length;
+        const outOfStockCount = products.filter(p => (p.quantity || 0) === 0).length;
 
         const stockData = [
             { name: 'In Stock', value: inStockCount, color: '#28a745' },
@@ -96,7 +88,7 @@ function WarehouseOverview({ warehouse, enterprise, manager, staff, shippers, pr
             orderStats,
             orderStatusData
         };
-    }, [products, inventory, exportOrders, importOrders, wholesaleOrders]);
+    }, [products, exportOrders, importOrders, wholesaleOrders]);
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('vi-VN', {
@@ -104,7 +96,6 @@ function WarehouseOverview({ warehouse, enterprise, manager, staff, shippers, pr
             currency: 'VND'
         }).format(amount);
     };
-    console.log('Warehouse statistics:', statistics);
 
     const COLORS = ['#28a745', '#ffc107', '#dc3545', '#17a2b8', '#007bff', '#6f42c1'];
 
@@ -419,18 +410,15 @@ function WarehouseOverview({ warehouse, enterprise, manager, staff, shippers, pr
                         <Card.Body>
                             {lowStockItems.length > 0 ? (
                                 <ListGroup variant="flush">
-                                    {lowStockItems.slice(0, 5).map((item, index) => {
-                                        const product = products.find(p => p.id === item.productId);
-                                        return (
-                                            <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center px-0">
-                                                <div>
-                                                    <div className="fw-medium">{product?.name || 'Unknown Product'}</div>
-                                                    <small className="text-muted">ID: {item.productId}</small>
-                                                </div>
-                                                <span className="badge bg-warning">{item.quantity} left</span>
-                                            </ListGroup.Item>
-                                        );
-                                    })}
+                                    {lowStockItems.slice(0, 5).map((product, index) => (
+                                        <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center px-0">
+                                            <div>
+                                                <div className="fw-medium">{product?.name || 'Unknown Product'}</div>
+                                                <small className="text-muted">ID: {product.id}</small>
+                                            </div>
+                                            <span className="badge bg-warning">{product.quantity || 0} left</span>
+                                        </ListGroup.Item>
+                                    ))}
                                     {lowStockItems.length > 5 && (
                                         <ListGroup.Item className="text-center text-muted px-0">
                                             And {lowStockItems.length - 5} more items...
@@ -457,18 +445,15 @@ function WarehouseOverview({ warehouse, enterprise, manager, staff, shippers, pr
                         <Card.Body>
                             {outOfStockItems.length > 0 ? (
                                 <ListGroup variant="flush">
-                                    {outOfStockItems.slice(0, 5).map((item, index) => {
-                                        const product = products.find(p => p.id === item.productId);
-                                        return (
-                                            <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center px-0">
-                                                <div>
-                                                    <div className="fw-medium">{product?.name || 'Unknown Product'}</div>
-                                                    <small className="text-muted">ID: {item.productId}</small>
-                                                </div>
-                                                <span className="badge bg-danger">Out of Stock</span>
-                                            </ListGroup.Item>
-                                        );
-                                    })}
+                                    {outOfStockItems.slice(0, 5).map((product, index) => (
+                                        <ListGroup.Item key={index} className="d-flex justify-content-between align-items-center px-0">
+                                            <div>
+                                                <div className="fw-medium">{product?.name || 'Unknown Product'}</div>
+                                                <small className="text-muted">ID: {product.id}</small>
+                                            </div>
+                                            <span className="badge bg-danger">Out of Stock</span>
+                                        </ListGroup.Item>
+                                    ))}
                                     {outOfStockItems.length > 5 && (
                                         <ListGroup.Item className="text-center text-muted px-0">
                                             And {outOfStockItems.length - 5} more items...

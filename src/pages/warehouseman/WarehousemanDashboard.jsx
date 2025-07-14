@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Row, Col, Card, Nav, Spinner, Alert, Button } from 'react-bootstrap';
+import { Row, Col, Card, Nav, Spinner, Alert } from 'react-bootstrap';
 import { useAuth } from '../../auth/AuthProvider';
 import api from '../../api/axiosInstance';
 import WarehouseOverview from '../../components/manager/warehouse/WarehouseOverview';
@@ -8,16 +7,12 @@ import WarehouseProducts from '../../components/manager/warehouse/WarehouseProdu
 import WarehouseStaff from '../../components/manager/warehouse/WarehouseStaff';
 import WarehouseHistory from '../../components/manager/warehouse/WarehouseHistory';
 
-function WarehouseDetail() {
-    const { warehouseId } = useParams();
-    const navigate = useNavigate();
+function WarehousemanDashboard() {
     const { user } = useAuth();
-
     const [warehouse, setWarehouse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('overview');
-
     const [warehouseData, setWarehouseData] = useState({
         enterprise: null,
         manager: null,
@@ -30,7 +25,11 @@ function WarehouseDetail() {
     });
 
     const fetchWarehouseData = useCallback(async () => {
-        if (!warehouseId) return;
+        if (!user.warehouseId) {
+            setError('No warehouse assigned to this user');
+            setLoading(false);
+            return;
+        }
 
         setLoading(true);
         setError(null);
@@ -45,7 +44,7 @@ function WarehouseDetail() {
                 allWarehousesRes,
                 orderDetailsRes
             ] = await Promise.all([
-                api.get(`/warehouses/${warehouseId}`),
+                api.get(`/warehouses/${user.warehouseId}`),
                 api.get('/users'),
                 api.get('/products'),
                 api.get('/orders'),
@@ -55,12 +54,6 @@ function WarehouseDetail() {
             ]);
 
             const warehouseInfo = warehouseRes.data;
-
-            // Check permission for manager role
-            if (user.role === 'manager' && warehouseInfo.enterpriseId !== user.enterpriseId) {
-                throw new Error('You do not have permission to access this warehouse.');
-            }
-
             setWarehouse(warehouseInfo);
 
             const allUsers = usersRes.data;
@@ -70,13 +63,12 @@ function WarehouseDetail() {
             const allWarehouses = allWarehousesRes.data;
             const allOrderDetails = orderDetailsRes.data;
 
-            // Fetch enterprise information
             const enterpriseRes = await api.get(`/enterprises/${warehouseInfo.enterpriseId}`);
             const enterprise = enterpriseRes.data;
 
-            // Filter warehouse staff with correct roles and warehouseId comparison
+            // Filter warehouse staff with new roles
             const warehouseStaff = allUsers.filter(u => 
-                u.warehouseId === warehouseId && // So sánh string với string
+                u.warehouseId === user.warehouseId && 
                 ['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(u.role)
             );
             
@@ -88,12 +80,11 @@ function WarehouseDetail() {
                 u.enterpriseId === warehouseInfo.enterpriseId && u.role === 'manager'
             );
 
-            // Filter products that belong to this warehouse - sửa so sánh
+            // Filter products that belong to this warehouse (using warehouseId in products)
             const warehouseProducts = allProducts.filter(product => 
-                product.warehouseId === warehouseId // So sánh string với string thay vì parseInt
+                product.warehouseId === user.warehouseId
             );
 
-            // Function to enrich orders with related data
             const enrichOrder = (order) => {
                 const senderStaff = allUsers.find(u => u.id === order.senderStaffId);
                 const receiverStaff = allUsers.find(u => u.id === order.receiverStaffId);
@@ -112,17 +103,7 @@ function WarehouseDetail() {
                 }, 0);
 
                 return {
-                    id: order.id,
-                    type: order.type,
-                    status: order.status,
-                    date: order.date,
-                    enterpriseId: order.enterpriseId,
-                    senderStaffId: order.senderStaffId,
-                    receiverStaffId: order.receiverStaffId,
-                    sendWarehouseId: order.sendWarehouseId,
-                    receiveWarehouseId: order.receiveWarehouseId,
-                    buyerId: order.buyerId,
-                    note: order.note,
+                    ...order,
                     senderStaff,
                     receiverStaff,
                     buyer,
@@ -135,17 +116,16 @@ function WarehouseDetail() {
                 };
             };
 
-            // Filter and enrich orders - sửa so sánh warehouseId
             const exportOrders = allOrders
-                .filter(o => o.sendWarehouseId === warehouseId && o.type === 'transfer')
+                .filter(o => o.sendWarehouseId === user.warehouseId && o.type === 'transfer')
                 .map(enrichOrder);
 
             const importOrders = allOrders
-                .filter(o => o.receiveWarehouseId === warehouseId)
+                .filter(o => o.receiveWarehouseId === user.warehouseId)
                 .map(enrichOrder);
 
             const wholesaleOrders = allOrders
-                .filter(o => o.type === 'wholesale' && o.sendWarehouseId === warehouseId)
+                .filter(o => o.type === 'wholesale' && o.sendWarehouseId === user.warehouseId)
                 .map(enrichOrder);
 
             setWarehouseData({
@@ -165,7 +145,7 @@ function WarehouseDetail() {
         } finally {
             setLoading(false);
         }
-    }, [warehouseId, user]);
+    }, [user]);
 
     useEffect(() => {
         fetchWarehouseData();
@@ -182,28 +162,18 @@ function WarehouseDetail() {
 
     if (error) {
         return (
-            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
-                <Alert variant="danger" className="text-center">
-                    <Alert.Heading>Error</Alert.Heading>
-                    <p>{error}</p>
-                    <hr />
-                    <Button variant="outline-danger" onClick={() => navigate('/manager/warehouse')}>
-                        <i className="fas fa-arrow-left me-2"></i>
-                        Back to Warehouses
-                    </Button>
-                </Alert>
-            </div>
+            <Alert variant="danger" className="m-4">
+                <Alert.Heading>Error</Alert.Heading>
+                <p>{error}</p>
+            </Alert>
         );
     }
 
     if (!warehouse) {
         return (
-            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
-                <Alert variant="warning" className="text-center">
-                    <i className="fas fa-exclamation-triangle me-2"></i>
-                    Warehouse not found
-                </Alert>
-            </div>
+            <Alert variant="warning" className="m-4">
+                No warehouse found for this user
+            </Alert>
         );
     }
 
@@ -246,18 +216,8 @@ function WarehouseDetail() {
                 <Row className="align-items-center">
                     <Col>
                         <div className="d-flex align-items-center mb-2">
-                            <Button
-                                variant="link"
-                                className="p-0 me-2 text-decoration-none"
-                                onClick={() => navigate('/manager/warehouse')}
-                                title="Back to Warehouses"
-                            >
-                                <i className="fas fa-arrow-left"></i>
-                            </Button>
                             <h4 className="mb-0">{warehouse.name}</h4>
-                            <span className="badge bg-primary ms-2">
-                                {warehouseData.products.length} products
-                            </span>
+                            <span className="badge bg-success ms-2">Warehouseman Dashboard</span>
                         </div>
                         <p className="text-muted mb-0">
                             <i className="fas fa-map-marker-alt me-1"></i>
@@ -279,26 +239,22 @@ function WarehouseDetail() {
                         <Nav variant="tabs" activeKey={activeTab} onSelect={setActiveTab}>
                             <Nav.Item>
                                 <Nav.Link eventKey="overview">
-                                    <i className="fas fa-tachometer-alt me-2"></i>
-                                    Overview
+                                    <i className="fas fa-tachometer-alt me-2"></i>Overview
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="products">
-                                    <i className="fas fa-boxes me-2"></i>
-                                    Products ({warehouseData.products.length})
+                                    <i className="fas fa-boxes me-2"></i>Products ({warehouseData.products.length})
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="staff">
-                                    <i className="fas fa-users me-2"></i>
-                                    Staff ({warehouseData.staff.length})
+                                    <i className="fas fa-users me-2"></i>Staff ({warehouseData.staff.length})
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="history">
-                                    <i className="fas fa-history me-2"></i>
-                                    History
+                                    <i className="fas fa-history me-2"></i>History
                                 </Nav.Link>
                             </Nav.Item>
                         </Nav>
@@ -312,4 +268,4 @@ function WarehouseDetail() {
     );
 }
 
-export default WarehouseDetail;
+export default WarehousemanDashboard;
