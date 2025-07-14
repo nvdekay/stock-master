@@ -38,6 +38,8 @@ import ShipperDashboard from "./pages/shipper/ShipperDashboard";
 import ShipmentDetail from "./pages/shipper/ShipmentDetail";
 import CompletedDeliveries from "./components/shipper/CompletedDeliveries";
 import DeliveryHistory from "./components/shipper/DelivaryHistory";
+import AvailableOrders from "./components/shipper/AvailableOrders";
+import InTransitShipments from "./components/shipper/InTransitShipments";
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -92,13 +94,12 @@ function App() {
             {/* route mà cần user phải có roles ADMIN/manager/... thả vào đây */}
           </Route>
 
-          <Route
-            path="/shipper"
-            element={<ProtectedRoute requiredRoles={["shipper"]} />}
-          >
+          <Route path="/shipper" element={<ProtectedRoute requiredRoles={["shipper"]} />}>
             <Route element={<ShipperLayout />}>
               <Route index element={<ShipperDashboard />} />
               <Route path="shipment/:id" element={<ShipmentDetail />} />
+              <Route path="available-orders" element={<AvailableOrders />} />
+              <Route path="in-transit" element={<InTransitShipments />} />
               <Route path="completed" element={<CompletedDeliveries />} />
               <Route path="history" element={<DeliveryHistory />} />
             </Route>
