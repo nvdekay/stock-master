@@ -3,6 +3,7 @@
     {
       "username": "admin01",
       "fullName": "Nguyen Văn Admin",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "email": "a@example.com",
       "role": "admin",
       "enterpriseId": null,
