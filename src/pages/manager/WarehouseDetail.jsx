@@ -24,7 +24,6 @@ function WarehouseDetail() {
         staff: [],
         shippers: [],
         products: [],
-        inventory: [],
         exportOrders: [],
         importOrders: [],
         wholesaleOrders: []
@@ -40,7 +39,6 @@ function WarehouseDetail() {
             const [
                 warehouseRes,
                 usersRes,
-                inventoryRes,
                 productsRes,
                 ordersRes,
                 shipmentsRes,
@@ -49,7 +47,6 @@ function WarehouseDetail() {
             ] = await Promise.all([
                 api.get(`/warehouses/${warehouseId}`),
                 api.get('/users'),
-                api.get(`/inventory?warehouseId=${warehouseId}`),
                 api.get('/products'),
                 api.get('/orders'),
                 api.get('/shipments'),
@@ -59,6 +56,7 @@ function WarehouseDetail() {
 
             const warehouseInfo = warehouseRes.data;
 
+            // Check permission for manager role
             if (user.role === 'manager' && warehouseInfo.enterpriseId !== user.enterpriseId) {
                 throw new Error('You do not have permission to access this warehouse.');
             }
@@ -72,28 +70,40 @@ function WarehouseDetail() {
             const allWarehouses = allWarehousesRes.data;
             const allOrderDetails = orderDetailsRes.data;
 
+            // Fetch enterprise information
             const enterpriseRes = await api.get(`/enterprises/${warehouseInfo.enterpriseId}`);
             const enterprise = enterpriseRes.data;
 
-            const warehouseStaff = allUsers.filter(u => u.warehouseId === warehouseId && u.role === 'staff');
-            const enterpriseShippers = allUsers.filter(u => u.enterpriseId === warehouseInfo.enterpriseId && u.role === 'shipper');
-            const manager = allUsers.find(u => u.enterpriseId === warehouseInfo.enterpriseId && u.role === 'manager');
+            // Filter warehouse staff with correct roles and warehouseId comparison
+            const warehouseStaff = allUsers.filter(u => 
+                u.warehouseId === warehouseId && // So sánh string với string
+                ['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(u.role)
+            );
+            
+            // Get enterprise shippers and manager
+            const enterpriseShippers = allUsers.filter(u => 
+                u.enterpriseId === warehouseInfo.enterpriseId && u.role === 'shipper'
+            );
+            const manager = allUsers.find(u => 
+                u.enterpriseId === warehouseInfo.enterpriseId && u.role === 'manager'
+            );
 
-            const inventory = inventoryRes.data;
-            const productIds = [...new Set(inventory.map(item => item.productId))];
-            const warehouseProducts = allProducts.filter(product => productIds.includes(product.id));
+            // Filter products that belong to this warehouse - sửa so sánh
+            const warehouseProducts = allProducts.filter(product => 
+                product.warehouseId === warehouseId // So sánh string với string thay vì parseInt
+            );
 
+            // Function to enrich orders with related data
             const enrichOrder = (order) => {
                 const senderStaff = allUsers.find(u => u.id === order.senderStaffId);
                 const receiverStaff = allUsers.find(u => u.id === order.receiverStaffId);
                 const buyer = allUsers.find(u => u.id === order.buyerId);
-
                 const sendWarehouse = allWarehouses.find(w => w.id === order.sendWarehouseId);
                 const receiveWarehouse = allWarehouses.find(w => w.id === order.receiveWarehouseId);
-
                 const shipment = allShipments.find(s => s.orderId === order.id);
                 const shipper = shipment ? allUsers.find(u => u.id === shipment.shipperId) : null;
-
+                
+                // Calculate total price from order details
                 const details = allOrderDetails.filter(d => d.orderId === order.id);
                 const totalPrice = details.reduce((sum, detail) => {
                     const product = allProducts.find(p => p.id === detail.productId);
@@ -120,10 +130,12 @@ function WarehouseDetail() {
                     receiveWarehouse,
                     shipment,
                     shipper,
-                    totalPrice
+                    totalPrice,
+                    details
                 };
             };
 
+            // Filter and enrich orders - sửa so sánh warehouseId
             const exportOrders = allOrders
                 .filter(o => o.sendWarehouseId === warehouseId && o.type === 'transfer')
                 .map(enrichOrder);
@@ -142,10 +154,9 @@ function WarehouseDetail() {
                 staff: warehouseStaff,
                 shippers: enterpriseShippers,
                 products: warehouseProducts,
-                inventory,
-                exportOrders: exportOrders,
-                importOrders: importOrders,
-                wholesaleOrders: wholesaleOrders
+                exportOrders,
+                importOrders,
+                wholesaleOrders
             });
 
         } catch (err) {
@@ -164,6 +175,7 @@ function WarehouseDetail() {
         return (
             <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
                 <Spinner animation="border" variant="primary" />
+                <span className="ms-2">Loading warehouse data...</span>
             </div>
         );
     }
@@ -176,6 +188,7 @@ function WarehouseDetail() {
                     <p>{error}</p>
                     <hr />
                     <Button variant="outline-danger" onClick={() => navigate('/manager/warehouse')}>
+                        <i className="fas fa-arrow-left me-2"></i>
                         Back to Warehouses
                     </Button>
                 </Alert>
@@ -186,7 +199,10 @@ function WarehouseDetail() {
     if (!warehouse) {
         return (
             <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '60vh' }}>
-                <Alert variant="warning">Warehouse not found</Alert>
+                <Alert variant="warning" className="text-center">
+                    <i className="fas fa-exclamation-triangle me-2"></i>
+                    Warehouse not found
+                </Alert>
             </div>
         );
     }
@@ -196,11 +212,29 @@ function WarehouseDetail() {
             case 'overview':
                 return <WarehouseOverview {...warehouseData} warehouse={warehouse} />;
             case 'products':
-                return <WarehouseProducts warehouse={warehouse} products={warehouseData.products} inventory={warehouseData.inventory} onRefresh={fetchWarehouseData} />;
+                return <WarehouseProducts 
+                    warehouse={warehouse} 
+                    products={warehouseData.products} 
+                    onRefresh={fetchWarehouseData} 
+                />;
             case 'staff':
-                return <WarehouseStaff warehouse={warehouse} staff={warehouseData.staff} shippers={warehouseData.shippers} manager={warehouseData.manager} onRefresh={fetchWarehouseData} />;
+                return <WarehouseStaff 
+                    warehouse={warehouse} 
+                    staff={warehouseData.staff} 
+                    shippers={warehouseData.shippers} 
+                    manager={warehouseData.manager} 
+                    onRefresh={fetchWarehouseData} 
+                />;
             case 'history':
-                return <WarehouseHistory warehouse={warehouse} exportOrders={warehouseData.exportOrders} importOrders={warehouseData.importOrders} wholesaleOrders={warehouseData.wholesaleOrders} staff={warehouseData.staff} shippers={warehouseData.shippers} onRefresh={fetchWarehouseData} />;
+                return <WarehouseHistory 
+                    warehouse={warehouse} 
+                    exportOrders={warehouseData.exportOrders} 
+                    importOrders={warehouseData.importOrders} 
+                    wholesaleOrders={warehouseData.wholesaleOrders} 
+                    staff={warehouseData.staff} 
+                    shippers={warehouseData.shippers} 
+                    onRefresh={fetchWarehouseData} 
+                />;
             default:
                 return null;
         }
@@ -216,15 +250,25 @@ function WarehouseDetail() {
                                 variant="link"
                                 className="p-0 me-2 text-decoration-none"
                                 onClick={() => navigate('/manager/warehouse')}
+                                title="Back to Warehouses"
                             >
                                 <i className="fas fa-arrow-left"></i>
                             </Button>
                             <h4 className="mb-0">{warehouse.name}</h4>
+                            <span className="badge bg-primary ms-2">
+                                {warehouseData.products.length} products
+                            </span>
                         </div>
                         <p className="text-muted mb-0">
                             <i className="fas fa-map-marker-alt me-1"></i>
                             {warehouse.location}
                         </p>
+                        {warehouseData.enterprise && (
+                            <p className="text-muted mb-0">
+                                <i className="fas fa-building me-1"></i>
+                                {warehouseData.enterprise.name}
+                            </p>
+                        )}
                     </Col>
                 </Row>
             </header>
@@ -235,22 +279,26 @@ function WarehouseDetail() {
                         <Nav variant="tabs" activeKey={activeTab} onSelect={setActiveTab}>
                             <Nav.Item>
                                 <Nav.Link eventKey="overview">
-                                    <i className="fas fa-tachometer-alt me-2"></i>Overview & Statistics
+                                    <i className="fas fa-tachometer-alt me-2"></i>
+                                    Overview
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="products">
-                                    <i className="fas fa-boxes me-2"></i>Products ({warehouseData.products.length})
+                                    <i className="fas fa-boxes me-2"></i>
+                                    Products ({warehouseData.products.length})
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="staff">
-                                    <i className="fas fa-users me-2"></i>Staff ({warehouseData.staff.length + warehouseData.shippers.length})
+                                    <i className="fas fa-users me-2"></i>
+                                    Staff ({warehouseData.staff.length})
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
                                 <Nav.Link eventKey="history">
-                                    <i className="fas fa-history me-2"></i>History
+                                    <i className="fas fa-history me-2"></i>
+                                    History
                                 </Nav.Link>
                             </Nav.Item>
                         </Nav>

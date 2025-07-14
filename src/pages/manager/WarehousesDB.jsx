@@ -29,13 +29,17 @@ function WarehousesDB() {
         try {
             const enterpriseId = user.enterpriseId;
 
-            const [enterpriseRes, warehousesRes] = await Promise.all([
+            const [enterpriseRes, warehousesRes, usersRes, productsRes] = await Promise.all([
                 api.get(`/enterprises/${enterpriseId}`),
-                api.get(`/warehouses?enterpriseId=${enterpriseId}`)
+                api.get(`/warehouses?enterpriseId=${enterpriseId}`),
+                api.get('/users'), // Lấy tất cả users
+                api.get('/products') // Lấy tất cả products
             ]);
 
             const enterpriseData = enterpriseRes.data;
             const enterpriseWarehouses = warehousesRes.data;
+            const allUsers = usersRes.data;
+            const allProducts = productsRes.data;
 
             if (enterpriseWarehouses.length === 0) {
                 setEnterprise(enterpriseData);
@@ -43,23 +47,30 @@ function WarehousesDB() {
                 setLoading(false);
                 return;
             }
-            const warehouseIdQuery = enterpriseWarehouses.map(w => `warehouseId=${w.id}`).join('&');
 
-            const [inventoryRes, usersRes] = await Promise.all([
-                api.get(`/inventory?${warehouseIdQuery}`),
-                api.get(`/users?${warehouseIdQuery}`)
-            ]);
-
-            const relevantInventory = inventoryRes.data;
-            const relevantUsers = usersRes.data;
-
+            // Merge warehouse data với staff count và product count
             const mergedWarehouses = enterpriseWarehouses.map(w => {
-                const warehouseInventory = relevantInventory.filter(i => i.warehouseId === w.id);
+                // Đếm tất cả staff thuộc warehouse này
+                const warehouseStaff = allUsers.filter(u => 
+                    u.warehouseId === w.id && 
+                    ['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(u.role)
+                );
+
+                // Đếm products thuộc warehouse này
+                const warehouseProducts = allProducts.filter(p => 
+                    p.warehouseId === w.id
+                );
+
+                // Tính tổng số lượng products
+                const totalQuantity = warehouseProducts.reduce((sum, product) => 
+                    sum + (product.quantity || 0), 0
+                );
+                
                 return {
                     ...w,
-                    productCount: new Set(warehouseInventory.map(item => item.productId)).size,
-                    totalQuantity: warehouseInventory.reduce((sum, i) => sum + i.quantity, 0),
-                    staffCount: relevantUsers.filter(u => u.warehouseId === w.id && u.role === 'staff').length,
+                    productCount: warehouseProducts.length,
+                    totalQuantity: totalQuantity,
+                    staffCount: warehouseStaff.length,
                 };
             });
 
@@ -118,13 +129,15 @@ function WarehousesDB() {
         if (!warehouseToDelete) return;
 
         if (warehouseToDelete.staffCount > 0) {
-            setToast({ show: true, message: `Cannot delete. Warehouse "${warehouseToDelete.name}" still has staff.`, variant: 'danger' });
+            setToast({ show: true, message: `Cannot delete. Warehouse "${warehouseToDelete.name}" still has ${warehouseToDelete.staffCount} staff.`, variant: 'danger' });
             return;
         }
-        if (warehouseToDelete.totalQuantity > 0) {
-            setToast({ show: true, message: `Cannot delete. Warehouse "${warehouseToDelete.name}" is not empty.`, variant: 'danger' });
+
+        if (warehouseToDelete.productCount > 0) {
+            setToast({ show: true, message: `Cannot delete. Warehouse "${warehouseToDelete.name}" still has ${warehouseToDelete.productCount} products.`, variant: 'danger' });
             return;
         }
+        
         if (!window.confirm(`Are you sure you want to permanently delete warehouse "${warehouseToDelete.name}"?`)) {
             return;
         }
@@ -164,7 +177,10 @@ function WarehousesDB() {
             </div>
         );
     }
-
+    console.log(user);
+    console.log(warehouses);
+    
+    
     return (
         <>
             <header className="p-4 bg-white border-bottom">
