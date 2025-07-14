@@ -4,6 +4,7 @@ import '../../public/assets/css/ProductList.css';
 import api from "../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../auth/AuthProvider';
+import e from "cors";
 
 function ProductList() {
     const [products, setProducts] = useState([]);
@@ -12,6 +13,8 @@ function ProductList() {
     const [productTypes, setProductTypes] = useState([]);
     const [selectedType, setSelectedType] = useState("");
     const [sortOrder, setSortOrder] = useState("asc"); // asc = từ thấp đến cao (mặc định)
+
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,6 +56,14 @@ function ProductList() {
             filtered = filtered.filter(product =>
                 product.productTypeId === parseInt(selectedType)
             );
+            if(filtered.length === 0) {
+                setMessage("Không có sản phẩm nào thuộc loại này");
+            }
+            else {
+                setMessage("");
+            }
+        }else {
+            setMessage("");
         }
 
         if (sortOrder === "asc") {
@@ -168,7 +179,8 @@ function ProductList() {
             </Form>
 
             <h2 className="mb-4">Danh sách sản phẩm</h2>
-
+            {message && <div className="alert alert-warning">{message}</div>}
+            <br/>
             <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                 {products.map((product) => (
                     <Col key={product.id}>

@@ -248,7 +248,7 @@
     {
       "userId": "13",
       "productId": "49",
-      "quantity": 6,
+      "quantity": 8,
       "id": 4
     },
     {
@@ -256,6 +256,12 @@
       "productId": "45",
       "quantity": 4,
       "id": 5
+    },
+    {
+      "userId": "13",
+      "productId": "44",
+      "quantity": 3,
+      "id": 6
     }
   ],
   "enterprises": [
