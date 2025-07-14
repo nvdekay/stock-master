@@ -1269,7 +1269,7 @@
     {
       "id": "1",
       "type": "transfer",
-      "status": "completed",
+      "status": "in_transit",
       "date": "2025-07-03",
       "enterpriseId": "2",
       "senderStaffId": "4",
@@ -1347,7 +1347,7 @@
     {
       "id": "7",
       "type": "wholesale",
-      "status": "completed",
+      "status": "in_transit",
       "date": "2025-07-04",
       "enterpriseId": "6",
       "senderStaffId": "19",
@@ -1566,6 +1566,22 @@
       "status": "in_transit",
       "deliveryDate": null,
       "note": "Vận chuyển nội bộ"
+    },
+    {
+      "orderId": "1",
+      "shipperId": "14",
+      "sendWarehouseId": "1",
+      "status": "in_transit",
+      "note": "Giao hàng cho đơn #1",
+      "id": "liem_oL"
+    },
+    {
+      "orderId": "7",
+      "shipperId": "14",
+      "sendWarehouseId": "5",
+      "status": "in_transit",
+      "note": "Giao hàng cho đơn #7",
+      "id": "-wXLwF_"
     }
   ],
   "logs": [

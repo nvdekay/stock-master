@@ -7,7 +7,8 @@ function ShipperSidebar({ isCollapsed, setIsCollapsed }) {
     const menuItems = [
         { icon: 'fas fa-truck', label: 'Assigned Shipments', path: '/shipper' },
         { icon: 'fas fa-check-circle', label: 'Completed Deliveries', path: '/shipper/completed' },
-        { icon: 'fas fa-history', label: 'Delivery History', path: '/shipper/history' }
+        { icon: 'fas fa-history', label: 'Delivery History', path: '/shipper/history' },
+        { icon: 'fas fa-clipboard-list', label: 'Available Orders', path: '/shipper/available-orders' }
     ];
 
     return (
