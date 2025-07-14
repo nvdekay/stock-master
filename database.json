@@ -2,9 +2,9 @@
   "users": [
     {
       "username": "admin",
-      "fullName": "Nguyen Văn Admin",
+      "fullName": "Admin",
+      "email": "admin@gmail.com",
       "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "email": "a@example.com",
       "role": "admin",
       "enterpriseId": null,
       "warehouseId": null,
