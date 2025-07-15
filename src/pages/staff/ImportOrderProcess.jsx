@@ -30,11 +30,7 @@ const ImportOrderProcess = () => {
   // We'll keep these states for future product management functionality
   // const [products, setProducts] = useState([]);
   const [submitting, setSubmitting] = useState(false);
-
-  // State to track which products are defective
-  const [defectiveItems, setDefectiveItems] = useState({});
-
-  // State for new product
+  const [acceptedQuantities, setAcceptedQuantities] = useState({});
   const [showNewProductModal, setShowNewProductModal] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: "",
@@ -55,8 +51,7 @@ const ImportOrderProcess = () => {
       try {
         setLoading(true);
 
-        // Get order details
-        const orderRes = await api.get(`/orders/${orderId}?_expand=enterprise`);
+        const orderRes = await api.get(`/orders/${orderId}`);
         setOrder(orderRes.data);
 
         // Get order items
@@ -69,12 +64,11 @@ const ImportOrderProcess = () => {
         const productTypesRes = await api.get(`/product_types`);
         setProductTypes(productTypesRes.data);
 
-        // Initialize defective items state
-        const defectiveState = {};
+        const acceptedQuantitiesState = {};
         orderDetailsRes.data.forEach((item) => {
-          defectiveState[item.id] = false;
+          acceptedQuantitiesState[item.id] = 0;
         });
-        setDefectiveItems(defectiveState);
+        setAcceptedQuantities(acceptedQuantitiesState);
 
         setLoading(false);
       } catch (err) {
@@ -87,14 +81,17 @@ const ImportOrderProcess = () => {
     fetchOrderData();
   }, [orderId]);
 
-  const handleDefectiveToggle = (detailId) => {
-    setDefectiveItems({
-      ...defectiveItems,
-      [detailId]: !defectiveItems[detailId],
-    });
+  const handleAcceptedQuantityChange = (detailId, value) => {
+    const quantity = Number(value);
+    const maxQuantity = orderDetails.find((detail) => detail.id === detailId)?.quantity || 0;
+    if (quantity >= 0 && quantity <= maxQuantity) {
+      setAcceptedQuantities({
+        ...acceptedQuantities,
+        [detailId]: quantity,
+      });
+    }
   };
 
-  // Handle input changes for new product form
   const handleNewProductChange = (e) => {
     const { name, value } = e.target;
     setNewProduct((prev) => ({
@@ -138,7 +135,9 @@ const ImportOrderProcess = () => {
         ...newProduct,
         price: Number(newProduct.price),
         warrantyExpire: newProduct.warrantyExpire || formattedWarrantyDate,
-        productTypeId: selectedProductType || undefined,
+        productTypeId: selectedProductType || 20,
+        quantity: newProductQuantity,
+        warehouseId: user.warehouseId,
       };
 
       const productRes = await api.post("/products", productData);
@@ -161,8 +160,17 @@ const ImportOrderProcess = () => {
       };
 
       setOrderDetails((prev) => [...prev, expandedDetail]);
+      setAcceptedQuantities((prev) => ({
+        ...prev,
+        [orderDetailRes.data.id]: newProductQuantity,
+      }));
 
-      // Success message and close modal
+      await api.post("/inventory", {
+        productId: newProductData.id,
+        warehouseId: user.warehouseId,
+        quantity: newProductQuantity,
+      });
+
       setSuccess(`Product "${newProductData.name}" added successfully!`);
       closeNewProductModal();
     } catch (err) {
@@ -181,28 +189,90 @@ const ImportOrderProcess = () => {
       const acceptedItems = [];
       const defectiveItemsList = [];
 
-      orderDetails.forEach((detail) => {
-        // Check if this item has a defective status set
-        // For new products that were just added, they won't have an entry in defectiveItems
-        const isDefective = defectiveItems[detail.id] === true;
+      for (const detail of orderDetails) {
+        const acceptedQty = acceptedQuantities[detail.id] || 0;
+        const defectiveQty = detail.quantity - acceptedQty;
 
-        if (isDefective) {
-          defectiveItemsList.push({
-            detailId: detail.id,
-            productId: detail.productId,
-            quantity: detail.quantity,
-          });
-        } else {
+        if (acceptedQty > 0) {
           acceptedItems.push({
             detailId: detail.id,
             productId: detail.productId,
-            quantity: detail.quantity,
+            quantity: acceptedQty,
             price: detail.price,
           });
         }
+
+        if (defectiveQty > 0) {
+          defectiveItemsList.push({
+            detailId: detail.id,
+            productId: detail.productId,
+            quantity: defectiveQty,
+          });
+        }
+
+        if (defectiveQty === detail.quantity) {
+          await api.patch(`/orderDetails/${detail.id}`, { status: "refunded" });
+        } else if (acceptedQty === detail.quantity) {
+          await api.patch(`/orderDetails/${detail.id}`, { status: "accepted" });
+        } else if (defectiveQty > 0) {
+          const newDetail = {
+            orderId,
+            productId: detail.productId,
+            quantity: defectiveQty,
+            price: detail.price,
+            status: "refunded",
+          };
+          await api.post("/orderDetails", newDetail);
+          await api.patch(`/orderDetails/${detail.id}`, {
+            quantity: acceptedQty,
+            status: "accepted",
+          });
+        }
+      }
+
+      for (const item of acceptedItems) {
+        const existingInventory = await api.get("/inventory", {
+          params: {
+            productId: item.productId,
+            warehouseId: user.warehouseId,
+          },
+        });
+
+        if (existingInventory.data.length > 0) {
+          const inventoryId = existingInventory.data[0].id;
+          const currentQuantity = existingInventory.data[0].quantity;
+          await api.patch(`/inventory/${inventoryId}`, {
+            quantity: currentQuantity + item.quantity,
+          });
+        } else {
+          await api.post("/inventory", {
+            productId: item.productId,
+            warehouseId: user.warehouseId,
+            quantity: item.quantity,
+          });
+        }
+      }
+
+      await api.patch(`/orders/${orderId}`, {
+        status: "completed",
+        completedDate: new Date().toISOString(),
+        receiverStaffId: user.id,
       });
 
-      // Send to API
+      const defectiveCount = defectiveItemsList.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+      const acceptedCount = acceptedItems.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+      );
+      await api.post("/logs", {
+        userId: user.id,
+        action: `Import order #${orderId} processed`,
+        timestamp: new Date().toISOString(),
+      });
+
       await api.post(`/orders/${orderId}/process`, {
         acceptedItems,
         defectiveItems: defectiveItemsList,
@@ -214,14 +284,12 @@ const ImportOrderProcess = () => {
       setSubmitting(false);
       setShowConfirmModal(false);
 
-      // Refresh order data
-      const updatedOrderRes = await api.get(
-        `/orders/${orderId}?_expand=enterprise`
-      );
+      const updatedOrderRes = await api.get(`/orders/${orderId}`);
       setOrder(updatedOrderRes.data);
     } catch (err) {
       console.error("Error processing import", err);
       setError(err.response?.data?.message || "Failed to process import order");
+    } finally {
       setSubmitting(false);
       setShowConfirmModal(false);
     }
@@ -339,6 +407,7 @@ const ImportOrderProcess = () => {
                 <th>Image</th>
                 <th>SKU</th>
                 <th>Quantity</th>
+                {!isOrderCompleted && <th>Accepted Quantity</th>}
                 <th>Price</th>
                 {!isOrderCompleted && <th>Mark as Defective</th>}
                 {isOrderCompleted && <th>Status</th>}
@@ -347,14 +416,14 @@ const ImportOrderProcess = () => {
             <tbody>
               {orderDetails.map((detail) => (
                 <tr key={detail.id}>
-                  <td>{detail.product.name}</td>
+                  <td>{detail.product?.name || "Unknown Product"}</td>
                   <td>
                     <img
                       src={
-                        detail.product.image ||
+                        detail.product?.image ||
                         "/assets/images/products/default.jpg"
                       }
-                      alt={detail.product.name}
+                      alt={detail.product?.name || "Product"}
                       style={{ maxHeight: "50px" }}
                     />
                   </td>
@@ -363,12 +432,15 @@ const ImportOrderProcess = () => {
                   <td>${detail.price.toFixed(2)}</td>
                   {!isOrderCompleted ? (
                     <td>
-                      <Form.Check
-                        type="switch"
-                        id={`defective-${detail.id}`}
-                        checked={defectiveItems[detail.id]}
-                        onChange={() => handleDefectiveToggle(detail.id)}
-                        label="Defective"
+                      <Form.Control
+                        type="number"
+                        value={acceptedQuantities[detail.id] || 0}
+                        onChange={(e) =>
+                          handleAcceptedQuantityChange(detail.id, e.target.value)
+                        }
+                        min="0"
+                        max={detail.quantity}
+                        style={{ width: "100px" }}
                       />
                     </td>
                   ) : (
@@ -380,6 +452,7 @@ const ImportOrderProcess = () => {
                       )}
                     </td>
                   )}
+                  <td>${detail.price.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
@@ -422,14 +495,19 @@ const ImportOrderProcess = () => {
           <p>Are you sure you want to process this import order?</p>
           <p>
             <strong>
-              {Object.values(defectiveItems).filter(Boolean).length}
+              {orderDetails.reduce(
+                (sum, detail) => sum + (detail.quantity - (acceptedQuantities[detail.id] || 0)),
+                0
+              )}
             </strong>{" "}
             items will be marked as defective and refunded.
           </p>
           <p>
             <strong>
-              {orderDetails.length -
-                Object.values(defectiveItems).filter(Boolean).length}
+              {orderDetails.reduce(
+                (sum, detail) => sum + (acceptedQuantities[detail.id] || 0),
+                0
+              )}
             </strong>{" "}
             items will be accepted and added to inventory.
           </p>
@@ -491,6 +569,7 @@ const ImportOrderProcess = () => {
                     value={newProduct.price}
                     onChange={handleNewProductChange}
                     min="0"
+                    step="0.01"
                     required
                   />
                 </Form.Group>
