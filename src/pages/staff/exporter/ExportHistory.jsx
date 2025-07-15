@@ -165,10 +165,12 @@ const ExportHistory = () => {
                     true
                     :
                     // } else {
-                    order.date.split("-")[index] ===
-                    new Date().toLocaleDateString((
-                        "en-CA"
-                    )).split("-")[index]
+                    [...Array(index + 1).keys()].every(i =>
+                        order.date.split("-")[i] ===
+                        new Date().toLocaleDateString((
+                            "en-CA"
+                        )).split("-")[i]
+                    )
 
                 console.log("matchTime: ", matchesTime);
                 return matchesSearch && matchesStatus && matchesTime;
@@ -227,7 +229,7 @@ const ExportHistory = () => {
     // console.log('unique status: ', uniqueStatuses)
     const totalValue = filteredHistory.reduce((sum, order) => sum + order.value, 0)
     const totalItems = filteredHistory.reduce((sum, order) => sum + order.orderDetails.length, 0)
-    const deliveredOrders = filteredHistory.filter((o) => o.status === "completed").length
+    const deliveredOrders = filteredHistory.filter((o) => ["completed", "shipped", "in_transit"].some((s) => o.status.includes(s))).length
     const returnedOrders = filteredHistory.filter((o) => o.status === "returned").length
     const avgRating =
         filteredHistory.filter((o) => o.rating).reduce((sum, o) => sum + (o.rating || 0), 0) /
@@ -265,7 +267,7 @@ const ExportHistory = () => {
                         <option key={"all"} value={"all"} selected={timeFilter.includes("all")}>All</option>
                         <option key={"year"} value={"year"} selected={timeFilter.includes("year")}>This Year</option>
                         <option key={"month"} value={"month"} selected={timeFilter.includes("month")}>This Month</option>
-                        <option key={"day"} value={"day"} selected={timeFilter.includes("day")}>This Date</option>
+                        <option key={"day"} value={"day"} selected={timeFilter.includes("day")}>Today</option>
                     </Form.Select>
                 </Col>
             </Row>
