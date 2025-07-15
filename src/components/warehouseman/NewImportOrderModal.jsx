@@ -19,7 +19,6 @@ function NewImportOrderModal({ show, onHide, selectedProducts, warehouse, onSucc
         setError('');
 
         try {
-            // Group products by source warehouse
             const ordersByWarehouse = selectedProducts.reduce((acc, product) => {
                 const key = product.sourceWarehouseId;
                 if (!acc[key]) {
@@ -33,21 +32,18 @@ function NewImportOrderModal({ show, onHide, selectedProducts, warehouse, onSucc
                 return acc;
             }, {});
 
-            // Create separate import orders for each source warehouse
             for (const [sourceWarehouseId, orderData] of Object.entries(ordersByWarehouse)) {
-                // Get max order ID
+                
                 const ordersRes = await api.get('/orders');
                 const maxId = Math.max(...ordersRes.data.map(o => parseInt(o.id) || 0), 0);
                 const newOrderId = (maxId + 1).toString();
 
-                // Find a staff member from the source warehouse to be the sender
                 const usersRes = await api.get('/users');
                 const sourceStaff = usersRes.data.find(u => 
                     u.warehouseId === sourceWarehouseId && 
                     ['staff', 'exportstaff'].includes(u.role)
                 );
 
-                // Create the import order
                 const orderPayload = {
                     id: newOrderId,
                     type: "transfer",
@@ -63,7 +59,6 @@ function NewImportOrderModal({ show, onHide, selectedProducts, warehouse, onSucc
 
                 await api.post('/orders', orderPayload);
 
-                // Create order details for each product
                 const orderDetailsRes = await api.get('/orderDetails');
                 let maxDetailId = Math.max(...orderDetailsRes.data.map(d => parseInt(d.id) || 0), 0);
 

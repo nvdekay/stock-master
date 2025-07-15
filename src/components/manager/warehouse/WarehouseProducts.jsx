@@ -136,6 +136,7 @@ function WarehouseProducts({ warehouse, products, onRefresh }) {
                     <Table responsive hover className="mb-0">
                         <thead className="bg-light">
                             <tr>
+                                <th>Image</th>
                                 <th>Product</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
@@ -148,6 +149,22 @@ function WarehouseProducts({ warehouse, products, onRefresh }) {
                             {filteredProducts.length > 0 ? (
                                 filteredProducts.map((product) => (
                                     <tr key={product.id}>
+                                        <td>
+                                            <img
+                                                src={product.src || '/assets/images/products/default.jpg'}
+                                                alt={product.name}
+                                                style={{
+                                                    width: '50px',
+                                                    height: '50px',
+                                                    objectFit: 'cover',
+                                                    borderRadius: '4px',
+                                                    border: '1px solid #ddd'
+                                                }}
+                                                onError={(e) => {
+                                                    e.target.src = '/assets/images/products/default.jpg';
+                                                }}
+                                            />
+                                        </td>
                                         <td>
                                             <div>
                                                 <div className="fw-medium">{product.name}</div>
@@ -194,7 +211,7 @@ function WarehouseProducts({ warehouse, products, onRefresh }) {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="6" className="text-center py-4">
+                                    <td colSpan="7" className="text-center py-4">
                                         <i className="fas fa-box-open fa-2x text-muted mb-2"></i>
                                         <div className="text-muted">No products found</div>
                                     </td>

@@ -65,7 +65,6 @@ function OrderEditModal({ show, onHide, order, onSuccess }) {
         setError('');
 
         try {
-            // Chỉ cập nhật status và note
             await api.patch(`/orders/${order.id}`, {
                 status: formData.status,
                 note: formData.note

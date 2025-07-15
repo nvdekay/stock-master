@@ -69,13 +69,11 @@ function WarehousemanDashboard() {
             const enterprise = enterpriseRes.data;
             console.log(allUsers,allProducts,allOrders,allShipments,allWarehouses,allOrderDetails);
             
-            // Filter warehouse staff with new roles
             const warehouseStaff = allUsers.filter(u => 
                 u.warehouseId === user.warehouseId && 
-                ['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(u.role)
+                ['staff', 'importstaff', 'exporter', 'warehouseman'].includes(u.role)
             );
             
-            // Get enterprise shippers and manager
             const enterpriseShippers = allUsers.filter(u => 
                 u.enterpriseId === warehouseInfo.enterpriseId && u.role === 'shipper'
             );
@@ -83,7 +81,6 @@ function WarehousemanDashboard() {
                 u.enterpriseId === warehouseInfo.enterpriseId && u.role === 'manager'
             );
 
-            // Filter products that belong to this warehouse (using warehouseId in products)
             const warehouseProducts = allProducts.filter(product => 
                 product.warehouseId === user.warehouseId
             );
@@ -98,7 +95,6 @@ function WarehousemanDashboard() {
                 const shipper = shipment ? allUsers.find(u => u.id === shipment.shipperId) : null;
                 const enterpriseId = sendWarehouse?.enterpriseId || null;
     
-                // Calculate total price from order details
                 const details = allOrderDetails.filter(d => d.orderId === order.id);
                 const totalPrice = details.reduce((sum, detail) => {
                     const product = allProducts.find(p => p.id === detail.productId);

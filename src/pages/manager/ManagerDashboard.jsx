@@ -31,14 +31,13 @@ function ManagerDashboard() {
             const [enterpriseRes, warehousesRes, productsRes] = await Promise.all([
                 api.get(`/enterprises/${enterpriseId}`),
                 api.get(`/warehouses?enterpriseId=${enterpriseId}`),
-                api.get('/products') // Lấy tất cả products
+                api.get('/products')
             ]);
 
             const enterpriseData = enterpriseRes.data;
             const warehousesData = warehousesRes.data;
             const allProducts = productsRes.data;
 
-            // Filter products thuộc các warehouses của enterprise này
             const enterpriseProducts = allProducts.filter(product => {
                 const warehouseIds = warehousesData.map(w => parseInt(w.id));
                 return warehouseIds.includes(parseInt(product.warehouseId));
@@ -47,7 +46,7 @@ function ManagerDashboard() {
             setDashboardData({
                 enterprise: enterpriseData,
                 warehouses: warehousesData,
-                products: enterpriseProducts // Chỉ hiển thị products thuộc enterprise
+                products: enterpriseProducts 
             });
 
         } catch (err) {

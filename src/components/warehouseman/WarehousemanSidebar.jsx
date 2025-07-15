@@ -6,7 +6,8 @@ function WarehousemanSidebar({ isCollapsed, setIsCollapsed }) {
 
     const menuItems = [
         { icon: 'fas fa-warehouse', label: 'Warehouse Detail', path: '/warehouseman' },
-        { icon: 'fas fa-box', label: 'Import Product', path: '/warehouseman/import' }
+        { icon: 'fas fa-box', label: 'Import Product', path: '/warehouseman/import' },
+        { icon: 'fas fa-box', label: 'Create New Product', path: '/warehouseman/create-product' }
     ];
 
     return (
