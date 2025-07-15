@@ -30,16 +30,14 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
     });
 
     const filteredByTab = activeTab === 'all' ? filteredEmployees :
-        activeTab === 'staff' ? filteredEmployees.filter(e => ['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(e.role)) :
+        activeTab === 'staff' ? filteredEmployees.filter(e => ['staff', 'exporter'].includes(e.role)) :
             filteredEmployees.filter(e => e.role === 'shipper');
 
     const getRoleBadge = (role) => {
         const roleConfig = {
             manager: { bg: 'primary', text: 'Manager' },
-            staff: { bg: 'info', text: 'General Staff' },
-            importstaff: { bg: 'success', text: 'Import Staff' },
-            exportstaff: { bg: 'primary', text: 'Export Staff' },
-            warehouseman: { bg: 'dark', text: 'Warehouseman' },
+            staff: { bg: 'info', text: 'Warehouse Staff' },
+            exporter: { bg: 'success', text: 'Export Staff' },
             shipper: { bg: 'warning', text: 'Shipper' },
             admin: { bg: 'danger', text: 'Admin' }
         };
@@ -49,7 +47,7 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
     };
 
     const getWorkLocationBadge = (employee) => {
-        if (['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(employee.role)) {
+        if (['staff', 'exporter'].includes(employee.role)) {
             return <Badge bg="light" text="dark">Warehouse: {warehouse.name}</Badge>;
         } else if (employee.role === 'shipper') {
             return <Badge bg="light" text="dark">Enterprise-wide</Badge>;
@@ -224,9 +222,9 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
                                         <td>
                                             <div className="d-flex align-items-center">
                                                 <div className="me-3">
-                                                    <div className={`bg-${['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(member.role) ? 'info' : 'warning'} rounded-circle d-flex align-items-center justify-content-center`}
+                                                    <div className={`bg-${['warehouseman', 'staff', 'exporter'].includes(member.role) ? 'info' : 'warning'} rounded-circle d-flex align-items-center justify-content-center`}
                                                         style={{ width: '40px', height: '40px' }}>
-                                                        <i className={`fas fa-${['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(member.role) ? 'user' : 'truck'} text-white`}></i>
+                                                        <i className={`fas fa-${['warehouseman', 'staff', 'exporter'].includes(member.role) ? 'user' : 'truck'} text-white`}></i>
                                                     </div>
                                                 </div>
                                                 <div>
@@ -292,7 +290,6 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
                 </Card.Body>
             </Card>
 
-            {/* Create Staff Modal */}
             <StaffCreateModal
                 show={showCreateModal}
                 onHide={handleCloseModals}
@@ -300,7 +297,6 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
                 onSuccess={onRefresh}
             />
 
-            {/* View Staff Modal */}
             <StaffViewModal
                 show={showViewModal}
                 onHide={handleCloseModals}
@@ -309,7 +305,6 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
                 onEdit={handleEditStaff}
             />
 
-            {/* Edit Staff Modal */}
             <StaffEditModal
                 show={showEditModal}
                 onHide={handleCloseModals}
@@ -318,7 +313,6 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
                 onSuccess={onRefresh}
             />
 
-            {/* Delete Confirmation Modal */}
             <Modal show={showDeleteModal} onHide={handleCloseModals}>
                 <Modal.Header closeButton>
                     <Modal.Title className="text-danger">
@@ -339,9 +333,9 @@ function WarehouseStaff({ warehouse, staff, shippers, manager, onRefresh }) {
 
                             <div className="border rounded p-3 bg-light mb-3">
                                 <div className="d-flex align-items-center">
-                                    <div className={`bg-${['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(selectedStaff.role) ? 'info' : 'warning'} rounded-circle d-flex align-items-center justify-content-center me-3`}
+                                    <div className={`bg-${['staff', 'exporter'].includes(selectedStaff.role) ? 'info' : 'warning'} rounded-circle d-flex align-items-center justify-content-center me-3`}
                                         style={{ width: '40px', height: '40px' }}>
-                                        <i className={`fas fa-${['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(selectedStaff.role) ? 'user' : 'truck'} text-white`}></i>
+                                        <i className={`fas fa-${['staff', 'exporter'].includes(selectedStaff.role) ? 'user' : 'truck'} text-white`}></i>
                                     </div>
                                     <div>
                                         <div className="fw-bold">{selectedStaff.fullName}</div>

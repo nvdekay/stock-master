@@ -94,7 +94,7 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  const { email, username, password, role, fullName } = req.body;
+  const { email, username, password, role, fullName, enterpriseId, warehouseId } = req.body;
 
   if (!email || !username || !password) {
     return res.status(400).json({ error: "Missing fields" });
@@ -130,26 +130,25 @@ app.post("/register", (req, res) => {
   const newUser = {
     id: newId,
     username,
-    password: bcrypt.hashSync(password),
-    role,
-    fullName,
+    password: bcrypt.hashSync(password), 
+    role: role || 'buyer',
+    fullName: fullName || '',
     email,
+    enterpriseId: enterpriseId || null,   
+    warehouseId: warehouseId || null  
   };
+  
   // Save to db.json
   app.db.get("users").push(newUser).write();
-
-  // Generate token
-  // const token = jwt.sign(
-  //     { id: newUser.id, username: newUser.username, role: newUser.role },
-  //     "your-secret-key",
-  //     { expiresIn: "1h" }
-  // );
 
   const userInfo = {
     id: newId,
     username,
     email,
-    role,
+    role: role || 'buyer',
+    fullName: fullName || '',
+    enterpriseId: enterpriseId || null,
+    warehouseId: warehouseId || null
   };
 
   res.status(201).json({
@@ -178,11 +177,17 @@ app.delete("/warehouses/:id", (req, res) => {
         .json({ error: "Cannot delete. Warehouse still has inventory." });
     }
 
-    const relatedUsers = db.get("users").filter({ warehouseId: id }).value();
+    // Kiểm tra users (không bao gồm warehouseman vì sẽ tự động xóa)
+    const relatedUsers = db.get("users").filter((user) => 
+      user.warehouseId === id && user.role !== 'warehouseman'
+    ).value();
     if (relatedUsers.length > 0) {
+      const userRoles = relatedUsers.map((u) => u.role).join(', ');
       return res
         .status(400)
-        .json({ error: "Cannot delete. Warehouse has assigned staff." });
+        .json({ 
+          error: `Cannot delete. Warehouse has assigned staff: ${userRoles}. Please reassign or remove them first.` 
+        });
     }
 
     const relatedSendingOrders = db
@@ -208,14 +213,102 @@ app.delete("/warehouses/:id", (req, res) => {
         error: "Cannot delete. Warehouse is associated with shipments.",
       });
     }
+
+    // Kiểm tra products trong warehouse
+    const relatedProducts = db
+      .get("products")
+      .filter({ warehouseId: id })
+      .value();
+    if (relatedProducts.length > 0) {
+      return res.status(400).json({
+        error: `Cannot delete. Warehouse still has ${relatedProducts.length} products.`,
+      });
+    }
+
+    // 1. Tìm và xóa warehouseman của warehouse này
+    const warehouseman = db.get("users").find({ 
+      warehouseId: id, 
+      role: 'warehouseman' 
+    }).value();
+
+    if (warehouseman) {
+      db.get("users").remove({ id: warehouseman.id }).write();
+    }
+
+    // 2. Xóa warehouse
     db.get("warehouses").remove({ id }).write();
 
-    res.status(200).json({ message: "Warehouse deleted successfully" });
+    res.status(200).json({ 
+      message: `Warehouse "${warehouseExists.name}" deleted successfully${warehouseman ? ` along with manager account "${warehouseman.username}"` : ''}`
+    });
+
   } catch (error) {
     console.error("Error deleting warehouse on server:", error);
     res.status(500).json({
       error: "An internal server error occurred while deleting the warehouse.",
     });
+  }
+});
+
+// Thêm route POST /warehouses
+app.post('/warehouses', authenticateToken, (req, res) => {
+  const db = app.db;
+  const { name, location, enterpriseId } = req.body;
+
+  if (!name || !location || !enterpriseId) {
+    return res.status(400).json({ error: 'Name, location, and enterpriseId are required' });
+  }
+
+  try {
+    // Tạo warehouse mới
+    const newWarehouseId = String(
+      db.get("warehouses")
+        .value()
+        .reduce((maxId, warehouse) => Math.max(parseInt(warehouse.id), maxId), 0) + 1
+    );
+
+    const newWarehouse = {
+      id: newWarehouseId,
+      name,
+      location,
+      enterpriseId
+    };
+
+    db.get("warehouses").push(newWarehouse).write();
+
+    res.status(201).json({
+      warehouse: newWarehouse,
+      message: `Warehouse "${name}" created successfully`
+    });
+
+  } catch (error) {
+    console.error("Error creating warehouse:", error);
+    res.status(500).json({ error: "Server error while creating warehouse" });
+  }
+});
+
+// Thêm route PUT /warehouses/:id
+app.put('/warehouses/:id', authenticateToken, (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+  const db = app.db;
+
+  try {
+    const warehouseIndex = db.get("warehouses").findIndex({ id }).value();
+    if (warehouseIndex === -1) {
+      return res.status(404).json({ error: "Warehouse not found" });
+    }
+
+    const warehouse = db.get("warehouses").find({ id }).value();
+    const updatedWarehouse = { ...warehouse, ...updates };
+
+    db.get("warehouses").find({ id }).assign(updatedWarehouse).write();
+
+    res.json(updatedWarehouse);
+
+  } catch (error) {
+    console.error("Error updating warehouse:", error);
+    res.status(500).json({ error: "Server error while updating warehouse" });
   }
 });
 

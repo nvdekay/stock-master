@@ -43,21 +43,21 @@ function StaffCreateModal({ show, onHide, warehouse, onSuccess }) {
         setError('');
 
         try {
+            const warehouseId = formData.role === 'shipper' ? null : warehouse.id;
+
             const userResponse = await api.post('/register', {
                 fullName: formData.fullName,
                 username: formData.username,
                 email: formData.email,
                 password: '123',
-                role: formData.role
-            });
-
-            await api.put(`/users/${userResponse.data.user.id}`, {
-                ...userResponse.data.user,
+                role: formData.role,
                 enterpriseId: warehouse.enterpriseId,
-                warehouseId: formData.role === 'staff' ? warehouse.id : null
+                warehouseId: warehouseId
             });
 
-            setSuccess('Staff account created successfully! Default password is "123".');
+            console.log('User created successfully:', userResponse.data.user);
+
+            setSuccess(`${getRoleDisplayName(formData.role)} account created successfully! Default password is "123".`);
             setTimeout(() => {
                 onHide();
                 onSuccess();
@@ -88,6 +88,24 @@ function StaffCreateModal({ show, onHide, warehouse, onSuccess }) {
         onHide();
     };
 
+    const getRoleDisplayName = (role) => {
+        const roleNames = {
+            staff: 'Warehouse Staff',
+            exporter: 'Export Staff',
+            shipper: 'Shipper'
+        };
+        return roleNames[role] || role;
+    };
+
+    const getRoleDescription = (role) => {
+        const descriptions = {
+            staff: 'General warehouse operations and inventory management',
+            exporter: 'Handle outgoing shipments and export documentation',
+            shipper: 'Deliver wholesale orders and manage transportation'
+        };
+        return descriptions[role] || '';
+    };
+
     return (
         <Modal show={show} onHide={handleClose} size="lg">
             <Modal.Header closeButton>
@@ -104,7 +122,7 @@ function StaffCreateModal({ show, onHide, warehouse, onSuccess }) {
                     <Row>
                         <Col md={6}>
                             <Form.Group className="mb-3">
-                                <Form.Label>Full Name *</Form.Label>
+                                <Form.Label>Full Name <span className="text-danger">*</span></Form.Label>
                                 <Form.Control
                                     type="text"
                                     value={formData.fullName}
@@ -116,7 +134,7 @@ function StaffCreateModal({ show, onHide, warehouse, onSuccess }) {
                         </Col>
                         <Col md={6}>
                             <Form.Group className="mb-3">
-                                <Form.Label>Username *</Form.Label>
+                                <Form.Label>Username <span className="text-danger">*</span></Form.Label>
                                 <Form.Control
                                     type="text"
                                     value={formData.username}
@@ -129,7 +147,7 @@ function StaffCreateModal({ show, onHide, warehouse, onSuccess }) {
                     </Row>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Email Address *</Form.Label>
+                        <Form.Label>Email Address <span className="text-danger">*</span></Form.Label>
                         <Form.Control
                             type="email"
                             value={formData.email}
@@ -140,17 +158,18 @@ function StaffCreateModal({ show, onHide, warehouse, onSuccess }) {
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Role</Form.Label>
+                        <Form.Label>Role <span className="text-danger">*</span></Form.Label>
                         <Form.Select
                             value={formData.role}
                             onChange={(e) => handleInputChange('role', e.target.value)}
                             disabled={loading}
                         >
                             <option value="staff">Warehouse Staff</option>
+                            <option value="exporter">Export Staff</option>
                             <option value="shipper">Shipper</option>
                         </Form.Select>
                         <Form.Text className="text-muted">
-                            Staff will be assigned to this warehouse. Shippers work enterprise-wide.
+                            {getRoleDescription(formData.role)}
                         </Form.Text>
                     </Form.Group>
 
@@ -162,9 +181,20 @@ function StaffCreateModal({ show, onHide, warehouse, onSuccess }) {
                         <ul className="mb-0">
                             <li><strong>Default Password:</strong> <code>123</code></li>
                             <li><strong>Enterprise:</strong> {warehouse.enterpriseId}</li>
-                            <li><strong>Warehouse:</strong> {formData.role === 'staff' ? warehouse.name : 'Enterprise-wide (for shippers)'}</li>
+                            <li><strong>Warehouse Assignment:</strong> {
+                                formData.role === 'shipper' 
+                                    ? 'Enterprise-wide (no specific warehouse)'
+                                    : warehouse.name
+                            }</li>
+                            <li><strong>Role:</strong> {getRoleDisplayName(formData.role)}</li>
                         </ul>
                     </Alert>
+
+                    {formData.role === 'shipper' && (
+                        <Alert variant="warning">
+                            <strong>Note:</strong> Shippers work across all warehouses in the enterprise and are not assigned to a specific warehouse.
+                        </Alert>
+                    )}
                 </Form>
             </Modal.Body>
             <Modal.Footer>
@@ -172,7 +202,17 @@ function StaffCreateModal({ show, onHide, warehouse, onSuccess }) {
                     Cancel
                 </Button>
                 <Button variant="primary" onClick={handleSubmit} disabled={loading}>
-                    {loading ? 'Creating...' : 'Create Staff Account'}
+                    {loading ? (
+                        <>
+                            <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Creating...
+                        </>
+                    ) : (
+                        <>
+                            <i className="fas fa-plus me-2"></i>
+                            Create {getRoleDisplayName(formData.role)}
+                        </>
+                    )}
                 </Button>
             </Modal.Footer>
         </Modal>

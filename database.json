@@ -1192,7 +1192,7 @@
     },
     {
       "id": "9",
-      "type": "import",
+      "type": "transfer",
       "status": "in_transit",
       "date": "2025-07-03",
       "senderStaffId": "5",
@@ -1215,7 +1215,7 @@
       "note": "Đơn sỉ cho buyer02"
     },
     {
-      "type": "import",
+      "type": "transfer",
       "status": "completed",
       "date": "2025-07-13",
       "senderStaffId": null,
@@ -1229,7 +1229,7 @@
       "completedDate": "2025-07-13T05:54:23.904Z"
     },
     {
-      "type": "import",
+      "type": "transfer",
       "status": "pending",
       "date": "2025-07-13",
       "senderStaffId": null,

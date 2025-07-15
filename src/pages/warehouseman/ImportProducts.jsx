@@ -79,7 +79,6 @@ function ImportProducts() {
         fetchData();
     }, [fetchData]);
 
-    // Reset pagination when filters change
     useEffect(() => {
         setCurrentPage(1);
     }, [searchTerm, selectedWarehouse, selectedProductType, sortBy, sortOrder]);
@@ -95,7 +94,6 @@ function ImportProducts() {
         return matchesSearch && matchesWarehouse && matchesType;
     });
 
-    // Sort products
     const sortedProducts = [...filteredProducts].sort((a, b) => {
         let comparison = 0;
         
@@ -113,7 +111,6 @@ function ImportProducts() {
         return sortOrder === 'asc' ? comparison : -comparison;
     });
 
-    // Pagination
     const totalPages = Math.ceil(sortedProducts.length / PRODUCTS_PER_PAGE);
     const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
     const paginatedProducts = sortedProducts.slice(startIndex, startIndex + PRODUCTS_PER_PAGE);
@@ -155,7 +152,6 @@ function ImportProducts() {
     };
 
     const getAvailableWarehouses = (productId) => {
-        // Find all products with the same productId in different warehouses
         const sameProducts = products.filter(product => 
             product.id === productId && 
             product.warehouseId !== user.warehouseId &&

@@ -7,10 +7,8 @@ function StaffViewModal({ show, onHide, staff, warehouse, onEdit }) {
         const roleConfig = {
             manager: { bg: 'primary', text: 'Manager' },
             staff: { bg: 'info', text: 'Warehouse Staff' },
-            importstaff: { bg: 'warning', text: 'Import Staff' },
-            exportstaff: { bg: 'secondary', text: 'Export Staff' },
-            warehouseman: { bg: 'dark', text: 'Warehouse Manager' },
-            shipper: { bg: 'success', text: 'Shipper' }
+            exporter: { bg: 'success', text: 'Export Staff' },
+            shipper: { bg: 'warning', text: 'Shipper' }
         };
         
         const config = roleConfig[role] || { bg: 'secondary', text: role };
@@ -18,9 +16,9 @@ function StaffViewModal({ show, onHide, staff, warehouse, onEdit }) {
     };
 
     const getWorkLocation = () => {
-        if (['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(staff.role) && staff.warehouseId) {
+        if (['staff', 'exporter'].includes(staff.role) && staff.warehouseId) {
             return warehouse.name;
-        } else if (staff.role === 'shipper' || staff.role === 'manager') {
+        } else if (staff.role === 'shipper') {
             return 'Enterprise-wide';
         }
         return 'Not assigned';
@@ -28,13 +26,6 @@ function StaffViewModal({ show, onHide, staff, warehouse, onEdit }) {
 
     const getResponsibilities = (role) => {
         switch(role) {
-            case 'manager':
-                return [
-                    'Oversee all warehouse operations',
-                    'Manage enterprise staff',
-                    'Monitor business performance',
-                    'Coordinate between warehouses'
-                ];
             case 'staff':
                 return [
                     'Manage warehouse inventory',
@@ -42,26 +33,12 @@ function StaffViewModal({ show, onHide, staff, warehouse, onEdit }) {
                     'Handle general warehouse tasks',
                     'Assist in stock management'
                 ];
-            case 'importstaff':
-                return [
-                    'Process incoming shipments',
-                    'Handle import documentation',
-                    'Verify incoming inventory',
-                    'Coordinate with suppliers'
-                ];
-            case 'exportstaff':
+            case 'exporter':
                 return [
                     'Process outgoing shipments',
                     'Handle export documentation',
                     'Prepare orders for delivery',
                     'Coordinate with customers'
-                ];
-            case 'warehouseman':
-                return [
-                    'Supervise warehouse operations',
-                    'Manage warehouse staff',
-                    'Oversee inventory management',
-                    'Ensure warehouse efficiency'
                 ];
             case 'shipper':
                 return [
@@ -77,11 +54,8 @@ function StaffViewModal({ show, onHide, staff, warehouse, onEdit }) {
 
     const getIconForRole = (role) => {
         const icons = {
-            manager: 'crown',
             staff: 'user',
-            importstaff: 'truck-loading',
-            exportstaff: 'shipping-fast',
-            warehouseman: 'warehouse',
+            exporter: 'shipping-fast',
             shipper: 'truck'
         };
         return icons[role] || 'user';
@@ -89,12 +63,9 @@ function StaffViewModal({ show, onHide, staff, warehouse, onEdit }) {
 
     const getColorForRole = (role) => {
         const colors = {
-            manager: 'primary',
             staff: 'info',
-            importstaff: 'warning',
-            exportstaff: 'secondary',
-            warehouseman: 'dark',
-            shipper: 'success'
+            exporter: 'success',
+            shipper: 'warning'
         };
         return colors[role] || 'info';
     };

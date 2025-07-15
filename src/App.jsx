@@ -43,6 +43,7 @@ import InTransitShipments from "./components/shipper/InTransitShipments";
 import WarehousemanLayout from "./layouts/WarehousemanLayout";
 import WarehousemanDashboard from "./pages/warehouseman/WarehousemanDashboard";
 import ImportProducts from "./pages/warehouseman/ImportProducts";
+import CreateProduct from "./pages/warehouseman/CreateProduct";
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -148,6 +149,7 @@ function App() {
             <Route element={<WarehousemanLayout />}>
               <Route index element={<WarehousemanDashboard />} />
               <Route path="import" element={<ImportProducts />} />
+              <Route path="create-product" element={<CreateProduct />} />
             </Route>
           </Route>
         </Route>
