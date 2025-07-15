@@ -116,7 +116,7 @@ function WarehouseDetail() {
                     type: order.type,
                     status: order.status,
                     date: order.date,
-                    enterpriseId: order.enterpriseId,
+                    // enterpriseId: order.enterpriseId,
                     senderStaffId: order.senderStaffId,
                     receiverStaffId: order.receiverStaffId,
                     sendWarehouseId: order.sendWarehouseId,
