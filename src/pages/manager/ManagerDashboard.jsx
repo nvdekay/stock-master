@@ -5,7 +5,8 @@ import { useAuth } from '../../auth/AuthProvider';
 
 function ManagerDashboard() {
     const { user, loading: authLoading } = useAuth();
-
+    console.log(user);
+    
     const [dashboardData, setDashboardData] = useState({
         enterprise: null,
         warehouses: [],
@@ -22,39 +23,31 @@ function ManagerDashboard() {
             if (!user || !user.enterpriseId) {
                 throw new Error("Dữ liệu người dùng không đầy đủ hoặc thiếu ID Doanh nghiệp.");
             }
-
+            console.log('user:', user);
+            
             const enterpriseId = user.enterpriseId;
-
-            const [enterpriseRes, warehousesRes] = await Promise.all([
+            console.log('enterpriseId:', enterpriseId);
+            
+            const [enterpriseRes, warehousesRes, productsRes] = await Promise.all([
                 api.get(`/enterprises/${enterpriseId}`),
-                api.get(`/warehouses?enterpriseId=${enterpriseId}`)
+                api.get(`/warehouses?enterpriseId=${enterpriseId}`),
+                api.get('/products') // Lấy tất cả products
             ]);
 
             const enterpriseData = enterpriseRes.data;
             const warehousesData = warehousesRes.data;
+            const allProducts = productsRes.data;
 
-            let allProducts = [];
-            if (warehousesData && warehousesData.length > 0) {
-                const warehouseIds = warehousesData.map(w => w.id);
-                const inventoryQuery = warehouseIds.map(id => `warehouseId=${id}`).join('&');
-                const inventoryRes = await api.get(`/inventory?${inventoryQuery}`);
-                const enterpriseInventory = inventoryRes.data;
-
-                if (enterpriseInventory && enterpriseInventory.length > 0) {
-                    const productIds = [...new Set(enterpriseInventory.map(item => item.productId))];
-
-                    if (productIds.length > 0) {
-                        const productsQuery = productIds.map(id => `id=${id}`).join('&');
-                        const productsRes = await api.get(`/products?${productsQuery}`);
-                        allProducts = productsRes.data;
-                    }
-                }
-            }
+            // Filter products thuộc các warehouses của enterprise này
+            const enterpriseProducts = allProducts.filter(product => {
+                const warehouseIds = warehousesData.map(w => parseInt(w.id));
+                return warehouseIds.includes(parseInt(product.warehouseId));
+            });
 
             setDashboardData({
                 enterprise: enterpriseData,
                 warehouses: warehousesData,
-                products: allProducts
+                products: enterpriseProducts // Chỉ hiển thị products thuộc enterprise
             });
 
         } catch (err) {

@@ -7,8 +7,10 @@ function StaffViewModal({ show, onHide, staff, warehouse, onEdit }) {
         const roleConfig = {
             manager: { bg: 'primary', text: 'Manager' },
             staff: { bg: 'info', text: 'Warehouse Staff' },
-            shipper: { bg: 'success', text: 'Shipper' },
-            admin: { bg: 'danger', text: 'Admin' }
+            importstaff: { bg: 'warning', text: 'Import Staff' },
+            exportstaff: { bg: 'secondary', text: 'Export Staff' },
+            warehouseman: { bg: 'dark', text: 'Warehouse Manager' },
+            shipper: { bg: 'success', text: 'Shipper' }
         };
         
         const config = roleConfig[role] || { bg: 'secondary', text: role };
@@ -16,12 +18,85 @@ function StaffViewModal({ show, onHide, staff, warehouse, onEdit }) {
     };
 
     const getWorkLocation = () => {
-        if (staff.role === 'staff' && staff.warehouseId) {
+        if (['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(staff.role) && staff.warehouseId) {
             return warehouse.name;
-        } else if (staff.role === 'shipper') {
+        } else if (staff.role === 'shipper' || staff.role === 'manager') {
             return 'Enterprise-wide';
         }
         return 'Not assigned';
+    };
+
+    const getResponsibilities = (role) => {
+        switch(role) {
+            case 'manager':
+                return [
+                    'Oversee all warehouse operations',
+                    'Manage enterprise staff',
+                    'Monitor business performance',
+                    'Coordinate between warehouses'
+                ];
+            case 'staff':
+                return [
+                    'Manage warehouse inventory',
+                    'Process internal transfers',
+                    'Handle general warehouse tasks',
+                    'Assist in stock management'
+                ];
+            case 'importstaff':
+                return [
+                    'Process incoming shipments',
+                    'Handle import documentation',
+                    'Verify incoming inventory',
+                    'Coordinate with suppliers'
+                ];
+            case 'exportstaff':
+                return [
+                    'Process outgoing shipments',
+                    'Handle export documentation',
+                    'Prepare orders for delivery',
+                    'Coordinate with customers'
+                ];
+            case 'warehouseman':
+                return [
+                    'Supervise warehouse operations',
+                    'Manage warehouse staff',
+                    'Oversee inventory management',
+                    'Ensure warehouse efficiency'
+                ];
+            case 'shipper':
+                return [
+                    'Deliver wholesale orders',
+                    'Handle shipments',
+                    'Coordinate deliveries',
+                    'Manage transportation logistics'
+                ];
+            default:
+                return ['General responsibilities'];
+        }
+    };
+
+    const getIconForRole = (role) => {
+        const icons = {
+            manager: 'crown',
+            staff: 'user',
+            importstaff: 'truck-loading',
+            exportstaff: 'shipping-fast',
+            warehouseman: 'warehouse',
+            shipper: 'truck'
+        };
+        return icons[role] || 'user';
+    };
+
+    const getColorForRole = (role) => {
+        const colors = {
+            manager: 'primary',
+            staff: 'info',
+            importstaff: 'warning',
+            exportstaff: 'secondary',
+            warehouseman: 'dark',
+            shipper: 'success'
+        };
+        return colors[role] || 'info';
     };
 
     return (
@@ -41,9 +116,9 @@ function StaffViewModal({ show, onHide, staff, warehouse, onEdit }) {
                             </Card.Header>
                             <Card.Body>
                                 <div className="text-center mb-3">
-                                    <div className={`bg-${staff.role === 'staff' ? 'info' : 'success'} rounded-circle d-flex align-items-center justify-content-center mx-auto`} 
+                                    <div className={`bg-${getColorForRole(staff.role)} rounded-circle d-flex align-items-center justify-content-center mx-auto`} 
                                          style={{ width: '80px', height: '80px' }}>
-                                        <i className={`fas fa-${staff.role === 'staff' ? 'user' : 'truck'} text-white fa-2x`}></i>
+                                        <i className={`fas fa-${getIconForRole(staff.role)} text-white fa-2x`}></i>
                                     </div>
                                     <h5 className="mt-2 mb-1">{staff.fullName}</h5>
                                     {getRoleBadge(staff.role)}
@@ -91,27 +166,6 @@ function StaffViewModal({ show, onHide, staff, warehouse, onEdit }) {
                                     <div className="mt-1">
                                         <Badge bg="success">Active</Badge>
                                     </div>
-                                </div>
-                                
-                                <div className="mt-4">
-                                    <h6>Responsibilities:</h6>
-                                    <ul className="text-muted small">
-                                        {staff.role === 'staff' ? (
-                                            <>
-                                                <li>Manage warehouse inventory</li>
-                                                <li>Process internal transfers</li>
-                                                <li>Handle stock management</li>
-                                                <li>Coordinate with other warehouses</li>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <li>Deliver wholesale orders</li>
-                                                <li>Handle shipments</li>
-                                                <li>Coordinate deliveries</li>
-                                                <li>Manage transportation logistics</li>
-                                            </>
-                                        )}
-                                    </ul>
                                 </div>
                             </Card.Body>
                         </Card>
