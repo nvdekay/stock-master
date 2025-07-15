@@ -4,7 +4,8 @@ import '../../public/assets/css/ProductList.css';
 import api from "../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../auth/AuthProvider';
-import e from "cors";
+import { useCart } from "../contexts/CartContext"; // hoặc đúng path
+
 
 function ProductList() {
     const [products, setProducts] = useState([]);
@@ -15,6 +16,8 @@ function ProductList() {
     const [sortOrder, setSortOrder] = useState("asc"); // asc = từ thấp đến cao (mặc định)
 
     const [message, setMessage] = useState("");
+
+    const { updateCartItems } = useCart();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -117,6 +120,8 @@ function ProductList() {
                     }
                 });
                 alert("Đã thêm sản phẩm vào giỏ hàng");
+
+                updateCartItems(); // Cập nhật số lượng giỏ hàng
             }
         } catch (err) {
             console.error("Lỗi khi thêm/cập nhật giỏ hàng:", err);
