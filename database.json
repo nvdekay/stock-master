@@ -223,17 +223,17 @@
   "locations": [
     {
       "id": "1",
-      "userId": "1",
+      "userId": "7",
       "location": "123 Đường Lê Lợi, Quận 1, TP.HCM"
     },
     {
       "id": "2",
-      "userId": "3",
+      "userId": "13",
       "location": "456 Đường Trần Hưng Đạo, Quận 5, TP.HCM"
     },
     {
       "id": "3",
-      "userId": "4",
+      "userId": "16",
       "location": "789 Đường Nguyễn Văn Cừ, Quận 10, TP.HCM"
     }
   ],
@@ -1154,7 +1154,7 @@
     },
     {
       "id": "9",
-      "type": "import",
+      "type": "transfer",
       "status": "in_transit",
       "date": "2025-07-03",
       "senderStaffId": "5",
@@ -1177,7 +1177,7 @@
       "note": "Đơn sỉ cho buyer02"
     },
     {
-      "type": "import",
+      "type": "transfer",
       "status": "completed",
       "date": "2025-07-13",
       "senderStaffId": null,
@@ -1191,7 +1191,7 @@
       "completedDate": "2025-07-13T05:54:23.904Z"
     },
     {
-      "type": "import",
+      "type": "transfer",
       "status": "pending",
       "date": "2025-07-13",
       "senderStaffId": null,

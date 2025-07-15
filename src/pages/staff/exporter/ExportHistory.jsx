@@ -24,73 +24,11 @@ import {
     TrendingUp,
     Users,
     Globe,
+    Pencil,
 } from "lucide-react"
 import api from "../../../api/axiosInstance"
 import { useAuth } from "../../../auth/AuthProvider"
-import AlertsPanel from "../../../components/staff/exporter/AlertsPanel"
-
-// const exportHistory = [
-//     {
-//         id: "EXP-2023-156",
-//         customer: "Global Shipping Co",
-//         destination: "Tokyo, Japan",
-//         items: 72,
-//         value: 234000,
-//         shipDate: "2023-12-15",
-//         deliveryDate: "2023-12-28",
-//         status: "Delivered",
-//         trackingNumber: "TRK-789456123",
-//         rating: 5,
-//     },
-//     {
-//         id: "EXP-2023-155",
-//         customer: "Atlantic Trade Partners",
-//         destination: "New York, USA",
-//         items: 48,
-//         value: 156000,
-//         shipDate: "2023-12-10",
-//         deliveryDate: "2023-12-18",
-//         status: "Delivered",
-//         trackingNumber: "TRK-654321987",
-//         rating: 4,
-//     },
-//     {
-//         id: "EXP-2023-154",
-//         customer: "European Logistics Hub",
-//         destination: "Berlin, Germany",
-//         items: 61,
-//         value: 189000,
-//         shipDate: "2023-12-08",
-//         deliveryDate: "2023-12-15",
-//         status: "Delivered",
-//         trackingNumber: "TRK-321654789",
-//         rating: 5,
-//     },
-//     {
-//         id: "EXP-2023-153",
-//         customer: "South American Imports",
-//         destination: "São Paulo, Brazil",
-//         items: 35,
-//         value: 98000,
-//         shipDate: "2023-12-05",
-//         deliveryDate: "2023-12-20",
-//         status: "In Transit",
-//         trackingNumber: "TRK-987123456",
-//         rating: null,
-//     },
-//     {
-//         id: "EXP-2023-152",
-//         customer: "Middle East Trading",
-//         destination: "Dubai, UAE",
-//         items: 44,
-//         value: 127000,
-//         shipDate: "2023-12-01",
-//         deliveryDate: "2023-12-08",
-//         status: "Delivered",
-//         trackingNumber: "TRK-456789123",
-//         rating: 4,
-//     },
-// ]
+import PerformanceAlert from "../../../components/staff/exporter/PerformanceAlert"
 
 const ExportHistory = () => {
     const [searchTerm, setSearchTerm] = useState("")
@@ -98,21 +36,35 @@ const ExportHistory = () => {
     const [timeFilter, setTimeFilter] = useState("all")
     const [exportHistory, setExportHistory] = useState([]);
     const [filteredHistory, setFilteredHistory] = useState([]);
-    // const [exp   ]
     const { user } = useAuth();
 
     useEffect(() => {
         // console.log(user.warehouseId)
         const fetchAllExportOrder = async () => {
             try {
-                const exportOrderRes = await api.get(`http://localhost:9999/orders?_embed=orderDetails&sendWarehouseId=${user.warehouseId}`);
-                // const order
-                console.log("exportOrderRes: ", exportOrderRes.data)
+                const [exportOrderRes, usersRes, warehousesRes, locationsRes] = await Promise.all([
+                    api.get(`http://localhost:9999/orders?_embed=orderDetails&sendWarehouseId=${user.warehouseId}`),
+                    api.get('http://localhost:9999/users'),
+                    api.get('http://localhost:9999/warehouses'),
+                    api.get('http://localhost:9999/locations'),
+                ])
+
+                const users = usersRes.data;
+                const warehouses = warehousesRes.data;
+                const locations = locationsRes.data;
+                // console.log("", exportOrderRes.data)
                 let exportOrder = exportOrderRes.data.map((order) => {
-                    order.value = order.orderDetails.reduce((total, product) => total + product.price, 0);
-                    order.items = order.orderDetails.length;
-                    // console.log( order.orderDetails.reduce((total, product) => total + product.price, 0));
-                    return order;
+                    let receiveWarehouse = warehouses.find(w => w.id === order.receiveWarehouseId);
+                    let buyer = users.find(u => u.id === order.buyerId);
+                    let destinationInfo = order.buyerId !== null ?
+                        { customer: buyer.username, destination: locations.find(l => l.userId === buyer.id).location }
+                        : { customer: receiveWarehouse.name, destination: receiveWarehouse.location }
+                    return {
+                        ...order,
+                        ...destinationInfo,
+                        value: order.orderDetails.reduce((total, product) => total + product.price, 0),
+                        items: order.orderDetails.length
+                    }
                 })
                 console.log("exportHistory: ", exportOrder)
                 setExportHistory(exportOrder);
@@ -130,13 +82,12 @@ const ExportHistory = () => {
         console.log("timeFilter: ", timeFilter)
         const filterOrder = () => {
             let filtered = exportHistory.filter((order) => {
-                const matchesSearch = searchTerm.length !== 0 ?
-                    // order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    order.id.toLowerCase().includes(searchTerm.toLowerCase())
+                const matchesSearch = searchTerm !== null ?
+                    order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    order.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    order.type.toLowerCase().includes(searchTerm.toLowerCase())
                     : true
-                // ||
-                // order.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                // order.trackingNumber.toLowerCase().includes(searchTerm.toLowerCase())
 
                 const matchesStatus = statusFilter === "All" || order.status === statusFilter
                 let index = -1;
@@ -231,9 +182,6 @@ const ExportHistory = () => {
     const totalItems = filteredHistory.reduce((sum, order) => sum + order.orderDetails.length, 0)
     const deliveredOrders = filteredHistory.filter((o) => ["completed", "shipped", "in_transit"].some((s) => o.status.includes(s))).length
     const returnedOrders = filteredHistory.filter((o) => o.status === "returned").length
-    const avgRating =
-        filteredHistory.filter((o) => o.rating).reduce((sum, o) => sum + (o.rating || 0), 0) /
-        filteredHistory.filter((o) => o.rating).length
 
     return (
         <div>
@@ -329,30 +277,7 @@ const ExportHistory = () => {
             </Row>
 
             {/* Performance Alert */}
-            {deliveredOrders === 0 ?
-                <Alert variant="danger" className="mb-4">
-                    <Alert.Heading className="h6 mb-2">
-                        <Bell className="me-2" size={16} />
-                        Performance Summary
-                    </Alert.Heading>
-                    <p className="mb-0">
-                        You have <strong>NOT</strong> delivered any order yet. Please start working <strong>NOW</strong>!
-                    </p>
-                </Alert>
-
-
-
-                : <Alert variant="info" className="mb-4">
-                    <Alert.Heading className="h6 mb-2">
-                        <Bell className="me-2" size={16} />
-                        Performance Summary
-                    </Alert.Heading>
-                    <p className="mb-0">
-                        You have successfully delivered <strong>{deliveredOrders}</strong> order(s)
-                        . Keep up the excellent work!
-                    </p>
-                </Alert>
-            }
+            <PerformanceAlert deliveredOrders={deliveredOrders} />
 
             {/* Search and Filters */}
             <Card className="mb-4">
@@ -369,7 +294,7 @@ const ExportHistory = () => {
                                 </InputGroup.Text>
                                 <Form.Control
                                     type="text"
-                                    placeholder="Search by customer, order ID, destination, or tracking number..."
+                                    placeholder="Search by customer, order ID, destination, ..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
@@ -409,12 +334,12 @@ const ExportHistory = () => {
                         <Table hover className="mb-0">
                             <thead className="table-dark">
                                 <tr>
-                                    <th>Order Information</th>
+                                    <th>Order Id</th>
                                     <th>Customer & Destination</th>
                                     <th>Financial Details</th>
-                                    <th>Shipping Timeline</th>
+                                    <th>Created Date</th>
                                     <th>Status & Rating</th>
-                                    <th>Tracking</th>
+                                    <th>Type</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -444,13 +369,21 @@ const ExportHistory = () => {
                                                     <td>
                                                         <strong className="text-success">${order.value?.toLocaleString()}</strong>
                                                         <br />
-                                                        <small className="text-muted">${(order.value / order.items)?.toFixed(0)}/item</small>
+                                                        {/* <small className="text-muted">${(order.value / order.items)?.toFixed(0)}/item</small> */}
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <strong>Shipped:</strong> {new Date(order.shipDate)?.toLocaleDateString()}
-                                                            <br />
-                                                            <strong>Delivered:</strong> {new Date(order.deliveryDate)?.toLocaleDateString()}
+                                                            {/* <strong>Shipped:</strong>  */}
+                                                            {
+                                                                new Date(order.date)?.toLocaleDateString(
+                                                                    ("vi-VN"), {
+                                                                    year: "numeric",
+                                                                    month: "2-digit",
+                                                                    day: "2-digit",
+                                                                })
+                                                            }
+                                                            {/* <br />
+                                                            <strong>Delivered:</strong> {new Date(order.deliveryDate)?.toLocaleDateString()} */}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -463,15 +396,15 @@ const ExportHistory = () => {
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <code className="small bg-light p-1 rounded">{order.trackingNumber}</code>
+                                                        <code className="small bg-light p-1 rounded">{order.type}</code>
                                                     </td>
                                                     <td>
                                                         <ButtonGroup size="sm">
                                                             <Button variant="outline-primary" title="View Details">
                                                                 <Eye size={14} />
                                                             </Button>
-                                                            <Button variant="outline-success" title="Download Invoice">
-                                                                <Download size={14} />
+                                                            <Button variant="outline-danger" title="Download Invoice">
+                                                                <Pencil size={14} />
                                                             </Button>
                                                         </ButtonGroup>
                                                     </td>
