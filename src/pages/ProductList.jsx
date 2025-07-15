@@ -56,13 +56,13 @@ function ProductList() {
             filtered = filtered.filter(product =>
                 product.productTypeId === parseInt(selectedType)
             );
-            if(filtered.length === 0) {
+            if (filtered.length === 0) {
                 setMessage("Không có sản phẩm nào thuộc loại này");
             }
             else {
                 setMessage("");
             }
-        }else {
+        } else {
             setMessage("");
         }
 
@@ -180,7 +180,7 @@ function ProductList() {
 
             <h2 className="mb-4">Danh sách sản phẩm</h2>
             {message && <div className="alert alert-warning">{message}</div>}
-            <br/>
+            <br />
             <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                 {products.map((product) => (
                     <Col key={product.id}>
@@ -190,7 +190,7 @@ function ProductList() {
                             <Card.Body onClick={() => handleProductDetail(product.id)}>
                                 <Card.Img
                                     variant="top"
-                                    src={`../../public/assets/images/products/${product.id}.jpg`}
+                                    src={product.src || `../../public/assets/images/products/${product.id}.jpg`} // Sử dụng src từ database
                                     alt={product.name}
                                     style={{
                                         height: "200px",

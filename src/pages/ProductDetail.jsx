@@ -144,7 +144,7 @@ function ProductDetail() {
                         }}
                     >
                         <Card.Img
-                            src={`../../public/assets/images/products/${product.id}.jpg`}
+                            src={product.src || `../../public/assets/images/products/${product.id}.jpg`} // Sử dụng src từ database
                             alt={product.name}
                             style={{ maxWidth: "90%", maxHeight: "90%", objectFit: "contain" }}
                         />
@@ -190,13 +190,14 @@ function ProductDetail() {
                         >
                             <Card.Img
                                 variant="top"
-                                src={`../../public/assets/images/products/${p.id}.jpg`}
+                                src={p.src || `../../public/assets/images/products/${p.id}.jpg`} // Sử dụng src từ database
                                 alt={p.name}
                                 style={{
-                                    height: "160px",
+                                    height: "150px",
+                                    width: "100%",
                                     objectFit: "contain",
-                                    padding: "10px",
-                                    backgroundColor: "#f8f9fa"
+                                    backgroundColor: "#f8f9fa",
+                                    padding: "5px"
                                 }}
                             />
                             <Card.Body>
