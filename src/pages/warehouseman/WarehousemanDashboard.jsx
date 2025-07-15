@@ -9,6 +9,8 @@ import WarehouseHistory from '../../components/manager/warehouse/WarehouseHistor
 
 function WarehousemanDashboard() {
     const { user } = useAuth();
+    console.log(user);
+    
     const [warehouse, setWarehouse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -65,7 +67,8 @@ function WarehousemanDashboard() {
 
             const enterpriseRes = await api.get(`/enterprises/${warehouseInfo.enterpriseId}`);
             const enterprise = enterpriseRes.data;
-
+            console.log(allUsers,allProducts,allOrders,allShipments,allWarehouses,allOrderDetails);
+            
             // Filter warehouse staff with new roles
             const warehouseStaff = allUsers.filter(u => 
                 u.warehouseId === user.warehouseId && 
@@ -93,7 +96,8 @@ function WarehousemanDashboard() {
                 const receiveWarehouse = allWarehouses.find(w => w.id === order.receiveWarehouseId);
                 const shipment = allShipments.find(s => s.orderId === order.id);
                 const shipper = shipment ? allUsers.find(u => u.id === shipment.shipperId) : null;
-                
+                const enterpriseId = sendWarehouse?.enterpriseId || null;
+    
                 // Calculate total price from order details
                 const details = allOrderDetails.filter(d => d.orderId === order.id);
                 const totalPrice = details.reduce((sum, detail) => {
