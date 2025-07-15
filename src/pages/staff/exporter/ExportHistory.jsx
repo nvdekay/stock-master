@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import {
     Row,
     Col,
@@ -25,84 +25,111 @@ import {
     Users,
     Globe,
 } from "lucide-react"
+import api from "../../../api/axiosInstance"
+import { useAuth } from "../../../auth/AuthProvider"
 
-const mockExportHistory = [
-    {
-        id: "EXP-2023-156",
-        customer: "Global Shipping Co",
-        destination: "Tokyo, Japan",
-        items: 72,
-        value: 234000,
-        shipDate: "2023-12-15",
-        deliveryDate: "2023-12-28",
-        status: "Delivered",
-        trackingNumber: "TRK-789456123",
-        rating: 5,
-    },
-    {
-        id: "EXP-2023-155",
-        customer: "Atlantic Trade Partners",
-        destination: "New York, USA",
-        items: 48,
-        value: 156000,
-        shipDate: "2023-12-10",
-        deliveryDate: "2023-12-18",
-        status: "Delivered",
-        trackingNumber: "TRK-654321987",
-        rating: 4,
-    },
-    {
-        id: "EXP-2023-154",
-        customer: "European Logistics Hub",
-        destination: "Berlin, Germany",
-        items: 61,
-        value: 189000,
-        shipDate: "2023-12-08",
-        deliveryDate: "2023-12-15",
-        status: "Delivered",
-        trackingNumber: "TRK-321654789",
-        rating: 5,
-    },
-    {
-        id: "EXP-2023-153",
-        customer: "South American Imports",
-        destination: "São Paulo, Brazil",
-        items: 35,
-        value: 98000,
-        shipDate: "2023-12-05",
-        deliveryDate: "2023-12-20",
-        status: "In Transit",
-        trackingNumber: "TRK-987123456",
-        rating: null,
-    },
-    {
-        id: "EXP-2023-152",
-        customer: "Middle East Trading",
-        destination: "Dubai, UAE",
-        items: 44,
-        value: 127000,
-        shipDate: "2023-12-01",
-        deliveryDate: "2023-12-08",
-        status: "Delivered",
-        trackingNumber: "TRK-456789123",
-        rating: 4,
-    },
-]
+// const exportHistory = [
+//     {
+//         id: "EXP-2023-156",
+//         customer: "Global Shipping Co",
+//         destination: "Tokyo, Japan",
+//         items: 72,
+//         value: 234000,
+//         shipDate: "2023-12-15",
+//         deliveryDate: "2023-12-28",
+//         status: "Delivered",
+//         trackingNumber: "TRK-789456123",
+//         rating: 5,
+//     },
+//     {
+//         id: "EXP-2023-155",
+//         customer: "Atlantic Trade Partners",
+//         destination: "New York, USA",
+//         items: 48,
+//         value: 156000,
+//         shipDate: "2023-12-10",
+//         deliveryDate: "2023-12-18",
+//         status: "Delivered",
+//         trackingNumber: "TRK-654321987",
+//         rating: 4,
+//     },
+//     {
+//         id: "EXP-2023-154",
+//         customer: "European Logistics Hub",
+//         destination: "Berlin, Germany",
+//         items: 61,
+//         value: 189000,
+//         shipDate: "2023-12-08",
+//         deliveryDate: "2023-12-15",
+//         status: "Delivered",
+//         trackingNumber: "TRK-321654789",
+//         rating: 5,
+//     },
+//     {
+//         id: "EXP-2023-153",
+//         customer: "South American Imports",
+//         destination: "São Paulo, Brazil",
+//         items: 35,
+//         value: 98000,
+//         shipDate: "2023-12-05",
+//         deliveryDate: "2023-12-20",
+//         status: "In Transit",
+//         trackingNumber: "TRK-987123456",
+//         rating: null,
+//     },
+//     {
+//         id: "EXP-2023-152",
+//         customer: "Middle East Trading",
+//         destination: "Dubai, UAE",
+//         items: 44,
+//         value: 127000,
+//         shipDate: "2023-12-01",
+//         deliveryDate: "2023-12-08",
+//         status: "Delivered",
+//         trackingNumber: "TRK-456789123",
+//         rating: 4,
+//     },
+// ]
 
 const ExportHistory = () => {
     const [searchTerm, setSearchTerm] = useState("")
     const [statusFilter, setStatusFilter] = useState("All")
+    const [timeFilter, setTimeFilter] = useState("all")
+    const [exportHistory, setExportHistory] = useState([]);
+    // const [exp   ]
+    const {user} = useAuth();
+
+    useEffect(() => {
+        const fetchAllExportOrder = async () => {
+            try {
+                const exportOrderRes = await api.get(`http://localhost:9999/orders?sendWarehouseId=${user.warehouseId}`);
+                setExportHistory(exportOrderRes.data)
+                // console.log(exportOrderRes.data)
+
+            } catch(err) {
+                console.log('error fetching order: ', err)
+            }
+        }
+
+        fetchAllExportOrder();
+    }, [])
 
     const filteredHistory = useMemo(() => {
-        return mockExportHistory.filter((order) => {
+        let filtered = exportHistory.filter((order) => {
             const matchesSearch =
-                order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                order.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                order.trackingNumber.toLowerCase().includes(searchTerm.toLowerCase())
+                // order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                order.id.toLowerCase().includes(searchTerm.toLowerCase()) 
+                // ||
+                // order.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                // order.trackingNumber.toLowerCase().includes(searchTerm.toLowerCase())
+
             const matchesStatus = statusFilter === "All" || order.status === statusFilter
             return matchesSearch && matchesStatus
         })
+
+        console.log(filtered)
+        return filtered
+
     }, [searchTerm, statusFilter])
 
     const getStatusVariant = (status) => {
@@ -146,7 +173,7 @@ const ExportHistory = () => {
         )
     }
 
-    const uniqueStatuses = ["All", ...Array.from(new Set(mockExportHistory.map((order) => order.status)))]
+    const uniqueStatuses = ["All", ...Array.from(new Set(exportHistory.map((order) => order.status)))]
     const totalValue = filteredHistory.reduce((sum, order) => sum + order.value, 0)
     const totalItems = filteredHistory.reduce((sum, order) => sum + order.items, 0)
     const deliveredOrders = filteredHistory.filter((o) => o.status === "Delivered").length
@@ -176,9 +203,24 @@ const ExportHistory = () => {
             </div>
 
             {/* Analytics Dashboard */}
+            <Row className="mb-4 d-flex justify-between">
+                <Col lg={8} className="mb-3">
+                    <h1>TOTAL STATISTIC</h1>
+                </Col>
+                <Col lg={4} className="mb-3">
+                    <Form.Label>Filter by Time</Form.Label>
+                    <Form.Select value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)}>
+                        <option key={"all"} value={"all"} selected={timeFilter.includes("all")}>All</option>
+                        <option key={"year"} value={"year"} selected={timeFilter.includes("year")}>Year</option>
+                        <option key={"month"} value={"month"} selected={timeFilter.includes("month")}>Month</option>
+                        <option key={"day"} value={"day"} selected={timeFilter.includes("day")}>Date</option>
+                    </Form.Select>
+                </Col>
+            </Row>
+
             <Row className="mb-4">
                 <Col xl={3} md={6} className="mb-3">
-                    <Card className="bg-gradient text-white" style={{ background: "linear-gradient(45deg, #28a745, #20c997)" }}>
+                    <Card className="bg-gradient" style={{ background: "linear-gradient(45deg, #28a745, #20c997)" }}>
                         <Card.Body>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
@@ -191,11 +233,11 @@ const ExportHistory = () => {
                     </Card>
                 </Col>
                 <Col xl={3} md={6} className="mb-3">
-                    <Card className="bg-gradient text-white" style={{ background: "linear-gradient(45deg, #007bff, #6610f2)" }}>
+                    <Card className="bg-gradient" style={{ background: "linear-gradient(45deg, #007bff, #6610f2)" }}>
                         <Card.Body>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 className="mb-1 opacity-75">Items Shipped</h6>
+                                    <h6 className="mb-1 opacity-75">Items Exported</h6>
                                     <h4 className="mb-0">{totalItems.toLocaleString()}</h4>
                                 </div>
                                 <Package size={32} className="opacity-75" />
@@ -204,11 +246,11 @@ const ExportHistory = () => {
                     </Card>
                 </Col>
                 <Col xl={3} md={6} className="mb-3">
-                    <Card className="bg-gradient text-white" style={{ background: "linear-gradient(45deg, #fd7e14, #e83e8c)" }}>
+                    <Card className="bg-gradient" style={{ background: "linear-gradient(45deg, #fd7e14, #e83e8c)" }}>
                         <Card.Body>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 className="mb-1 opacity-75">Delivered Orders</h6>
+                                    <h6 className="mb-1 opacity-75">Exported Orders</h6>
                                     <h4 className="mb-0">{deliveredOrders}</h4>
                                 </div>
                                 <CheckCircle size={32} className="opacity-75" />
@@ -217,7 +259,7 @@ const ExportHistory = () => {
                     </Card>
                 </Col>
                 <Col xl={3} md={6} className="mb-3">
-                    <Card className="bg-gradient text-white" style={{ background: "linear-gradient(45deg, #ffc107, #fd7e14)" }}>
+                    <Card className="bg-gradient" style={{ background: "linear-gradient(45deg, #ffc107, #fd7e14)" }}>
                         <Card.Body>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
@@ -232,7 +274,7 @@ const ExportHistory = () => {
             </Row>
 
             {/* Performance Alert */}
-            <Alert variant="info" className="mb-4">
+            {/* <Alert variant="info" className="mb-4">
                 <Alert.Heading className="h6 mb-2">
                     <Bell className="me-2" size={16} />
                     Performance Summary
@@ -241,7 +283,7 @@ const ExportHistory = () => {
                     You have successfully delivered <strong>{deliveredOrders}</strong> orders with an average rating of{" "}
                     <strong>{avgRating.toFixed(1)} stars</strong>. Keep up the excellent work!
                 </p>
-            </Alert>
+            </Alert> */}
 
             {/* Search and Filters */}
             <Card className="mb-4">

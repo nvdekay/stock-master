@@ -5,11 +5,21 @@ import {
 import {
     Clock,
     CheckCircle,
+    Calendar
 } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react";
 
-const ExporterSidebar = ({ activeTab, setActiveTab }) => {
+const ExporterSidebar = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const path = location.pathname.split(["/"]);
+    const [activeTab, setActiveTab] = useState('');
+
+    useEffect(() => {
+        setActiveTab(path[path.length - 1]);
+    }, [path]);
+
     return (
         <div className="bg-white shadow-sm" style={{ minHeight: "calc(100vh - 56px)" }}>
             <div className="p-3 border-bottom">
@@ -18,11 +28,27 @@ const ExporterSidebar = ({ activeTab, setActiveTab }) => {
             <Nav className="flex-column">
                 <Nav.Item>
                     <Nav.Link
+                        active={activeTab === "dashboard" || ""}
+                        onClick={() => {
+                            setActiveTab("dashboard")
+                            navigate("dashboard")
+                        }}
+                        className={`d-flex align-items-center gap-2 py-3 px-3 ${activeTab.includes("dashboard") ? "bg-primary text-white" : "text-dark"}`}
+                        style={{ cursor: "pointer" }}
+                    >
+                        <Calendar size={18} />
+                        <div className="flex-grow-1">
+                            <div>Dashboard</div>
+                        </div>
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
                         active={activeTab === "pending"}
-                         onClick={() => {
+                        onClick={() => {
                             setActiveTab("pending")
                             navigate("pending-orders")
-                        }}                        className={`d-flex align-items-center gap-2 py-3 px-3 ${activeTab === "pending" ? "bg-primary text-white" : "text-dark"}`}
+                        }} className={`d-flex align-items-center gap-2 py-3 px-3 ${activeTab.includes("pending") ? "bg-primary text-white" : "text-dark"}`}
                         style={{ cursor: "pointer" }}
                     >
                         <Clock size={18} />
@@ -47,7 +73,7 @@ const ExporterSidebar = ({ activeTab, setActiveTab }) => {
                             setActiveTab("history")
                             navigate("history")
                         }}
-                        className={`d-flex align-items-center gap-2 py-3 px-3 ${activeTab === "history" ? "bg-primary text-white" : "text-dark"}`}
+                        className={`d-flex align-items-center gap-2 py-3 px-3 ${activeTab.includes("history") ? "bg-primary text-white" : "text-dark"}`}
                         style={{ cursor: "pointer" }}
                     >
                         <CheckCircle size={18} />

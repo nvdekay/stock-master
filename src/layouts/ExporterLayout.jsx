@@ -18,14 +18,14 @@ import { Outlet } from "react-router-dom";
 
 
 const ExporterLayout = () => {
-    const [activeTab, setActiveTab] = useState("pending")
+    // const [activeTab, setActiveTab] = useState("pending")
     // const [showSidebar, setShowSidebar] = useState(true);
     return (
         <div className="min-vh-100 bg-light">
             <Container fluid>
                 <Row>
                     <Col lg={3} xl={2} className="d-none d-lg-block p-0">
-                        <ExporterSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+                        <ExporterSidebar  />
                     </Col>
                     {/* <Row>
                     <Offcanvas show={showSidebar} onHide={() => setShowSidebar(false)} placement="start">
