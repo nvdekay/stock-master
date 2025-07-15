@@ -27,6 +27,7 @@ import {
 } from "lucide-react"
 import api from "../../../api/axiosInstance"
 import { useAuth } from "../../../auth/AuthProvider"
+import AlertsPanel from "../../../components/staff/exporter/AlertsPanel"
 
 // const exportHistory = [
 //     {
@@ -97,16 +98,16 @@ const ExportHistory = () => {
     const [timeFilter, setTimeFilter] = useState("all")
     const [exportHistory, setExportHistory] = useState([]);
     // const [exp   ]
-    const {user} = useAuth();
+    const { user } = useAuth();
 
     useEffect(() => {
+        console.log(user.warehouseId)
         const fetchAllExportOrder = async () => {
             try {
-                const exportOrderRes = await api.get(`http://localhost:9999/orders?sendWarehouseId=${user.warehouseId}`);
-                setExportHistory(exportOrderRes.data)
-                // console.log(exportOrderRes.data)
-
-            } catch(err) {
+                const exportOrderRes = await api.get(`http://localhost:9999/orders?_embed=orderDetails&sendWarehouseId=${user.warehouseId}`);
+                // const order
+                console.log(exportOrderRes.data)
+            } catch (err) {
                 console.log('error fetching order: ', err)
             }
         }
@@ -118,10 +119,11 @@ const ExportHistory = () => {
         let filtered = exportHistory.filter((order) => {
             const matchesSearch =
                 // order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                order.id.toLowerCase().includes(searchTerm.toLowerCase()) 
-                // ||
-                // order.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                // order.trackingNumber.toLowerCase().includes(searchTerm.toLowerCase())
+                // order.id.toLowerCase().includes(searchTerm.toLowerCase()) 
+                true
+            // ||
+            // order.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            // order.trackingNumber.toLowerCase().includes(searchTerm.toLowerCase())
 
             const matchesStatus = statusFilter === "All" || order.status === statusFilter
             return matchesSearch && matchesStatus
@@ -173,10 +175,10 @@ const ExportHistory = () => {
         )
     }
 
-    const uniqueStatuses = ["All", ...Array.from(new Set(exportHistory.map((order) => order.status)))]
+    const uniqueStatuses = ["All", ...Array.from(new Set(exportHistory?.map((order) => order.status)))]
     const totalValue = filteredHistory.reduce((sum, order) => sum + order.value, 0)
     const totalItems = filteredHistory.reduce((sum, order) => sum + order.items, 0)
-    const deliveredOrders = filteredHistory.filter((o) => o.status === "Delivered").length
+    const deliveredOrders = filteredHistory.filter((o) => o.status === "completed").length
     const avgRating =
         filteredHistory.filter((o) => o.rating).reduce((sum, o) => sum + (o.rating || 0), 0) /
         filteredHistory.filter((o) => o.rating).length
@@ -350,61 +352,79 @@ const ExportHistory = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredHistory.map((order) => (
-                                    <tr key={order.id}>
-                                        <td>
-                                            <div>
-                                                <strong className="text-primary">{order.id}</strong>
-                                                <br />
-                                                <small className="text-muted">{order.items} items shipped</small>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <strong>{order.customer}</strong>
-                                                <br />
-                                                <small className="text-muted">
-                                                    <Globe size={12} className="me-1" />
-                                                    {order.destination}
-                                                </small>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <strong className="text-success">${order.value.toLocaleString()}</strong>
-                                            <br />
-                                            <small className="text-muted">${(order.value / order.items).toFixed(0)}/item</small>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <strong>Shipped:</strong> {new Date(order.shipDate).toLocaleDateString()}
-                                                <br />
-                                                <strong>Delivered:</strong> {new Date(order.deliveryDate).toLocaleDateString()}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <Badge bg={getStatusVariant(order.status)} className="d-flex align-items-center gap-1 mb-2">
-                                                    {getStatusIcon(order.status)}
-                                                    {order.status}
-                                                </Badge>
-                                                {renderStars(order.rating)}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <code className="small bg-light p-1 rounded">{order.trackingNumber}</code>
-                                        </td>
-                                        <td>
-                                            <ButtonGroup size="sm">
-                                                <Button variant="outline-primary" title="View Details">
-                                                    <Eye size={14} />
-                                                </Button>
-                                                <Button variant="outline-success" title="Download Invoice">
-                                                    <Download size={14} />
-                                                </Button>
-                                            </ButtonGroup>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {
+                                    filteredHistory.length !== 0 ?
+                                        exportHistory.length !== 0 ?
+                                            filteredHistory.map((order) => (
+                                                <tr key={order.id}>
+                                                    <td>
+                                                        <div>
+                                                            <strong className="text-primary">{order.id}</strong>
+                                                            <br />
+                                                            <small className="text-muted">{order.items} items shipped</small>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <strong>{order.customer}</strong>
+                                                            <br />
+                                                            <small className="text-muted">
+                                                                <Globe size={12} className="me-1" />
+                                                                {order.destination}
+                                                            </small>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <strong className="text-success">${order.value.toLocaleString()}</strong>
+                                                        <br />
+                                                        <small className="text-muted">${(order.value / order.items).toFixed(0)}/item</small>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <strong>Shipped:</strong> {new Date(order.shipDate).toLocaleDateString()}
+                                                            <br />
+                                                            <strong>Delivered:</strong> {new Date(order.deliveryDate).toLocaleDateString()}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <Badge bg={getStatusVariant(order.status)} className="d-flex align-items-center gap-1 mb-2">
+                                                                {getStatusIcon(order.status)}
+                                                                {order.status}
+                                                            </Badge>
+                                                            {renderStars(order.rating)}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <code className="small bg-light p-1 rounded">{order.trackingNumber}</code>
+                                                    </td>
+                                                    <td>
+                                                        <ButtonGroup size="sm">
+                                                            <Button variant="outline-primary" title="View Details">
+                                                                <Eye size={14} />
+                                                            </Button>
+                                                            <Button variant="outline-success" title="Download Invoice">
+                                                                <Download size={14} />
+                                                            </Button>
+                                                        </ButtonGroup>
+                                                    </td>
+                                                </tr>
+                                            ))
+
+                                            : <tr>
+                                                <td colSpan={10}>
+                                                    <Alert variant="warning">There is no such Order</Alert>
+                                                </td>
+                                            </tr> :
+                                        <tr>
+                                            <td colSpan={10}>
+                                                <Alert variant="danger">
+                                                    There are no exported order that you handle yet
+                                                </Alert>
+                                            </td>
+                                        </tr>
+                                }
+
                             </tbody>
                         </Table>
                     </div>

@@ -82,7 +82,7 @@
       "id": "12",
       "username": "staff04",
       "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "role": "staff",
+      "role": "exporter",
       "fullName": "Bui Thi K",
       "email": "k@example.com",
       "enterpriseId": "4",
