@@ -97,16 +97,27 @@ const ExportHistory = () => {
     const [statusFilter, setStatusFilter] = useState("All")
     const [timeFilter, setTimeFilter] = useState("all")
     const [exportHistory, setExportHistory] = useState([]);
+    const [filteredHistory, setFilteredHistory] = useState([]);
     // const [exp   ]
     const { user } = useAuth();
 
     useEffect(() => {
-        console.log(user.warehouseId)
+        // console.log(user.warehouseId)
         const fetchAllExportOrder = async () => {
             try {
                 const exportOrderRes = await api.get(`http://localhost:9999/orders?_embed=orderDetails&sendWarehouseId=${user.warehouseId}`);
                 // const order
-                console.log(exportOrderRes.data)
+                console.log("exportOrderRes: ", exportOrderRes.data)
+                let exportOrder = exportOrderRes.data.map((order) => {
+                    order.value = order.orderDetails.reduce((total, product) => total + product.price, 0);
+                    order.items = order.orderDetails.length;
+                    // console.log( order.orderDetails.reduce((total, product) => total + product.price, 0));
+                    return order;
+                })
+                console.log("exportHistory: ", exportOrder)
+                setExportHistory(exportOrder);
+                setFilteredHistory(exportOrder);
+
             } catch (err) {
                 console.log('error fetching order: ', err)
             }
@@ -115,35 +126,72 @@ const ExportHistory = () => {
         fetchAllExportOrder();
     }, [])
 
-    const filteredHistory = useMemo(() => {
-        let filtered = exportHistory.filter((order) => {
-            const matchesSearch =
-                // order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                // order.id.toLowerCase().includes(searchTerm.toLowerCase()) 
-                true
-            // ||
-            // order.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            // order.trackingNumber.toLowerCase().includes(searchTerm.toLowerCase())
+    useEffect(() => {
+        console.log("timeFilter: ", timeFilter)
+        const filterOrder = () => {
+            let filtered = exportHistory.filter((order) => {
+                const matchesSearch = searchTerm.length !== 0 ?
+                    // order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    order.id.toLowerCase().includes(searchTerm.toLowerCase())
+                    : true
+                // ||
+                // order.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                // order.trackingNumber.toLowerCase().includes(searchTerm.toLowerCase())
 
-            const matchesStatus = statusFilter === "All" || order.status === statusFilter
-            return matchesSearch && matchesStatus
-        })
+                const matchesStatus = statusFilter === "All" || order.status === statusFilter
+                let index = -1;
+                switch (timeFilter) {
+                    case "day":
+                        index = 2;
+                        break;
+                    case "month":
+                        index = 1;
+                        break;
+                    case "year":
+                        index = 0;
+                        break;
+                    default:
+                        break;
+                }
+                console.log("index: ", index)
 
-        console.log(filtered)
-        return filtered
+                console.log("date: ", order.date.split("-"))
+                console.log("date: ", new Date().toLocaleDateString((
+                    "en-CA"
+                )).split("-")[index])
 
-    }, [searchTerm, statusFilter])
+                // if (index === -1) {
+                const matchesTime = index === -1 ?
+                    true
+                    :
+                    // } else {
+                    order.date.split("-")[index] ===
+                    new Date().toLocaleDateString((
+                        "en-CA"
+                    )).split("-")[index]
+
+                console.log("matchTime: ", matchesTime);
+                return matchesSearch && matchesStatus && matchesTime;
+            })
+
+            console.log("filtered: ", filtered);
+            setFilteredHistory(filtered)
+        }
+
+        filterOrder();
+
+    }, [searchTerm, timeFilter, statusFilter])
 
     const getStatusVariant = (status) => {
-        switch (status) {
-            case "Delivered":
+        switch (status.toLowerCase()) {
+            case "completed":
                 return "success"
-            case "In Transit":
+            case "in_transit":
                 return "primary"
-            case "Delayed":
-                return "warning"
             case "Cancelled":
                 return "danger"
+            case "shipped":
+                return "warning"
             default:
                 return "secondary"
         }
@@ -151,9 +199,9 @@ const ExportHistory = () => {
 
     const getStatusIcon = (status) => {
         switch (status) {
-            case "Delivered":
+            case "completed":
                 return <CheckCircle size={16} />
-            case "In Transit":
+            case "in_transit":
                 return <Clock size={16} />
             case "Cancelled":
                 return <XCircle size={16} />
@@ -176,9 +224,11 @@ const ExportHistory = () => {
     }
 
     const uniqueStatuses = ["All", ...Array.from(new Set(exportHistory?.map((order) => order.status)))]
+    // console.log('unique status: ', uniqueStatuses)
     const totalValue = filteredHistory.reduce((sum, order) => sum + order.value, 0)
-    const totalItems = filteredHistory.reduce((sum, order) => sum + order.items, 0)
+    const totalItems = filteredHistory.reduce((sum, order) => sum + order.orderDetails.length, 0)
     const deliveredOrders = filteredHistory.filter((o) => o.status === "completed").length
+    const returnedOrders = filteredHistory.filter((o) => o.status === "returned").length
     const avgRating =
         filteredHistory.filter((o) => o.rating).reduce((sum, o) => sum + (o.rating || 0), 0) /
         filteredHistory.filter((o) => o.rating).length
@@ -213,16 +263,16 @@ const ExportHistory = () => {
                     <Form.Label>Filter by Time</Form.Label>
                     <Form.Select value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)}>
                         <option key={"all"} value={"all"} selected={timeFilter.includes("all")}>All</option>
-                        <option key={"year"} value={"year"} selected={timeFilter.includes("year")}>Year</option>
-                        <option key={"month"} value={"month"} selected={timeFilter.includes("month")}>Month</option>
-                        <option key={"day"} value={"day"} selected={timeFilter.includes("day")}>Date</option>
+                        <option key={"year"} value={"year"} selected={timeFilter.includes("year")}>This Year</option>
+                        <option key={"month"} value={"month"} selected={timeFilter.includes("month")}>This Month</option>
+                        <option key={"day"} value={"day"} selected={timeFilter.includes("day")}>This Date</option>
                     </Form.Select>
                 </Col>
             </Row>
 
             <Row className="mb-4">
                 <Col xl={3} md={6} className="mb-3">
-                    <Card className="bg-gradient" style={{ background: "linear-gradient(45deg, #28a745, #20c997)" }}>
+                    <Card className="text-white" style={{ background: "linear-gradient(45deg, #007bff, #6610f2)" }}>
                         <Card.Body>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
@@ -235,7 +285,7 @@ const ExportHistory = () => {
                     </Card>
                 </Col>
                 <Col xl={3} md={6} className="mb-3">
-                    <Card className="bg-gradient" style={{ background: "linear-gradient(45deg, #007bff, #6610f2)" }}>
+                    <Card className="text-white" style={{ background: "linear-gradient(45deg, #fd7e14, #ffc107)" }}>
                         <Card.Body>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
@@ -248,7 +298,7 @@ const ExportHistory = () => {
                     </Card>
                 </Col>
                 <Col xl={3} md={6} className="mb-3">
-                    <Card className="bg-gradient" style={{ background: "linear-gradient(45deg, #fd7e14, #e83e8c)" }}>
+                    <Card className="text-white" style={{ background: "linear-gradient(45deg, #28a745, #20c997)" }}>
                         <Card.Body>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
@@ -261,31 +311,46 @@ const ExportHistory = () => {
                     </Card>
                 </Col>
                 <Col xl={3} md={6} className="mb-3">
-                    <Card className="bg-gradient" style={{ background: "linear-gradient(45deg, #ffc107, #fd7e14)" }}>
+                    <Card className="text-white" style={{ background: "linear-gradient(45deg, #fd7e14, #e83e8c)" }}>
                         <Card.Body>
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h6 className="mb-1 opacity-75">Avg Rating</h6>
-                                    <h4 className="mb-0">{avgRating.toFixed(1)} ★</h4>
+                                    <h6 className="mb-1 opacity-75">Returned Order</h6>
+                                    <h4 className="mb-0">{returnedOrders}</h4>
                                 </div>
                                 <Users size={32} className="opacity-75" />
                             </div>
                         </Card.Body>
                     </Card>
                 </Col>
+
             </Row>
 
             {/* Performance Alert */}
-            {/* <Alert variant="info" className="mb-4">
-                <Alert.Heading className="h6 mb-2">
-                    <Bell className="me-2" size={16} />
-                    Performance Summary
-                </Alert.Heading>
-                <p className="mb-0">
-                    You have successfully delivered <strong>{deliveredOrders}</strong> orders with an average rating of{" "}
-                    <strong>{avgRating.toFixed(1)} stars</strong>. Keep up the excellent work!
-                </p>
-            </Alert> */}
+            {deliveredOrders === 0 ?
+                <Alert variant="danger" className="mb-4">
+                    <Alert.Heading className="h6 mb-2">
+                        <Bell className="me-2" size={16} />
+                        Performance Summary
+                    </Alert.Heading>
+                    <p className="mb-0">
+                        You have <strong>NOT</strong> delivered any order yet. Please start working <strong>NOW</strong>!
+                    </p>
+                </Alert>
+
+
+
+                : <Alert variant="info" className="mb-4">
+                    <Alert.Heading className="h6 mb-2">
+                        <Bell className="me-2" size={16} />
+                        Performance Summary
+                    </Alert.Heading>
+                    <p className="mb-0">
+                        You have successfully delivered <strong>{deliveredOrders}</strong> order(s)
+                        . Keep up the excellent work!
+                    </p>
+                </Alert>
+            }
 
             {/* Search and Filters */}
             <Card className="mb-4">
@@ -353,15 +418,15 @@ const ExportHistory = () => {
                             </thead>
                             <tbody>
                                 {
-                                    filteredHistory.length !== 0 ?
-                                        exportHistory.length !== 0 ?
+                                    exportHistory.length !== 0 ?
+                                        filteredHistory.length !== 0 ?
                                             filteredHistory.map((order) => (
                                                 <tr key={order.id}>
                                                     <td>
                                                         <div>
                                                             <strong className="text-primary">{order.id}</strong>
                                                             <br />
-                                                            <small className="text-muted">{order.items} items shipped</small>
+                                                            <small className="text-muted">{order.items} items {order.status.includes("in_trasit") ? "being" : ""} shipped</small>
                                                         </div>
                                                     </td>
                                                     <td>
@@ -375,15 +440,15 @@ const ExportHistory = () => {
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <strong className="text-success">${order.value.toLocaleString()}</strong>
+                                                        <strong className="text-success">${order.value?.toLocaleString()}</strong>
                                                         <br />
-                                                        <small className="text-muted">${(order.value / order.items).toFixed(0)}/item</small>
+                                                        <small className="text-muted">${(order.value / order.items)?.toFixed(0)}/item</small>
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <strong>Shipped:</strong> {new Date(order.shipDate).toLocaleDateString()}
+                                                            <strong>Shipped:</strong> {new Date(order.shipDate)?.toLocaleDateString()}
                                                             <br />
-                                                            <strong>Delivered:</strong> {new Date(order.deliveryDate).toLocaleDateString()}
+                                                            <strong>Delivered:</strong> {new Date(order.deliveryDate)?.toLocaleDateString()}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -415,8 +480,9 @@ const ExportHistory = () => {
                                                 <td colSpan={10}>
                                                     <Alert variant="warning">There is no such Order</Alert>
                                                 </td>
-                                            </tr> :
-                                        <tr>
+                                            </tr>
+
+                                        : <tr>
                                             <td colSpan={10}>
                                                 <Alert variant="danger">
                                                     There are no exported order that you handle yet
