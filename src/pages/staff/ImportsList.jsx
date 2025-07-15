@@ -30,11 +30,15 @@ const ImportsList = () => {
       try {
         setLoading(true);
 
-        // Fetch import orders for this staff's warehouse
+        if (!user?.warehouseId) {
+          setError("No warehouse assigned to your account");
+          setLoading(false);
+          return;
+        }
+
         const params = {
           type: "import",
-          receiveWarehouseId: user?.warehouseId,
-          _expand: "enterprise",
+          receiveWarehouseId: user.warehouseId,
           _sort: "date",
           _order: "desc",
         };
@@ -97,7 +101,7 @@ const ImportsList = () => {
 
   return (
     <Container className="my-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      {/* <div className="d-flex justify-content-between align-items-center mb-3">
         <h1>Import Orders</h1>
         <Button
           variant="primary"
@@ -105,7 +109,7 @@ const ImportsList = () => {
         >
           Create New Import
         </Button>
-      </div>
+      </div> */}
 
       <Card className="mb-4">
         <Card.Body>
@@ -115,7 +119,7 @@ const ImportsList = () => {
                 <FaSearch />
               </InputGroup.Text>
               <Form.Control
-                placeholder="Search by ID, enterprise, or note"
+                placeholder="Search by ID or note"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -150,7 +154,7 @@ const ImportsList = () => {
             <tbody>
               {filteredImports.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="text-center">
+                  <td colSpan="5" className="text-center">
                     No import orders found
                   </td>
                 </tr>

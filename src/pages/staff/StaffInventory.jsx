@@ -66,7 +66,7 @@ const StaffInventory = () => {
     };
 
     fetchInventoryData();
-  }, [user.warehouseId]);
+  }, [user?.warehouseId]);
 
   const handleSort = (field) => {
     if (sortField === field) {
@@ -89,9 +89,7 @@ const StaffInventory = () => {
         (item.product?.sku &&
           item.product.sku.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (item.product?.description &&
-          item.product.description
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()))
+          item.product.description.toLowerCase().includes(searchTerm.toLowerCase()))
     )
     .sort((a, b) => {
       let compareA, compareB;
@@ -197,7 +195,7 @@ const StaffInventory = () => {
                 <FaSearch />
               </InputGroup.Text>
               <Form.Control
-                placeholder="Search by name, SKU, or description"
+                placeholder="Search by name or description"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -238,7 +236,7 @@ const StaffInventory = () => {
             <tbody>
               {filteredInventory.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="text-center">
+                  <td colSpan="5" className="text-center">
                     No inventory items found
                   </td>
                 </tr>
@@ -251,12 +249,11 @@ const StaffInventory = () => {
                           item.product?.image ||
                           "/assets/images/products/default.jpg"
                         }
-                        alt={item.product?.name}
+                        alt={item.product?.name || "Product"}
                         style={{ maxHeight: "50px" }}
                       />
                     </td>
-                    <td>{item.product?.name}</td>
-                    <td>{item.product?.sku}</td>
+                    <td>{item.product?.name || "Unknown Product"}</td>
                     <td>
                       {item.quantity}
                       {item.quantity <= 5 && (

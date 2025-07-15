@@ -1214,6 +1214,20 @@
       "receiveWarehouseId": "13",
       "buyerId": null,
       "note": "ok"
+    },
+    {
+      "type": "import",
+      "status": "completed",
+      "date": "2025-07-15",
+      "enterpriseId": "3",
+      "senderStaffId": null,
+      "receiverStaffId": "4",
+      "sendWarehouseId": "3",
+      "receiveWarehouseId": "1",
+      "buyerId": null,
+      "note": "dddd",
+      "id": "as0Vcap",
+      "completedDate": "2025-07-15T17:14:53.326Z"
     }
   ],
   "orderDetails": [
@@ -1315,6 +1329,38 @@
       "productId": "2",
       "quantity": 1,
       "price": 8490000
+    },
+    {
+      "orderId": "as0Vcap",
+      "productId": "1",
+      "quantity": 8,
+      "price": 1290000,
+      "id": "YP8uUoc",
+      "status": "accepted"
+    },
+    {
+      "orderId": "as0Vcap",
+      "productId": "2",
+      "quantity": 8,
+      "price": 8490000,
+      "id": "RtO7xtx",
+      "status": "accepted"
+    },
+    {
+      "orderId": "as0Vcap",
+      "productId": "1",
+      "quantity": 2,
+      "price": 1290000,
+      "status": "refunded",
+      "id": "y5rS_IG"
+    },
+    {
+      "orderId": "as0Vcap",
+      "productId": "2",
+      "quantity": 2,
+      "price": 8490000,
+      "status": "refunded",
+      "id": "Tjpt-9C"
     }
   ],
   "shipments": [
@@ -1408,6 +1454,12 @@
       "userId": "4",
       "action": "Import order #XVWButc processed. 0 items accepted, 1 items refunded",
       "timestamp": "2025-07-13T05:54:23.904Z"
+    },
+    {
+      "userId": "4",
+      "action": "Import order #as0Vcap processed",
+      "timestamp": "2025-07-15T17:14:53.359Z",
+      "id": "xriwGi-"
     }
   ],
   "product_types": [
@@ -1496,7 +1548,7 @@
     {
       "productId": "1",
       "warehouseId": "1",
-      "quantity": 12,
+      "quantity": 20,
       "id": "1"
     },
     {
@@ -1702,6 +1754,12 @@
       "productId": "35",
       "warehouseId": "7",
       "quantity": 90
+    },
+    {
+      "productId": "2",
+      "warehouseId": "1",
+      "quantity": 8,
+      "id": "ysUPI1q"
     }
   ]
 }
