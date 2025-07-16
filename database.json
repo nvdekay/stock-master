@@ -82,7 +82,7 @@
       "id": "12",
       "username": "staff04",
       "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "role": "staff",
+      "role": "exporter",
       "fullName": "Bui Thi K",
       "email": "k@example.com",
       "enterpriseId": "4",
@@ -112,7 +112,7 @@
       "id": "15",
       "username": "staff05",
       "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
-      "role": "staff",
+      "role": "exporter",
       "fullName": "Ngo Van N",
       "email": "n@example.com",
       "enterpriseId": "5",
@@ -207,22 +207,33 @@
       "email": "qlk@example.com",
       "enterpriseId": "2",
       "warehouseId": "13"
+    },
+    {
+      "id": "65705",
+      "username": "exporter01",
+      "password": "$2b$10$3798TZULTmGpzuM/ZoNB1.hPlt4./KH9ijAHPVA/iXDEGwI3.UKNO",
+      "role": "exporter",
+      "fullName": "exporter 01",
+      "email": "ep1@mail.com",
+      "warehouseId": "1",
+      "enterpriseId": "2"
     }
+
   ],
   "locations": [
     {
       "id": "1",
-      "userId": "1",
+      "userId": "7",
       "location": "123 Đường Lê Lợi, Quận 1, TP.HCM"
     },
     {
       "id": "2",
-      "userId": "3",
+      "userId": "13",
       "location": "456 Đường Trần Hưng Đạo, Quận 5, TP.HCM"
     },
     {
       "id": "3",
-      "userId": "4",
+      "userId": "16",
       "location": "789 Đường Nguyễn Văn Cừ, Quận 10, TP.HCM"
     }
   ],
@@ -1146,7 +1157,7 @@
       "id": "5",
       "type": "wholesale",
       "status": "completed",
-      "date": "2025-07-01",
+      "date": "2024-07-01",
       "senderStaffId": "12",
       "receiverStaffId": null,
       "sendWarehouseId": "3",
@@ -1227,6 +1238,20 @@
       "expectedDeliveryDate": "2025-07-18",
       "id": "XVWButc",
       "completedDate": "2025-07-13T05:54:23.904Z"
+    },
+    {
+      "type": "transfer",
+      "status": "pending",
+      "date": "2025-07-13",
+      "senderStaffId": null,
+      "receiverStaffId": "4",
+      "sendWarehouseId": "3",
+      "receiveWarehouseId": "1",
+      "buyerId": null,
+      "note": "nothing",
+      "expectedDeliveryDate": "2025-07-18",
+      "id": "XVWBUtc",
+      "completedDate": null
     },
     {
       "type": "transfer",
@@ -1410,6 +1435,13 @@
       "price": 8490000,
       "status": "refunded",
       "id": "Tjpt-9C"
+    },
+    {
+      "id": "11",
+      "orderId": "XVWBUtc",
+      "productId": "2",
+      "quantity": 1,
+      "price": 8490000
     }
   ],
   "shipments": [

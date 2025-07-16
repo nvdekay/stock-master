@@ -37,7 +37,7 @@ app.use((req, res, next) => {
     "/products",
     "/product_types",
   ];
-  const isPublicRoute = publicPaths.includes(req.path);
+  const isPublicRoute = publicPaths.some(path => req.path.includes(path));
 
   if (isPublicRoute) {
     return next();

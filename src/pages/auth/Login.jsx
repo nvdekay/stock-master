@@ -82,6 +82,10 @@ const LoginPage = () => {
           case "staff":
             navigate("/staff/dashboard");
             break;
+          case "exporter":
+            navigate("/exporter");
+            break;
+
           case "manager":
             navigate("/manager");
             break;
