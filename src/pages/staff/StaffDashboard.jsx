@@ -27,18 +27,21 @@ const StaffDashboard = () => {
       try {
         setLoading(true);
 
-        // Fetch warehouse information
-        if (user?.warehouseId) {
-          const warehouseRes = await api.get(`/warehouses/${user.warehouseId}`);
-          setWarehouse(warehouseRes.data);
+        if (!user?.warehouseId) {
+          setError("No warehouse assigned to your account");
+          setLoading(false);
+          return;
         }
 
-        // Fetch import orders for this staff's warehouse
+        const warehouseRes = await api.get(`/warehouses/${user.warehouseId}`);
+        setWarehouse(warehouseRes.data);
+
         const ordersRes = await api.get("/orders", {
           params: {
             type: "import",
-            receiveWarehouseId: user?.warehouseId,
-            _expand: "enterprise",
+            receiveWarehouseId: user.warehouseId,
+            _sort: "date",
+            _order: "desc",
           },
         });
 
@@ -135,8 +138,7 @@ const StaffDashboard = () => {
                         <br />
                         <strong>From:</strong> {order.sendWarehouseId}
                         <br />
-                        <strong>Note:</strong>{" "}
-                        {order.note || "No note provided"}
+                        <strong>Note:</strong> {order.note || "No note provided"}
                       </Card.Text>
                       <Button
                         variant="primary"
@@ -176,8 +178,7 @@ const StaffDashboard = () => {
                         <br />
                         <strong>From:</strong> {order.sendWarehouseId}
                         <br />
-                        <strong>Note:</strong>{" "}
-                        {order.note || "No note provided"}
+                        <strong>Note:</strong> {order.note || "No note provided"}
                       </Card.Text>
                       <Button
                         variant="outline-primary"
@@ -203,12 +204,12 @@ const StaffDashboard = () => {
           >
             View Inventory
           </Button>
-          <Button
+          {/* <Button
             variant="info"
             onClick={() => navigate("/staff/create-import")}
           >
             Create Import Order
-          </Button>
+          </Button> */}
         </Col>
       </Row>
     </Container>

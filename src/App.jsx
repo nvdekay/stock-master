@@ -44,6 +44,13 @@ import WarehousemanLayout from "./layouts/WarehousemanLayout";
 import WarehousemanDashboard from "./pages/warehouseman/WarehousemanDashboard";
 import ImportProducts from "./pages/warehouseman/ImportProducts";
 import Cart from "./pages/Cart";
+import ExportOrderManagement from "./pages/staff/exporter/PendingOrders";
+import ExporterDashboard from "./pages/staff/exporter/ExporterDashboard";
+import ExporterLayout from "./layouts/ExporterLayout";
+import PendingOrders from "./pages/staff/exporter/PendingOrders";
+import ExportHistory from "./pages/staff/exporter/ExportHistory";
+import CreateProduct from "./pages/warehouseman/CreateProduct";
+import UserProfile from "./pages/Profile";
 
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
@@ -65,12 +72,13 @@ function App() {
           <Route path="product/:id" element={<ProductDetail />} /> 
           <Route path="cart" element={<Cart />} />
 
+
           {/* Unauthenticated Routes */}
           {/* route public mà không cần đăng nhập */}
           <Route path="/public">
             <Route index element={<ProductList />} />
             <Route path="products" element={<ProductList />} />
-             <Route path="product/:id" element={<ProductDetail />} /> 
+            <Route path="product/:id" element={<ProductDetail />} />
             {/* ... ném các route tương tự mà không cần đăng nhập vẫn xem được vào đây */}
           </Route>
 
@@ -83,6 +91,7 @@ function App() {
           {/* Routes that requires user to log in */}
           <Route path="/authenticated" element={<ProtectedRoute />}>
             {/* route mà cần user đã đăng nhập mới truy cập được thì thả vào đây */}
+            <Route path="profile" element={<UserProfile />} />
           </Route>
 
           {/* Nếu trang liến quan đến quản lí mà
@@ -130,6 +139,18 @@ function App() {
             </Route>
           </Route>
 
+          <Route path="/exporter" element={<ProtectedRoute requiredRoles={["exporter"]} />}>
+            <Route element={<ExporterLayout />} >
+              {/* <Route index element={<ExporterDashboard />} /> */}
+              <Route index element={<PendingOrders />} />
+              <Route path="dashboard" element={<ExporterDashboard />} />
+              <Route path="pending-orders" element={<PendingOrders />} />
+              <Route path="history" element={<ExportHistory />} />
+            </Route>
+          </Route>
+
+
+
           {/* làm tương tự cho các route cần role khác */}
           <Route
             path="/manager"
@@ -151,6 +172,7 @@ function App() {
             <Route element={<WarehousemanLayout />}>
               <Route index element={<WarehousemanDashboard />} />
               <Route path="import" element={<ImportProducts />} />
+              <Route path="create-product" element={<CreateProduct />} />
             </Route>
           </Route>
         </Route>
@@ -166,7 +188,7 @@ function App() {
           <Route path="manage-warehouse" element={<AdminManageWarehouse />} />
         </Route>
       </Routes>
-    </Router>
+    </Router >
   );
 }
 

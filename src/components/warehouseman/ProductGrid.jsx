@@ -24,7 +24,7 @@ function ProductGrid({
                 return (
                     <Col key={product.id} lg={3} md={6} sm={6} className="mb-4">
                         <Card className="h-100 shadow-sm">
-                            {/* Product Image */}
+                            
                             <div style={{ height: '200px', overflow: 'hidden' }}>
                                 <Image
                                     className='mt-4'

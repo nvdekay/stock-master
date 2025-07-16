@@ -1,8 +1,9 @@
-import { Card, Button, Dropdown, Row, Col } from 'react-bootstrap';
+import { Card, Button, Dropdown, Row, Col, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 function WarehouseCard({ warehouse, onEdit, onDelete, onView, isOwner }) {
   const navigate = useNavigate();
+  
   return (
     <Card
       className="h-100 shadow-sm"
@@ -15,12 +16,12 @@ function WarehouseCard({ warehouse, onEdit, onDelete, onView, isOwner }) {
       <Card.Body className="d-flex flex-column p-4">
         <div className="d-flex justify-content-between align-items-start mb-3">
           <div className="flex-grow-1 me-3">
-            <h5 className="mb-1 fw-bold ">
+            <h5 className="mb-1 fw-bold">
               {warehouse.name}
             </h5>
             <div className="d-flex align-items-center text-muted small">
               <i className="fas fa-map-marker-alt me-2"></i>
-              <span>{warehouse.location || 'Chưa có địa chỉ'}</span>
+              <span>{warehouse.location || 'No address'}</span>
             </div>
           </div>
           {isOwner && (
@@ -44,6 +45,30 @@ function WarehouseCard({ warehouse, onEdit, onDelete, onView, isOwner }) {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+          )}
+        </div>
+
+        {/* Warehouse Manager Info */}
+        <div className="mb-3 p-2 bg-light rounded">
+          <div className="d-flex align-items-center justify-content-between">
+            <span className="small fw-medium text-muted">Manager:</span>
+            {warehouse.warehouseman ? (
+              <Badge bg="success">Assigned</Badge>
+            ) : (
+              <Badge bg="warning">Not Assigned</Badge>
+            )}
+          </div>
+          {warehouse.warehouseman ? (
+            <div className="mt-1">
+              <div className="fw-medium small">{warehouse.warehouseman.fullName}</div>
+              <div className="text-muted" style={{ fontSize: '0.75rem' }}>
+                {warehouse.warehouseman.username}
+              </div>
+            </div>
+          ) : (
+            <div className="mt-1 text-muted small">
+              No manager assigned
+            </div>
           )}
         </div>
 
@@ -80,7 +105,6 @@ function WarehouseCard({ warehouse, onEdit, onDelete, onView, isOwner }) {
             View Details
           </Button>
         </div>
-
       </Card.Body>
     </Card>
   );

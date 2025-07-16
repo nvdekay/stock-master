@@ -13,23 +13,23 @@ const Header = () => {
     const handleShowLogout = () => setShowLogoutModal(true)
     const handleHideLogout = () => setShowLogoutModal(false)
 
-
-    // console.log(user)
-
     if (loading) return <div className="text-center">Loading</div>;
+
+    const dashboardLink = user ? `/${user.role}` : "/"
+    // console.log(dashboardLink)
 
     return (
         <Navbar bg="light" variant="light" className="shadow-sm border-bottom">
             <Container fluid>
                 {/* Company Name */}
-                <Navbar.Brand href="#" className="fw-bold fs-3 text-primary">
+                <Navbar.Brand href="/" className="fw-bold fs-3 text-primary">
                     StockMaster
                 </Navbar.Brand>
 
                 {/* Right side items */}
                 <Nav className="ms-auto d-flex align-items-center">
                     {/* Cart Icon */}
-                    { user ? 
+                    {user ?
                         user.role.toLowerCase().includes("buyer") ?
                             <CartButton />
                             : ""
@@ -49,7 +49,19 @@ const Header = () => {
                         }
 
                         <Dropdown.Menu className="shadow">
-                            <Dropdown.Item href="#profile">
+
+                            {
+                                ["buyer", "admin"].some(role => user?.role.includes(role)) ?
+                                    ""
+                                    :
+                                    <Dropdown.Item href={dashboardLink}>
+                                        <ShoppingCart size={16} className="me-2" />
+                                        View Dashboard
+                                    </Dropdown.Item>
+                            }
+                            <Dropdown.Item
+                                href="/authenticated/profile"
+                            >
                                 <User size={16} className="me-2" />
                                 View Profile
                             </Dropdown.Item>
@@ -57,6 +69,8 @@ const Header = () => {
                                 <ShoppingCart size={16} className="me-2" />
                                 View Order History
                             </Dropdown.Item>
+
+
                             <Dropdown.Divider />
                             <Dropdown.Item
                                 href="#"
@@ -65,7 +79,6 @@ const Header = () => {
                             >
                                 <LogOut size={16} /> Sign out
                             </Dropdown.Item>
-
                         </Dropdown.Menu>
                     </Dropdown>
                 </Nav>

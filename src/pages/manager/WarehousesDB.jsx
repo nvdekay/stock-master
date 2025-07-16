@@ -7,7 +7,7 @@ import WarehouseModal from '../../components/manager/WarehouseModal';
 
 function WarehousesDB() {
     const { user, loading: authLoading } = useAuth();
-
+console.log('👉 User from AuthProvider:', user);
     const [warehouses, setWarehouses] = useState([]);
     const [enterprise, setEnterprise] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -32,8 +32,8 @@ function WarehousesDB() {
             const [enterpriseRes, warehousesRes, usersRes, productsRes] = await Promise.all([
                 api.get(`/enterprises/${enterpriseId}`),
                 api.get(`/warehouses?enterpriseId=${enterpriseId}`),
-                api.get('/users'), // Lấy tất cả users
-                api.get('/products') // Lấy tất cả products
+                api.get('/users'),
+                api.get('/products')
             ]);
 
             const enterpriseData = enterpriseRes.data;
@@ -48,20 +48,21 @@ function WarehousesDB() {
                 return;
             }
 
-            // Merge warehouse data với staff count và product count
             const mergedWarehouses = enterpriseWarehouses.map(w => {
-                // Đếm tất cả staff thuộc warehouse này
-                const warehouseStaff = allUsers.filter(u => 
-                    u.warehouseId === w.id && 
-                    ['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(u.role)
+                
+                const warehouseman = allUsers.find(u => 
+                    u.warehouseId === w.id && u.role === 'warehouseman'
                 );
 
-                // Đếm products thuộc warehouse này
+                const warehouseStaff = allUsers.filter(u => 
+                    u.warehouseId === w.id && 
+                    ['staff', 'exporter'].includes(u.role)
+                );
+
                 const warehouseProducts = allProducts.filter(p => 
                     p.warehouseId === w.id
                 );
 
-                // Tính tổng số lượng products
                 const totalQuantity = warehouseProducts.reduce((sum, product) => 
                     sum + (product.quantity || 0), 0
                 );
@@ -71,9 +72,12 @@ function WarehousesDB() {
                     productCount: warehouseProducts.length,
                     totalQuantity: totalQuantity,
                     staffCount: warehouseStaff.length,
+                    warehouseman: warehouseman || null,
+                    hasWarehouseman: !!warehouseman
                 };
             });
-
+            console.log("Fetched warehouses:", mergedWarehouses);
+            
             setEnterprise(enterpriseData);
             setWarehouses(mergedWarehouses);
         } catch (err) {
@@ -90,39 +94,102 @@ function WarehousesDB() {
     }, [authLoading, fetchData]);
 
     const handleSubmit = useCallback(async (formData) => {
-        if (!user?.enterpriseId) return;
-        try {
-            let payload = { ...formData, enterpriseId: user.enterpriseId };
-            console.log("Submitting warehouse data:", payload);
+    if (!user?.enterpriseId) {
+        setToast({
+            show: true,
+            message: 'Your account is not assigned to any enterprise.',
+            variant: 'danger'
+        });
+        return;
+    }
 
-            if (!editingWarehouse) {
-                const res = await api.get(`/warehouses`);
-                const latest = res.data;
-                console.log("Latest warehouses fetched:", latest);
-                const maxId = Math.max(0, ...latest.map(w => parseInt(w.id) || 0));
-                payload.id = String(maxId + 1);
+    try {
+        let warehousePayload = { 
+            name: formData.name, 
+            location: formData.location, 
+            enterpriseId: user.enterpriseId 
+        };
+
+        if (editingWarehouse) {
+            await api.put(`/warehouses/${editingWarehouse.id}`, warehousePayload);
+            
+            if (formData.warehouseman.fullName && formData.warehouseman.username && formData.warehouseman.email) {
+                if (editingWarehouse.warehouseman) {
+                    await api.put(`/users/${editingWarehouse.warehouseman.id}`, {
+                        fullName: formData.warehouseman.fullName,
+                        username: formData.warehouseman.username,
+                        email: formData.warehouseman.email,
+                        password: formData.warehouseman.password,
+                        role: 'warehouseman',
+                        enterpriseId: user.enterpriseId,
+                        warehouseId: editingWarehouse.id
+                    });
+                } else {
+                    await api.post('/register', {
+                        fullName: formData.warehouseman.fullName,
+                        username: formData.warehouseman.username,
+                        email: formData.warehouseman.email,
+                        password: formData.warehouseman.password,
+                        role: 'warehouseman',
+                        enterpriseId: user.enterpriseId,
+                        warehouseId: editingWarehouse.id
+                    });
+                }
             }
-
-            if (editingWarehouse) {
-                await api.put(`/warehouses/${editingWarehouse.id}`, payload);
-                setToast({ show: true, message: 'Warehouse updated successfully!', variant: 'success' });
+            
+            setToast({ show: true, message: 'Warehouse updated successfully!', variant: 'success' });
+        } else {
+            const warehouseResponse = await api.post('/warehouses', warehousePayload);
+            const newWarehouse = warehouseResponse.data.warehouse || warehouseResponse.data;
+            
+            if (formData.warehouseman.fullName && formData.warehouseman.username && formData.warehouseman.email) {
+                try {
+                    await api.post('/register', {
+                        fullName: formData.warehouseman.fullName,
+                        username: formData.warehouseman.username,
+                        email: formData.warehouseman.email,
+                        password: formData.warehouseman.password,
+                        role: 'warehouseman',
+                        enterpriseId: user.enterpriseId,
+                        warehouseId: newWarehouse.id
+                    });
+                    
+                    setToast({ 
+                        show: true, 
+                        message: `Warehouse "${newWarehouse.name}" and manager account "${formData.warehouseman.username}" created successfully!`, 
+                        variant: 'success' 
+                    });
+                } catch (managerError) {
+                    console.error('Error creating manager:', managerError);
+                    setToast({ 
+                        show: true, 
+                        message: `Warehouse "${newWarehouse.name}" created but failed to create manager: ${managerError.response?.data?.error || 'Unknown error'}`, 
+                        variant: 'warning' 
+                    });
+                }
             } else {
-                await api.post('/warehouses', payload);
-                setToast({ show: true, message: 'Warehouse created successfully!', variant: 'success' });
+                setToast({ 
+                    show: true, 
+                    message: `Warehouse "${newWarehouse.name}" created successfully!`, 
+                    variant: 'success' 
+                });
             }
-
-            setIsModalOpen(false);
-            setEditingWarehouse(null);
-            await fetchData();
-        } catch (err) {
-            console.error("Failed to save warehouse:", err);
-            setToast({
-                show: true,
-                message: err.response?.data?.error || 'Could not save warehouse data.',
-                variant: 'danger'
-            });
         }
-    }, [user, editingWarehouse, fetchData]);
+
+        setIsModalOpen(false);
+        setEditingWarehouse(null);
+        await fetchData();
+    } catch (err) {
+        console.error("Failed to save warehouse:", err);
+        setToast({
+            show: true,
+            message: err.response?.data?.error || 'Could not save warehouse data.',
+            variant: 'danger'
+        });
+    }
+}, [user, editingWarehouse, fetchData]);
+
+
 
     const handleDelete = useCallback(async (id) => {
         const warehouseToDelete = warehouses.find(w => w.id === id);

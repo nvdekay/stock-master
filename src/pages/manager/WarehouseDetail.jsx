@@ -56,7 +56,6 @@ function WarehouseDetail() {
 
             const warehouseInfo = warehouseRes.data;
 
-            // Check permission for manager role
             if (user.role === 'manager' && warehouseInfo.enterpriseId !== user.enterpriseId) {
                 throw new Error('You do not have permission to access this warehouse.');
             }
@@ -70,17 +69,13 @@ function WarehouseDetail() {
             const allWarehouses = allWarehousesRes.data;
             const allOrderDetails = orderDetailsRes.data;
 
-            // Fetch enterprise information
             const enterpriseRes = await api.get(`/enterprises/${warehouseInfo.enterpriseId}`);
             const enterprise = enterpriseRes.data;
 
-            // Filter warehouse staff with correct roles and warehouseId comparison
             const warehouseStaff = allUsers.filter(u => 
-                u.warehouseId === warehouseId && // So sánh string với string
-                ['staff', 'importstaff', 'exportstaff', 'warehouseman'].includes(u.role)
+                u.warehouseId === warehouseId && 
+                ['staff', 'importstaff', 'exporter', 'warehouseman'].includes(u.role)
             );
-            
-            // Get enterprise shippers and manager
             const enterpriseShippers = allUsers.filter(u => 
                 u.enterpriseId === warehouseInfo.enterpriseId && u.role === 'shipper'
             );
@@ -88,12 +83,10 @@ function WarehouseDetail() {
                 u.enterpriseId === warehouseInfo.enterpriseId && u.role === 'manager'
             );
 
-            // Filter products that belong to this warehouse - sửa so sánh
             const warehouseProducts = allProducts.filter(product => 
-                product.warehouseId === warehouseId // So sánh string với string thay vì parseInt
+                product.warehouseId === warehouseId 
             );
 
-            // Function to enrich orders with related data
             const enrichOrder = (order) => {
                 const senderStaff = allUsers.find(u => u.id === order.senderStaffId);
                 const receiverStaff = allUsers.find(u => u.id === order.receiverStaffId);
@@ -103,7 +96,6 @@ function WarehouseDetail() {
                 const shipment = allShipments.find(s => s.orderId === order.id);
                 const shipper = shipment ? allUsers.find(u => u.id === shipment.shipperId) : null;
                 
-                // Calculate total price from order details
                 const details = allOrderDetails.filter(d => d.orderId === order.id);
                 const totalPrice = details.reduce((sum, detail) => {
                     const product = allProducts.find(p => p.id === detail.productId);
@@ -116,7 +108,6 @@ function WarehouseDetail() {
                     type: order.type,
                     status: order.status,
                     date: order.date,
-                    // enterpriseId: order.enterpriseId,
                     senderStaffId: order.senderStaffId,
                     receiverStaffId: order.receiverStaffId,
                     sendWarehouseId: order.sendWarehouseId,
@@ -135,7 +126,6 @@ function WarehouseDetail() {
                 };
             };
 
-            // Filter and enrich orders - sửa so sánh warehouseId
             const exportOrders = allOrders
                 .filter(o => o.sendWarehouseId === warehouseId && o.type === 'transfer')
                 .map(enrichOrder);
