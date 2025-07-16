@@ -41,6 +41,7 @@
     },
     {
       "username": "buyer01",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "fullName": "Nguyen Thi E",
       "email": "e@example.com",
       "role": "staff",
