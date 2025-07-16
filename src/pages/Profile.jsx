@@ -1,24 +1,47 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Container, Row, Col, Card, Form, Button, InputGroup } from "react-bootstrap"
 import { User, Mail, MapPin, Building, Warehouse } from "lucide-react"
+import { useAuth } from "../auth/AuthProvider"
+import api from "../api/axiosInstance"
 
 export default function UserProfile() {
-    const [formData, setFormData] = useState({
-        username: "john_doe",
-        fullName: "John Doe",
-        email: "john.doe@company.com",
-        phone: "+1 (555) 123-4567",
-        location: "New York, NY, USA",
-        role: "enterprise_manager",
-        enterpriseName: "Tech Solutions Inc.",
-        warehouseName: "Main Distribution Center",
-    })
+    const { user } = useAuth();
+
+    const [formData, setFormData] = useState(user)
+    const [enterprise, setEnterprise] = useState();
+    const [warehouse, setWarehouse] = useState();
+
+    useEffect(() => {
+        const fetchStaffData = async () => {
+            if (user.warehouseId !== null && user.enterpriseId !== null) {
+                try {
+                    const [warehouseRes, enterpriseRes] = await Promise.all([
+                        api.get(`http://localhost:9999/warehouses/${user.warehouseId}`),
+                        api.get(`http://localhost:9999/enterprises/${user.enterpriseId}`)
+                    ])
+
+                    setWarehouse(warehouseRes.data);
+                    setEnterprise(enterpriseRes.data);
+                    setFormData({
+                        ...formData,
+                        enterpriseName: enterpriseRes.data.name,
+                        warehouseName: warehouseRes.data.name,
+                        warehouseLocation: warehouseRes.data.location
+                    })
+                } catch (err) {
+                    console.log("error fetching staff data: ", err)
+                }
+            }
+
+        }
+        fetchStaffData();
+    }, [])
 
     const handleInputChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }))
     }
 
-    const showEnterpriseFields = ["staff", "warehouse_manager", "enterprise_manager"].includes(formData.role)
+    const showEnterpriseFields = ["staff", "warehouseman", "manager", "exporter"].includes(formData.role)
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -69,18 +92,12 @@ export default function UserProfile() {
 
                                 <Form.Group className="mb-3">
                                     <Form.Label htmlFor="role">Role in System</Form.Label>
-                                    <Form.Select
-                                        id="role"
+                                    <Form.Control
+                                        type="text"
                                         value={formData.role}
-                                        onChange={(e) => handleInputChange("role", e.target.value)}
+                                        readOnly
                                     >
-                                        <option value="">Select role</option>
-                                        <option value="admin">Administrator</option>
-                                        <option value="enterprise_manager">Enterprise Manager</option>
-                                        <option value="warehouse_manager">Warehouse Manager</option>
-                                        <option value="staff">Staff</option>
-                                        <option value="customer">Customer</option>
-                                    </Form.Select>
+                                    </Form.Control>
                                 </Form.Group>
                             </Card.Body>
                         </Card>
@@ -161,6 +178,7 @@ export default function UserProfile() {
                                 <Card.Body>
                                     <Row>
                                         <Col md={6}>
+
                                             <Form.Group className="mb-3">
                                                 <Form.Label htmlFor="enterpriseName">Enterprise Name</Form.Label>
                                                 <InputGroup>
@@ -171,8 +189,7 @@ export default function UserProfile() {
                                                         type="text"
                                                         id="enterpriseName"
                                                         value={formData.enterpriseName}
-                                                        onChange={(e) => handleInputChange("enterpriseName", e.target.value)}
-                                                        placeholder="Enter enterprise name"
+                                                        readOnly
                                                     />
                                                 </InputGroup>
                                             </Form.Group>
@@ -188,8 +205,20 @@ export default function UserProfile() {
                                                         type="text"
                                                         id="warehouseName"
                                                         value={formData.warehouseName}
-                                                        onChange={(e) => handleInputChange("warehouseName", e.target.value)}
-                                                        placeholder="Enter warehouse name"
+                                                        readOnly
+                                                    />
+                                                </InputGroup>
+                                            </Form.Group>
+                                            <Form.Group>
+                                                <Form.Label htmlFor="location">Location</Form.Label>
+                                                <InputGroup>
+                                                    <InputGroup.Text>
+                                                        <MapPin size={16} />
+                                                    </InputGroup.Text>
+                                                    <Form.Control
+                                                        id="location"
+                                                        value={formData.warehouseLocation}
+                                                        readOnly
                                                     />
                                                 </InputGroup>
                                             </Form.Group>
