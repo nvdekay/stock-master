@@ -43,6 +43,8 @@ import InTransitShipments from "./components/shipper/InTransitShipments";
 import WarehousemanLayout from "./layouts/WarehousemanLayout";
 import WarehousemanDashboard from "./pages/warehouseman/WarehousemanDashboard";
 import ImportProducts from "./pages/warehouseman/ImportProducts";
+import Cart from "./pages/Cart";
+
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -61,6 +63,7 @@ function App() {
         <Route element={<UserLayout />}>
           <Route index element={<ProductList />} />
           <Route path="product/:id" element={<ProductDetail />} /> 
+          <Route path="cart" element={<Cart />} />
 
           {/* Unauthenticated Routes */}
           {/* route public mà không cần đăng nhập */}

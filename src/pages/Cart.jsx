@@ -1,157 +1,128 @@
 import { useEffect, useState } from "react";
-import { Container, Table, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { useAuth } from "../auth/AuthProvider";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-// import "../../public/assets/css/Cart.css";
 
 function Cart() {
-  const navigate = useNavigate();
+  const { user, token } = useAuth();
   const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
-  const [alert, setAlert] = useState({ show: false, message: "", variant: "success" });
-
-  // Hardcode user ID to match ProductList's no-auth approach
-  const userId = 1;
+  const [enterprises, setEnterprises] = useState([]);
 
   useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
-    setCartItems(storedCart);
+    const fetchData = async () => {
+      try {
+        const [cartRes, productRes, enterpriseRes] = await Promise.all([
+          axios.get("http://localhost:9999/carts", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get("http://localhost:9999/products"),
+          axios.get("http://localhost:9999/enterprises", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
 
-    axios
-      .get("http://localhost:9999/products")
-      .then((res) => {
-        console.log("Products fetched:", res.data);
-        setProducts(res.data);
-      })
-      .catch((err) => {
-        console.error("Lỗi khi fetch sản phẩm:", err);
-        setAlert({ show: true, message: `Lỗi khi fetch sản phẩm: ${err.message}`, variant: "danger" });
-      });
-  }, []);
+        setCartItems(cartRes.data.filter(item => item.userId === user.id));
+        setProducts(productRes.data);
+        setEnterprises(enterpriseRes.data);
+      } catch (error) {
+        console.error("Lỗi khi load giỏ hàng:", error);
+      }
+    };
 
-  const handleQuantityChange = (productId, quantity) => {
-    const updatedCart = cartItems.map((item) =>
-      item.productId === productId ? { ...item, quantity: parseInt(quantity) || 0 } : item
-    );
-    setCartItems(updatedCart);
-    localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
+    fetchData();
+  }, [user, token]);
+
+  const getProductById = (id) => products.find(p => p.id === id);
+  const getEnterpriseName = (enterpriseId) => {
+    const e = enterprises.find(en => en.id === enterpriseId);
+    return e ? e.name : "Không rõ";
   };
 
-  const handleRemoveItem = (productId) => {
-    const updatedCart = cartItems.filter((item) => item.productId !== productId);
-    setCartItems(updatedCart);
-    localStorage.setItem(`cart_${userId}`, JSON.stringify(updatedCart));
-  };
-
-  const handleCheckout = async () => {
-    if (cartItems.length === 0) {
-      setAlert({ show: true, message: "Giỏ hàng trống", variant: "danger" });
-      return;
-    }
-
+  const updateQuantity = async (cartItemId, newQuantity) => {
     try {
-      const totalPrice = cartItems.reduce((sum, item) => {
-        const product = products.find((p) => p.id === item.productId);
-        return sum + (product ? product.price * item.quantity : 0);
-      }, 0);
-
-      const wholesaleOrder = {
-        buyerId: userId,
-        status: "pending",
-        totalPrice,
-        date: new Date().toISOString().split("T")[0],
-      };
-      const orderRes = await axios.post("http://localhost:9999/wholesaleOrders", wholesaleOrder);
-      const orderId = orderRes.data.id;
-
-      const orderItemsPromises = cartItems.map((item) =>
-        axios.post("http://localhost:9999/wholesaleOrderItems", {
-          orderId,
-          productId: item.productId,
-          quantity: item.quantity,
-        })
+      await axios.patch(
+        `http://localhost:9999/carts/${cartItemId}`,
+        { quantity: newQuantity },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       );
-      await Promise.all(orderItemsPromises);
 
-      setCartItems([]);
-      localStorage.removeItem(`cart_${userId}`);
-
-      setAlert({ show: true, message: "Đặt hàng thành công", variant: "success" });
-      setTimeout(() => navigate("/orders"), 1500);
-    } catch (err) {
-      console.error("Checkout error:", err);
-      setAlert({ show: true, message: `Lỗi khi đặt hàng: ${err.message}`, variant: "danger" });
+      // ✅ Cập nhật UI ngay sau khi PATCH thành công
+      setCartItems(prev =>
+        prev.map(item =>
+          item.id === cartItemId ? { ...item, quantity: newQuantity } : item
+        )
+      );
+    } catch (error) {
+      console.error("Lỗi khi cập nhật số lượng:", error);
+      alert("Không thể cập nhật số lượng");
     }
   };
 
-  const getProductDetails = (productId) => {
-    return products.find((p) => p.id === productId) || { name: "Không rõ", price: 0 };
-  };
 
   return (
     <Container className="mt-4">
-      <h2 className="mb-4">🛒 Giỏ hàng của bạn</h2>
-      {alert.show && (
-        <Alert
-          variant={alert.variant}
-          onClose={() => setAlert({ ...alert, show: false })}
-          dismissible
-        >
-          {alert.message}
-        </Alert>
-      )}
-      {cartItems.length === 0 ? (
-        <p>Giỏ hàng trống.</p>
-      ) : (
-        <>
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Sản phẩm</th>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Tổng</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems.map((item) => {
-                const product = getProductDetails(item.productId);
-                return (
-                  <tr key={item.productId}>
-                    <td>{product.name}</td>
-                    <td>{product.price.toLocaleString()}₫</td>
-                    <td>
-                      <input
-                        type="number"
-                        min="1"
-                        value={item.quantity}
-                        onChange={(e) => handleQuantityChange(item.productId, e.target.value)}
-                        style={{ width: "60px" }}
-                      />
-                    </td>
-                    <td>{(product.price * item.quantity).toLocaleString()}₫</td>
-                    <td>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => handleRemoveItem(item.productId)}
+      <h2>🛒 Giỏ hàng của bạn</h2>
+      <Row>
+        {cartItems.map((item) => {
+          const product = getProductById(item.productId);
+          if (!product) return null;
+
+          return (
+            <Col key={item.id} xs={12} className="mb-4">
+              <Card>
+                <Card.Body className="d-flex align-items-center">
+                  <img
+                    src={product.src}
+                    alt={product.name}
+                    style={{
+                      width: "200px",
+                      height: "200px",
+                      objectFit: "contain",
+                      marginRight: "20px",
+                      backgroundColor: "#f8f9fa",
+                      padding: "5px",
+                    }}
+                  />
+                  <div>
+                    <Card.Title>{product.name}</Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      💼 {getEnterpriseName(product.warehouseId)}
+                    </Card.Subtitle>
+                    <Card.Text>💰 {product.price*item.quantity} ₫</Card.Text>
+                    <div className="d-flex align-items-center gap-2">
+                      <button
+                        className="btn btn-outline-secondary"
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        disabled={item.quantity <= 1}
                       >
-                        Xóa
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-          <div className="d-flex justify-content-end">
-            <Button variant="primary" onClick={handleCheckout}>
-              Thanh toán
-            </Button>
-          </div>
-        </>
-      )}
+                        -
+                      </button>
+
+                      <span>{item.quantity}</span>
+
+                      <button
+                        className="btn btn-outline-secondary"
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <br/>
+                    <Button variant="danger" size="sm" style={{marginRight: "20px"}} onClick={(e)=>handleDeleteProduct(e)}>Xoá</Button>
+                    
+                    <Button variant="warning" size="sm">Mua</Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          );
+        })}
+      </Row>
     </Container>
   );
 }
