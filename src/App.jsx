@@ -43,6 +43,7 @@ import InTransitShipments from "./components/shipper/InTransitShipments";
 import WarehousemanLayout from "./layouts/WarehousemanLayout";
 import WarehousemanDashboard from "./pages/warehouseman/WarehousemanDashboard";
 import ImportProducts from "./pages/warehouseman/ImportProducts";
+import Cart from "./pages/Cart";
 import ExportOrderManagement from "./pages/staff/exporter/PendingOrders";
 import ExporterDashboard from "./pages/staff/exporter/ExporterDashboard";
 import ExporterLayout from "./layouts/ExporterLayout";
@@ -50,6 +51,7 @@ import PendingOrders from "./pages/staff/exporter/PendingOrders";
 import ExportHistory from "./pages/staff/exporter/ExportHistory";
 import CreateProduct from "./pages/warehouseman/CreateProduct";
 import UserProfile from "./pages/Profile";
+
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -67,7 +69,9 @@ function App() {
         {/* <Route path="/" element={<Navigate to="/products" replace />} /> */}
         <Route element={<UserLayout />}>
           <Route index element={<ProductList />} />
-          <Route path="product/:id" element={<ProductDetail />} />
+          <Route path="product/:id" element={<ProductDetail />} /> 
+          <Route path="cart" element={<Cart />} />
+
 
           {/* Unauthenticated Routes */}
           {/* route public mà không cần đăng nhập */}
