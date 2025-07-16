@@ -85,7 +85,9 @@ const LoginPage = () => {
           case "exporter":
             navigate("/exporter");
             break;
-
+         case "warehouseman":
+            navigate("/warehouseman");
+            break; 
           case "manager":
             navigate("/manager");
             break;
