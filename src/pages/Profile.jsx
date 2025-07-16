@@ -5,11 +5,16 @@ import { useAuth } from "../auth/AuthProvider"
 import api from "../api/axiosInstance"
 
 export default function UserProfile() {
-    const { user } = useAuth();
+    const { user, login } = useAuth();
 
     const [formData, setFormData] = useState(user)
     const [enterprise, setEnterprise] = useState();
     const [warehouse, setWarehouse] = useState();
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertVariant, setAlertVariant] = useState("danger");
+
+
 
     useEffect(() => {
         const fetchStaffData = async () => {
@@ -43,11 +48,49 @@ export default function UserProfile() {
 
     const showEnterpriseFields = ["staff", "warehouseman", "manager", "exporter"].includes(formData.role)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         console.log("Form submitted:", formData)
 
-        // Handle form submission here
+        try {
+            const updateBody = {
+                username: formData.username,
+                fullName: formData.fullName,
+                phone: formData.phone,
+                email: formData.email
+            }
+            const updateRes = await api.patch(`/users/${user.id}`, updateBody)
+            const getLocationByUserId = await api.get(`/locations?userId=${user.id}`)
+            console.log("getLocation: ", getLocationByUserId.data)
+
+            // console.log(updateRes)
+            if (getLocationByUserId.status === 404) {
+                const addNewLocationRes = await api.post(`/locations`, {
+                    userId: formData.id,
+                    location: formData.location
+                })
+                console.log("add new location: ", addNewLocationRes.data)
+            } else {
+                const locationUpdateRes = await api.patch(`/locations/${getLocationByUserId.data.id}`, {
+                    location: formData.location
+                })
+                console.log("update location: ", locationUpdateRes.data)
+            }
+            if (updateRes.status === 200 ) {
+                login(updateRes.data, JSON.parse(localStorage.getItem("token")));
+                setTimeout(() => {
+                    setAlertMessage("Your profile is updated successfully")
+                    setAlertVariant("success")
+                    setShowAlert(true)
+
+                }, 5000)
+                setShowAlert(false)
+            }
+
+        } catch (err) {
+            console.log("error patching data: ", err)
+        }
+
     }
 
     return (
@@ -57,6 +100,15 @@ export default function UserProfile() {
                 <p className="text-muted">Manage your account information and preferences</p>
                 <p className="text-muted">Fields mark by a red <span className="text-danger">*</span> is required</p>
             </div>
+            {showAlert && (
+                <Alert
+                    variant={alertVariant}
+                    dismissible
+                    onClose={() => setShowAlert(false)}
+                >
+                    {alertMessage}
+                </Alert>
+            )}
 
             <Form onSubmit={handleSubmit}>
                 <Row className="g-4">
