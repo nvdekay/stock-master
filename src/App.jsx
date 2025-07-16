@@ -49,6 +49,7 @@ import ExporterLayout from "./layouts/ExporterLayout";
 import PendingOrders from "./pages/staff/exporter/PendingOrders";
 import ExportHistory from "./pages/staff/exporter/ExportHistory";
 import CreateProduct from "./pages/warehouseman/CreateProduct";
+import UserProfile from "./pages/Profile";
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -86,6 +87,7 @@ function App() {
           {/* Routes that requires user to log in */}
           <Route path="/authenticated" element={<ProtectedRoute />}>
             {/* route mà cần user đã đăng nhập mới truy cập được thì thả vào đây */}
+            <Route path="profile" element={<UserProfile />} />
           </Route>
 
           {/* Nếu trang liến quan đến quản lí mà

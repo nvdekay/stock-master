@@ -41,6 +41,7 @@
     },
     {
       "username": "buyer01",
+      "password": "$2b$10$JpvqdIV3DVd.ZNjJ5YeaLuaxXzsDQeBuCy5WcyKE9cdzdIaJTYH3S",
       "fullName": "Nguyen Thi E",
       "email": "e@example.com",
       "role": "staff",
@@ -86,7 +87,8 @@
       "fullName": "Bui Thi K",
       "email": "k@example.com",
       "enterpriseId": "4",
-      "warehouseId": "3"
+      "warehouseId": "3",
+      "phone": "12341"
     },
     {
       "id": "13",
@@ -218,7 +220,6 @@
       "warehouseId": "1",
       "enterpriseId": "2"
     }
-
   ],
   "locations": [
     {
@@ -235,6 +236,11 @@
       "id": "3",
       "userId": "16",
       "location": "789 Đường Nguyễn Văn Cừ, Quận 10, TP.HCM"
+    },
+    {
+      "userId": "12",
+      "location": "efgh",
+      "id": "iZLM3Jx"
     }
   ],
   "carts": [
