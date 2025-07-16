@@ -175,7 +175,12 @@ const LoginPage = () => {
                     Login
                   </Button>
                 </div>
-
+                <div className="text-center">
+                  Don't have an account yet? Sign up{' '}
+                  <Link to="/auth/register" className="text-decoration-none hover:text-underline">
+                    <strong>HERE</strong>
+                  </Link>
+                </div>
                 <div className="text-center">
                   <Link to="/" className="text-decoration-none">
                     ← Back to Home
