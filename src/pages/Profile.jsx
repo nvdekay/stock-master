@@ -46,6 +46,7 @@ export default function UserProfile() {
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log("Form submitted:", formData)
+
         // Handle form submission here
     }
 
@@ -54,6 +55,7 @@ export default function UserProfile() {
             <div className="mb-4">
                 <h1 className="display-5 fw-bold">User Profile</h1>
                 <p className="text-muted">Manage your account information and preferences</p>
+                <p className="text-muted">Fields mark by a red <span className="text-danger">*</span> is required</p>
             </div>
 
             <Form onSubmit={handleSubmit}>
@@ -69,7 +71,7 @@ export default function UserProfile() {
                             </Card.Header>
                             <Card.Body>
                                 <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="username">Username</Form.Label>
+                                    <Form.Label htmlFor="username">Username{' '}<span className="text-danger">*</span></Form.Label>
                                     <Form.Control
                                         type="text"
                                         id="username"
@@ -80,7 +82,7 @@ export default function UserProfile() {
                                 </Form.Group>
 
                                 <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="fullName">Full Name</Form.Label>
+                                    <Form.Label htmlFor="fullName">Full Name{' '}<span className="text-danger">*</span></Form.Label>
                                     <Form.Control
                                         type="text"
                                         id="fullName"
@@ -114,7 +116,7 @@ export default function UserProfile() {
                             </Card.Header>
                             <Card.Body>
                                 <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="email">Email Address</Form.Label>
+                                    <Form.Label htmlFor="email">Email Address{' '}<span className="text-danger">*</span></Form.Label>
                                     <InputGroup>
                                         <InputGroup.Text>
                                             <Mail size={16} />
@@ -125,12 +127,13 @@ export default function UserProfile() {
                                             value={formData.email}
                                             onChange={(e) => handleInputChange("email", e.target.value)}
                                             placeholder="Enter email address"
+                                            required
                                         />
                                     </InputGroup>
                                 </Form.Group>
 
                                 <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="phone">Contact Phone</Form.Label>
+                                    <Form.Label htmlFor="phone">Contact Phone{' '}<span className="text-danger">*</span></Form.Label>
                                     <Form.Control
                                         type="tel"
                                         id="phone"
@@ -141,7 +144,7 @@ export default function UserProfile() {
                                 </Form.Group>
 
                                 <Form.Group className="mb-3">
-                                    <Form.Label htmlFor="location">Location</Form.Label>
+                                    <Form.Label htmlFor="location">Location{' '}<span className="text-danger">*</span></Form.Label>
                                     <InputGroup>
                                         <InputGroup.Text>
                                             <MapPin size={16} />
