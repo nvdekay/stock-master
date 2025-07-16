@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import {
     Container,
     Row,
@@ -33,118 +33,125 @@ import {
     TrendingUp,
     Users,
     Globe,
+    Pencil,
 } from "lucide-react"
-
-// Mock data for demonstration
-const mockPendingOrders = [
-    {
-        id: "EXP-2024-001",
-        customer: "Global Trade Corp",
-        destination: "Hamburg, Germany",
-        items: 45,
-        value: 125000,
-        priority: "High",
-        orderDate: "2024-01-15",
-        expectedShipDate: "2024-01-20",
-        status: "Processing",
-        progress: 65,
-    },
-    {
-        id: "EXP-2024-002",
-        customer: "International Logistics Ltd",
-        destination: "Rotterdam, Netherlands",
-        items: 32,
-        value: 89000,
-        priority: "Medium",
-        orderDate: "2024-01-16",
-        expectedShipDate: "2024-01-22",
-        status: "Pending Documentation",
-        progress: 30,
-    },
-    {
-        id: "EXP-2024-003",
-        customer: "Pacific Imports Inc",
-        destination: "Los Angeles, USA",
-        items: 67,
-        value: 198000,
-        priority: "High",
-        orderDate: "2024-01-17",
-        expectedShipDate: "2024-01-25",
-        status: "Ready to Ship",
-        progress: 95,
-    },
-    {
-        id: "EXP-2024-004",
-        customer: "Euro Distribution SA",
-        destination: "Barcelona, Spain",
-        items: 28,
-        value: 76000,
-        priority: "Low",
-        orderDate: "2024-01-18",
-        expectedShipDate: "2024-01-28",
-        status: "Processing",
-        progress: 45,
-    },
-    {
-        id: "EXP-2024-005",
-        customer: "Nordic Trade AS",
-        destination: "Oslo, Norway",
-        items: 41,
-        value: 112000,
-        priority: "Medium",
-        orderDate: "2024-01-19",
-        expectedShipDate: "2024-01-26",
-        status: "Customs Clearance",
-        progress: 75,
-    },
-    {
-        id: "EXP-2024-006",
-        customer: "Asian Markets Ltd",
-        destination: "Singapore",
-        items: 53,
-        value: 145000,
-        priority: "High",
-        orderDate: "2024-01-20",
-        expectedShipDate: "2024-01-27",
-        status: "Processing",
-        progress: 55,
-    },
-    {
-        id: "EXP-2024-007",
-        customer: "Mediterranean Traders",
-        destination: "Marseille, France",
-        items: 39,
-        value: 95000,
-        priority: "Medium",
-        orderDate: "2024-01-21",
-        expectedShipDate: "2024-01-29",
-        status: "Ready to Ship",
-        progress: 90,
-    },
-]
+import { useAuth } from "../../../auth/AuthProvider"
+import api from "../../../api/axiosInstance"
 
 const PendingOrders = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [searchTerm, setSearchTerm] = useState("")
     const [statusFilter, setStatusFilter] = useState("All")
     const [priorityFilter, setPriorityFilter] = useState("All")
+    const [timeFilter, setTimeFilter] = useState("all")
+    const [pendingOrders, setPendingOrders] = useState([]);
+    const [filteredPendingOrders, setFilteredPendingOrders] = useState([]);
+    const { user } = useAuth();
+
+    useEffect(() => {
+        // console.log(user.warehouseId)
+        const fetchAllExportOrder = async () => {
+            try {
+                const [pendingOrderRes, usersRes, warehousesRes, locationsRes] = await Promise.all([
+                    api.get(`http://localhost:9999/orders?_embed=orderDetails&sendWarehouseId=${user.warehouseId}&status=pending`),
+                    api.get('http://localhost:9999/users'),
+                    api.get('http://localhost:9999/warehouses'),
+                    api.get('http://localhost:9999/locations'),
+                ])
+
+                const users = usersRes.data;
+                const warehouses = warehousesRes.data;
+                const locations = locationsRes.data;
+                // console.log("", exportOrderRes.data)
+                let pendingOrder = pendingOrderRes.data.map((order) => {
+                    let sendWarehouse = warehouses.find(w => w.id === order.receiveWarehouseId);
+                    let buyer = users.find(u => u.id === order.buyerId);
+                    let destinationInfo = order.buyerId !== null ?
+                        { customer: buyer.username, destination: locations.find(l => l.userId === buyer.id).location }
+                        : { customer: sendWarehouse.name, destination: sendWarehouse.location }
+                    return {
+                        ...order,
+                        ...destinationInfo,
+                        value: order.orderDetails.reduce((total, product) => total + product.price, 0),
+                        items: order.orderDetails.length
+                    }
+                })
+                console.log("pending Order: ", pendingOrder)
+                setPendingOrders(pendingOrder);
+                setFilteredPendingOrders(pendingOrder);
+
+            } catch (err) {
+                console.log('error fetching order: ', err)
+            }
+        }
+
+        fetchAllExportOrder();
+    }, [])
+
+    // filter by search and status
+    useEffect(() => {
+        console.log("timeFilter: ", timeFilter)
+        const filterOrder = () => {
+            let filtered = pendingOrders.filter((order) => {
+                const matchesSearch = searchTerm !== null ?
+                    order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    order.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    order.type.toLowerCase().includes(searchTerm.toLowerCase())
+                    : true
+
+                const matchesStatus = statusFilter === "All" || order.status === statusFilter
+                let index = -1;
+                switch (timeFilter) {
+                    case "Today":
+                        index = 2;
+                        break;
+                    case "month":
+                        index = 1;
+                        break;
+                    case "year":
+                        index = 0;
+                        break;
+                    default:
+                        break;
+                }
+                console.log("index: ", index)
+
+                console.log("date: ", order.date.split("-"))
+                console.log("date: ", new Date().toLocaleDateString((
+                    "en-CA"
+                )).split("-")[index])
+
+                // if (index === -1) {
+                const matchesTime = index === -1 ?
+                    true
+                    :
+                    // } else {
+                    [...Array(index + 1).keys()].every(i =>
+                        order.date.split("-")[i] ===
+                        new Date().toLocaleDateString((
+                            "en-CA"
+                        )).split("-")[i]
+                    )
+
+                console.log("matchTime: ", matchesTime);
+                return matchesSearch && matchesStatus && matchesTime;
+            })
+
+            console.log("filtered: ", filtered);
+            setFilteredPendingOrders(filtered)
+        }
+
+        filterOrder();
+
+    }, [searchTerm, timeFilter, statusFilter])
+
+
     const ordersPerPage = 5
 
-    const filteredOrders = useMemo(() => {
-        return mockPendingOrders.filter((order) => {
-            const matchesSearch =
-                order.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                order.destination.toLowerCase().includes(searchTerm.toLowerCase())
-            const matchesStatus = statusFilter === "All" || order.status === statusFilter
-            const matchesPriority = priorityFilter === "All" || order.priority === priorityFilter
-            return matchesSearch && matchesStatus && matchesPriority
-        })
-    }, [searchTerm, statusFilter, priorityFilter])
-
-    const totalPages = Math.ceil(filteredOrders.length / ordersPerPage)
+    const totalPages = Math.ceil(filteredPendingOrders.length / ordersPerPage)
     const startIndex = (currentPage - 1) * ordersPerPage
-    const currentOrders = filteredOrders.slice(startIndex, startIndex + ordersPerPage)
+    const currentOrders = filteredPendingOrders.slice(startIndex, startIndex + ordersPerPage)
 
     const getPriorityVariant = (priority) => {
         switch (priority) {
@@ -160,14 +167,14 @@ const PendingOrders = () => {
     }
 
     const getStatusVariant = (status) => {
-        switch (status) {
-            case "Ready to Ship":
+        switch (status.toLowerCase()) {
+            case "ready":
                 return "success"
-            case "Processing":
-                return "primary"
-            case "Pending Documentation":
+            // case "pending":
+            //     return "primary"
+            case "pending":
                 return "warning"
-            case "Customs Clearance":
+            case "shipped":
                 return "info"
             default:
                 return "secondary"
@@ -181,8 +188,8 @@ const PendingOrders = () => {
         return "danger"
     }
 
-    const uniqueStatuses = ["All", ...Array.from(new Set(mockPendingOrders.map((order) => order.status)))]
-    const uniquePriorities = ["All", "High", "Medium", "Low"]
+    const uniqueStatuses = ["All", ...Array.from(new Set(pendingOrders.map((order) => order.status)))]
+    const time = ["All", "This Year", "This Month", "Today"]
 
     return (
         <div>
@@ -198,7 +205,7 @@ const PendingOrders = () => {
                     </Col>
                     <Col xs="auto">
                         <div className="text-center">
-                            <h3 className="mb-0">{filteredOrders.length}</h3>
+                            <h3 className="mb-0">{filteredPendingOrders.length}</h3>
                             <small>Total Orders</small>
                         </div>
                     </Col>
@@ -212,8 +219,8 @@ const PendingOrders = () => {
                         <Card.Body>
                             <div className="d-flex justify-content-between">
                                 <div>
-                                    <h6 className="text-danger mb-1">High Priority</h6>
-                                    <h4 className="mb-0">{mockPendingOrders.filter((o) => o.priority === "High").length}</h4>
+                                    <h6 className="text-danger mb-1">Total Pending</h6>
+                                    <h4 className="mb-0">{filteredPendingOrders.length}</h4>
                                 </div>
                                 <div className="text-danger">
                                     <TrendingUp size={24} />
@@ -228,7 +235,7 @@ const PendingOrders = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <h6 className="text-success mb-1">Ready to Ship</h6>
-                                    <h4 className="mb-0">{mockPendingOrders.filter((o) => o.status === "Ready to Ship").length}</h4>
+                                    <h4 className="mb-0">{filteredPendingOrders.filter((o) => o.status === "ready").length}</h4>
                                 </div>
                                 <div className="text-success">
                                     <Package size={24} />
@@ -243,7 +250,7 @@ const PendingOrders = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <h6 className="text-info mb-1">Total Value</h6>
-                                    <h4 className="mb-0">${mockPendingOrders.reduce((sum, o) => sum + o.value, 0).toLocaleString()}</h4>
+                                    <h4 className="mb-0">${pendingOrders.reduce((sum, o) => sum + o.value, 0).toLocaleString()}</h4>
                                 </div>
                                 <div className="text-info">
                                     <Globe size={24} />
@@ -258,7 +265,7 @@ const PendingOrders = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <h6 className="text-warning mb-1">Total Items</h6>
-                                    <h4 className="mb-0">{mockPendingOrders.reduce((sum, o) => sum + o.items, 0)}</h4>
+                                    <h4 className="mb-0">{pendingOrders.reduce((sum, o) => sum + o.items, 0)}</h4>
                                 </div>
                                 <div className="text-warning">
                                     <Users size={24} />
@@ -293,7 +300,7 @@ const PendingOrders = () => {
                                 />
                             </InputGroup>
                         </Col>
-                        <Col lg={3} className="mb-3">
+                        {/* <Col lg={3} className="mb-3">
                             <Form.Label>Filter by Status</Form.Label>
                             <Form.Select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
                                 {uniqueStatuses.map((status) => (
@@ -302,13 +309,13 @@ const PendingOrders = () => {
                                     </option>
                                 ))}
                             </Form.Select>
-                        </Col>
+                        </Col> */}
                         <Col lg={3} className="mb-3">
-                            <Form.Label>Filter by Priority</Form.Label>
-                            <Form.Select value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
-                                {uniquePriorities.map((priority) => (
-                                    <option key={priority} value={priority}>
-                                        {priority}
+                            <Form.Label>Filter by Time</Form.Label>
+                            <Form.Select value={timeFilter} onChange={(e) => setTimeFilter(e.target.value)}>
+                                {time.map((timeType) => (
+                                    <option key={timeType} value={timeType}>
+                                        {timeType}
                                     </option>
                                 ))}
                             </Form.Select>
@@ -340,75 +347,110 @@ const PendingOrders = () => {
                                     <th>Order Details</th>
                                     <th>Customer & Destination</th>
                                     <th>Order Value</th>
-                                    <th>Priority</th>
+                                    {/* <th>Priority</th> */}
                                     <th>Status & Progress</th>
+                                    <th>Created Date</th>
                                     <th>Expected Ship Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {currentOrders.map((order) => (
-                                    <tr key={order.id}>
-                                        <td>
-                                            <div>
-                                                <strong className="text-primary">{order.id}</strong>
-                                                <br />
-                                                <small className="text-muted">{order.items} items</small>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <strong>{order.customer}</strong>
-                                                <br />
-                                                <small className="text-muted">
-                                                    <Globe size={12} className="me-1" />
-                                                    {order.destination}
-                                                </small>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <strong className="text-success">${order.value.toLocaleString()}</strong>
-                                        </td>
-                                        <td>
+                                {
+                                    pendingOrders.length !== 0 ?
+                                        currentOrders.length !== 0 ?
+                                            currentOrders.map((order) => (
+                                                <tr key={order.id}>
+                                                    <td>
+                                                        <div>
+                                                            <strong className="text-primary">{order.id}</strong>
+                                                            <br />
+                                                            <small className="text-muted">{order.items} item(s)</small>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div>
+                                                            <strong>{order.customer}</strong>
+                                                            <br />
+                                                            <small className="text-muted">
+                                                                <Globe size={12} className="me-1" />
+                                                                {order.destination}
+                                                            </small>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <strong className="text-success">${order.value.toLocaleString()}</strong>
+                                                    </td>
+                                                    {/* <td>
                                             <Badge bg={getPriorityVariant(order.priority)} className="px-3 py-2">
                                                 {order.priority}
                                             </Badge>
-                                        </td>
-                                        <td>
-                                            <div>
-                                                <Badge bg={getStatusVariant(order.status)} className="mb-2">
-                                                    {order.status}
-                                                </Badge>
-                                                <ProgressBar
+                                        </td> */}
+                                                    <td>
+                                                        <div className="d-flex justify-center">
+                                                            <Badge bg={getStatusVariant(order.status)} className="mb-2 px-4 py-2">
+                                                                {order.status}
+                                                            </Badge>
+                                                            {/* <ProgressBar
                                                     variant={getProgressVariant(order.progress)}
                                                     now={order.progress}
                                                     style={{ height: "6px" }}
                                                 />
-                                                <small className="text-muted">{order.progress}% Complete</small>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <strong>{new Date(order.expectedShipDate).toLocaleDateString()}</strong>
-                                            <br />
-                                            <small className="text-muted">
-                                                {Math.ceil(
-                                                    (new Date(order.expectedShipDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
-                                                )}{" "}
-                                                days
-                                            </small>
-                                        </td>
-                                        <td>
-                                            <ButtonGroup size="sm">
-                                                <Button variant="outline-primary" title="View Details">
-                                                    <Eye size={14} />
-                                                </Button>
-                                                <Button variant="outline-success" title="Download">
-                                                    <Download size={14} />
-                                                </Button>
-                                            </ButtonGroup>
-                                        </td>
-                                    </tr>
-                                ))}
+                                                <small className="text-muted">{order.progress}% Complete</small> */}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <strong>{new Date(order.date).toLocaleDateString(("vi-VN"), {
+                                                            year: "numeric",
+                                                            month: "2-digit",
+                                                            day: "2-digit"
+                                                        })}</strong>
+                                                        <br />
+                                                        <small className="text-muted">
+                                                            {Math.ceil(
+                                                                (new Date().getTime() - new Date(order.date).getTime()) / (1000 * 60 * 60 * 24),
+                                                            )}{" "}
+                                                            days ago
+                                                        </small>
+                                                    </td>
+                                                    <td>
+                                                        <strong>{new Date(order.expectedDeliveryDate).toLocaleDateString(("vi-VN"), {
+                                                            year: "numeric",
+                                                            month: "2-digit",
+                                                            day: "2-digit"
+                                                        })}</strong>
+                                                        <br />
+                                                        <small className="text-muted">
+                                                            {Math.ceil(
+                                                                (new Date(order.expectedDeliveryDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
+                                                            )}{" "}
+                                                            days remaining
+                                                        </small>
+                                                    </td>
+                                                    <td>
+                                                        <ButtonGroup size="sm">
+                                                            <Button variant="outline-primary" title="View Details">
+                                                                <Eye size={14} />
+                                                            </Button>
+                                                            <Button variant="outline-danger" title="Update Order">
+                                                                <Pencil size={14} />
+                                                            </Button>
+                                                        </ButtonGroup>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                            : <tr>
+                                                <td colSpan={10}>
+                                                    <Alert variant="warning">There is no such Order</Alert>
+                                                </td>
+                                            </tr>
+                                        : <tr>
+                                            <td colSpan={10}>
+                                                <Alert variant="danger">
+                                                    There are no exported order that you handle yet
+                                                </Alert>
+                                            </td>
+                                        </tr>
+                                }
                             </tbody>
                         </Table>
                     </div>
@@ -419,8 +461,8 @@ const PendingOrders = () => {
                     <Card.Footer className="bg-light">
                         <div className="d-flex justify-content-between align-items-center">
                             <small className="text-muted">
-                                Showing {startIndex + 1} to {Math.min(startIndex + ordersPerPage, filteredOrders.length)} of{" "}
-                                {filteredOrders.length} orders
+                                Showing {startIndex + 1} to {Math.min(startIndex + ordersPerPage, filteredPendingOrders.length)} of{" "}
+                                {filteredPendingOrders.length} orders
                             </small>
                             <Pagination className="mb-0">
                                 <Pagination.First onClick={() => setCurrentPage(1)} disabled={currentPage === 1} />

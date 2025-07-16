@@ -13,12 +13,13 @@ import { useEffect, useState } from "react";
 const ExporterSidebar = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const path = location.pathname.split(["/"]);
+    const pathNames = location.pathname.split(["/"]);
+    console.log(pathNames[pathNames.length - 1])
     const [activeTab, setActiveTab] = useState('');
 
     useEffect(() => {
-        setActiveTab(path[path.length - 1]);
-    }, [path]);
+        setActiveTab(pathNames[pathNames.length - 1] || "pending");
+    }, [pathNames]);
 
     return (
         <div className="bg-white shadow-sm" style={{ minHeight: "calc(100vh - 56px)" }}>
@@ -26,14 +27,14 @@ const ExporterSidebar = () => {
                 <h6 className="mb-0 text-muted">Exporter</h6>
             </div>
             <Nav className="flex-column">
-                <Nav.Item>
+                {/* <Nav.Item>
                     <Nav.Link
-                        active={activeTab === "dashboard" || ""}
+                        active={activeTab === "dashboard"}
                         onClick={() => {
                             setActiveTab("dashboard")
                             navigate("dashboard")
                         }}
-                        className={`d-flex align-items-center gap-2 py-3 px-3 ${activeTab.includes("dashboard") ? "bg-primary text-white" : "text-dark"}`}
+                        className={`d-flex align-items-center gap-2 py-3 px-3 ${["dashboard", "exporter"].some(pathName => activeTab.includes(pathName)) ? "bg-primary text-white" : "text-dark"}`}
                         style={{ cursor: "pointer" }}
                     >
                         <Calendar size={18} />
@@ -41,14 +42,14 @@ const ExporterSidebar = () => {
                             <div>Dashboard</div>
                         </div>
                     </Nav.Link>
-                </Nav.Item>
+                </Nav.Item> */}
                 <Nav.Item>
                     <Nav.Link
                         active={activeTab === "pending"}
                         onClick={() => {
                             setActiveTab("pending")
                             navigate("pending-orders")
-                        }} className={`d-flex align-items-center gap-2 py-3 px-3 ${activeTab.includes("pending") ? "bg-primary text-white" : "text-dark"}`}
+                        }} className={`d-flex align-items-center gap-2 py-3 px-3 ${["pending", "exporter"].some(pathName => activeTab.includes(pathName)) ? "bg-primary text-white" : "text-dark"}`}
                         style={{ cursor: "pointer" }}
                     >
                         <Clock size={18} />

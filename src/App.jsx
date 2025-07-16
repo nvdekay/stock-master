@@ -134,7 +134,8 @@ function App() {
 
           <Route path="/exporter" element={<ProtectedRoute requiredRoles={["exporter"]} />}>
             <Route element={<ExporterLayout />} >
-              <Route index element={<ExporterDashboard />} />
+              {/* <Route index element={<ExporterDashboard />} /> */}
+              <Route index element={<PendingOrders />} />
               <Route path="dashboard" element={<ExporterDashboard />} />
               <Route path="pending-orders" element={<PendingOrders />} />
               <Route path="history" element={<ExportHistory />} />

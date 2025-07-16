@@ -1196,6 +1196,20 @@
       "date": "2025-07-13",
       "senderStaffId": null,
       "receiverStaffId": "4",
+      "sendWarehouseId": "3",
+      "receiveWarehouseId": "1",
+      "buyerId": null,
+      "note": "nothing",
+      "expectedDeliveryDate": "2025-07-18",
+      "id": "XVWBUtc",
+      "completedDate": null
+    },
+    {
+      "type": "transfer",
+      "status": "pending",
+      "date": "2025-07-13",
+      "senderStaffId": null,
+      "receiverStaffId": "4",
       "sendWarehouseId": "2",
       "receiveWarehouseId": "1",
       "buyerId": null,
@@ -1323,6 +1337,13 @@
     {
       "id": "10",
       "orderId": "12",
+      "productId": "2",
+      "quantity": 1,
+      "price": 8490000
+    },
+    {
+      "id": "11",
+      "orderId": "XVWBUtc",
       "productId": "2",
       "quantity": 1,
       "price": 8490000

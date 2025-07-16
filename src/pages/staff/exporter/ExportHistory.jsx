@@ -54,11 +54,11 @@ const ExportHistory = () => {
                 const locations = locationsRes.data;
                 // console.log("", exportOrderRes.data)
                 let exportOrder = exportOrderRes.data.map((order) => {
-                    let receiveWarehouse = warehouses.find(w => w.id === order.receiveWarehouseId);
+                    let sendWarehouse = warehouses.find(w => w.id === order.receiveWarehouseId);
                     let buyer = users.find(u => u.id === order.buyerId);
                     let destinationInfo = order.buyerId !== null ?
                         { customer: buyer.username, destination: locations.find(l => l.userId === buyer.id).location }
-                        : { customer: receiveWarehouse.name, destination: receiveWarehouse.location }
+                        : { customer: sendWarehouse.name, destination: sendWarehouse.location }
                     return {
                         ...order,
                         ...destinationInfo,
@@ -78,6 +78,7 @@ const ExportHistory = () => {
         fetchAllExportOrder();
     }, [])
 
+    // filter by search and status
     useEffect(() => {
         console.log("timeFilter: ", timeFilter)
         const filterOrder = () => {
@@ -141,10 +142,12 @@ const ExportHistory = () => {
                 return "success"
             case "in_transit":
                 return "primary"
-            case "Cancelled":
+            case "cancelled":
                 return "danger"
-            case "shipped":
+            case "pending":
                 return "warning"
+            case "shipped": 
+                return "info"
             default:
                 return "secondary"
         }
@@ -392,7 +395,6 @@ const ExportHistory = () => {
                                                                 {getStatusIcon(order.status)}
                                                                 {order.status}
                                                             </Badge>
-                                                            {renderStars(order.rating)}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -403,7 +405,7 @@ const ExportHistory = () => {
                                                             <Button variant="outline-primary" title="View Details">
                                                                 <Eye size={14} />
                                                             </Button>
-                                                            <Button variant="outline-danger" title="Download Invoice">
+                                                            <Button variant="outline-danger" title="Update Order">
                                                                 <Pencil size={14} />
                                                             </Button>
                                                         </ButtonGroup>
