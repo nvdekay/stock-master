@@ -45,6 +45,11 @@ function StaffEditModal({ show, onHide, staff, warehouse, onSuccess }) {
             return false;
         }
 
+        if (!['staff', 'exporter', 'shipper'].includes(formData.role)) {
+            setError('Invalid role selected');
+            return false;
+        }
+
         return true;
     };
 
@@ -55,6 +60,8 @@ function StaffEditModal({ show, onHide, staff, warehouse, onSuccess }) {
         setError('');
 
         try {
+            const warehouseId = formData.role === 'shipper' ? null : warehouse.id;
+
             await api.put(`/users/${staff.id}`, {
                 ...staff,
                 fullName: formData.fullName,
@@ -62,10 +69,10 @@ function StaffEditModal({ show, onHide, staff, warehouse, onSuccess }) {
                 email: formData.email,
                 role: formData.role,
                 enterpriseId: warehouse.enterpriseId,
-                warehouseId: formData.role === 'staff' ? warehouse.id : null
+                warehouseId: warehouseId
             });
 
-            setSuccess('Staff information updated successfully!');
+            setSuccess(`${getRoleDisplayName(formData.role)} information updated successfully!`);
             setTimeout(() => {
                 onHide();
                 onSuccess();
@@ -83,6 +90,24 @@ function StaffEditModal({ show, onHide, staff, warehouse, onSuccess }) {
         setError('');
         setSuccess('');
         onHide();
+    };
+
+    const getRoleDisplayName = (role) => {
+        const roleNames = {
+            staff: 'Warehouse Staff',
+            exporter: 'Export Staff',
+            shipper: 'Shipper'
+        };
+        return roleNames[role] || role;
+    };
+
+    const getRoleDescription = (role) => {
+        const descriptions = {
+            staff: 'General warehouse operations and inventory management',
+            exporter: 'Handle outgoing shipments and export documentation',
+            shipper: 'Deliver wholesale orders and manage transportation'
+        };
+        return descriptions[role] || '';
     };
 
     if (!staff) return null;
@@ -103,7 +128,7 @@ function StaffEditModal({ show, onHide, staff, warehouse, onSuccess }) {
                     <Row>
                         <Col md={6}>
                             <Form.Group className="mb-3">
-                                <Form.Label>Full Name *</Form.Label>
+                                <Form.Label>Full Name <span className="text-danger">*</span></Form.Label>
                                 <Form.Control
                                     type="text"
                                     value={formData.fullName}
@@ -115,7 +140,7 @@ function StaffEditModal({ show, onHide, staff, warehouse, onSuccess }) {
                         </Col>
                         <Col md={6}>
                             <Form.Group className="mb-3">
-                                <Form.Label>Username *</Form.Label>
+                                <Form.Label>Username <span className="text-danger">*</span></Form.Label>
                                 <Form.Control
                                     type="text"
                                     value={formData.username}
@@ -128,7 +153,7 @@ function StaffEditModal({ show, onHide, staff, warehouse, onSuccess }) {
                     </Row>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Email Address *</Form.Label>
+                        <Form.Label>Email Address <span className="text-danger">*</span></Form.Label>
                         <Form.Control
                             type="email"
                             value={formData.email}
@@ -139,17 +164,18 @@ function StaffEditModal({ show, onHide, staff, warehouse, onSuccess }) {
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label>Role</Form.Label>
+                        <Form.Label>Role <span className="text-danger">*</span></Form.Label>
                         <Form.Select
                             value={formData.role}
                             onChange={(e) => handleInputChange('role', e.target.value)}
                             disabled={loading}
                         >
                             <option value="staff">Warehouse Staff</option>
+                            <option value="exporter">Export Staff</option>
                             <option value="shipper">Shipper</option>
                         </Form.Select>
                         <Form.Text className="text-muted">
-                            Changing role will update work location assignment
+                            {getRoleDescription(formData.role)}
                         </Form.Text>
                     </Form.Group>
 
@@ -161,14 +187,26 @@ function StaffEditModal({ show, onHide, staff, warehouse, onSuccess }) {
                         <ul className="mb-0">
                             <li><strong>Staff ID:</strong> {staff.id}</li>
                             <li><strong>Enterprise:</strong> {warehouse.enterpriseId}</li>
-                            <li><strong>Warehouse:</strong> {formData.role === 'staff' ? warehouse.name : 'Enterprise-wide (for shippers)'}</li>
-                            <li><strong>Current Role:</strong> {formData.role === 'staff' ? 'Warehouse Staff' : 'Shipper'}</li>
+                            <li><strong>Warehouse Assignment:</strong> {
+                                formData.role === 'shipper' 
+                                    ? 'Enterprise-wide (no specific warehouse)'
+                                    : warehouse.name
+                            }</li>
+                            <li><strong>Role:</strong> {getRoleDisplayName(formData.role)}</li>
                         </ul>
                     </Alert>
 
                     {formData.role !== staff.role && (
                         <Alert variant="warning">
-                            <strong>Role Change Warning:</strong> Changing from {staff.role} to {formData.role} will update the work location and permissions.
+                            <strong>Role Change Warning:</strong> Changing from {getRoleDisplayName(staff.role)} to {getRoleDisplayName(formData.role)} will update the work location and permissions.
+                            {formData.role === 'shipper' && <br />}
+                            {formData.role === 'shipper' && <strong>Note: Shipper role will remove warehouse assignment and enable enterprise-wide access.</strong>}
+                        </Alert>
+                    )}
+
+                    {formData.role === 'shipper' && (
+                        <Alert variant="info">
+                            <strong>Shipper Role:</strong> This role allows access to all warehouses in the enterprise for delivery management.
                         </Alert>
                     )}
                 </Form>
@@ -186,7 +224,7 @@ function StaffEditModal({ show, onHide, staff, warehouse, onSuccess }) {
                     ) : (
                         <>
                             <i className="fas fa-save me-2"></i>
-                            Update Staff
+                            Update {getRoleDisplayName(formData.role)}
                         </>
                     )}
                 </Button>

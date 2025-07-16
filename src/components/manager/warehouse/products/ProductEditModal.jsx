@@ -18,6 +18,7 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [imagePreview, setImagePreview] = useState('');
 
     useEffect(() => {
         if (product) {
@@ -30,8 +31,10 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
                 price: product.price || '',
                 status: calculateStatus(initialWarranty, initialQuantity),
                 warrantyExpire: initialWarranty,
-                quantity: initialQuantity
+                quantity: initialQuantity,
+                src: product.src || '' 
             });
+            setImagePreview(product.src || '');
             setError('');
             setSuccess('');
         }
@@ -51,6 +54,26 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
         newForm.status = newStatus;
 
         setEditForm(newForm);
+    };
+
+    const handleImageChange = (value) => {
+        setEditForm(prev => ({
+            ...prev,
+            src: value
+        }));
+        setImagePreview(value);
+    };
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const dataUrl = event.target.result;
+                handleImageChange(dataUrl);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const validateForm = () => {
@@ -85,7 +108,6 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
         setError('');
 
         try {
-            // Update product with new quantity directly in products table
             await api.put(`/products/${product.id}`, {
                 name: editForm.name,
                 description: editForm.description,
@@ -93,7 +115,8 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
                 status: editForm.status,
                 warrantyExpire: editForm.warrantyExpire,
                 quantity: Number(editForm.quantity),
-                warehouseId: warehouse.id
+                warehouseId: warehouse.id,
+                src: editForm.src || 'https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg'
             });
 
             setSuccess('Product updated successfully');
@@ -153,6 +176,32 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
                 </Alert>
                 
                 <Form>
+                    {imagePreview && (
+                        <Row className="mb-3">
+                            <Col md={12}>
+                                <Form.Label>Current Image</Form.Label>
+                                <div className="d-flex justify-content-center">
+                                    <img
+                                        src={imagePreview}
+                                        alt="Product preview"
+                                        style={{
+                                            maxWidth: '150px',
+                                            maxHeight: '150px',
+                                            objectFit: 'contain',
+                                            border: '1px solid #ddd',
+                                            borderRadius: '8px',
+                                            padding: '8px',
+                                            backgroundColor: '#f8f9fa'
+                                        }}
+                                        onError={(e) => {
+                                            e.target.src = '/assets/images/products/default.jpg';
+                                        }}
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                    )}
+
                     <Row>
                         <Col md={6}>
                             <Form.Group className="mb-3">
@@ -193,6 +242,35 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
                         />
                     </Form.Group>
 
+                    {/* Image URL field */}
+                    <Form.Group className="mb-3">
+                        <Form.Label>Product Image URL</Form.Label>
+                        <Form.Control
+                            type="url"
+                            value={editForm.src || ''}
+                            onChange={(e) => handleImageChange(e.target.value)}
+                            placeholder="https://example.com/image.jpg"
+                            disabled={loading}
+                        />
+                        <Form.Text className="text-muted">
+                            Enter an image URL or upload a file below
+                        </Form.Text>
+                    </Form.Group>
+
+                    {/* File upload */}
+                    <Form.Group className="mb-3">
+                        <Form.Label>Or Upload Image File</Form.Label>
+                        <Form.Control
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            disabled={loading}
+                        />
+                        <Form.Text className="text-muted">
+                            Supported formats: JPG, PNG, GIF
+                        </Form.Text>
+                    </Form.Group>
+
                     <Row>
                         <Col md={4}>
                             <Form.Group className="mb-3">
@@ -207,7 +285,7 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
                                 />
                             </Form.Group>
                         </Col>
-                        <Col md={4}>
+                        <Col md={8}>
                             <Form.Group className="mb-3">
                                 <Form.Label>Warranty Expiry *</Form.Label>
                                 <Form.Control
@@ -222,6 +300,7 @@ function ProductEditModal({ show, onHide, product, warehouse, onSuccess }) {
                             </Form.Group>
                         </Col>
                     </Row>
+
                     <Alert variant="info">
                         <strong>Current Warehouse:</strong> {warehouse.name}<br/>
                         <strong>Original Quantity:</strong> {product.quantity}<br/>

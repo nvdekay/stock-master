@@ -4,7 +4,8 @@ import '../../public/assets/css/ProductList.css';
 import api from "../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../auth/AuthProvider';
-import e from "cors";
+import { useCart } from "../contexts/CartContext"; // hoặc đúng path
+
 
 function ProductList() {
     const [products, setProducts] = useState([]);
@@ -15,6 +16,8 @@ function ProductList() {
     const [sortOrder, setSortOrder] = useState("asc"); // asc = từ thấp đến cao (mặc định)
 
     const [message, setMessage] = useState("");
+
+    const { updateCartItems } = useCart();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -56,13 +59,13 @@ function ProductList() {
             filtered = filtered.filter(product =>
                 product.productTypeId === parseInt(selectedType)
             );
-            if(filtered.length === 0) {
+            if (filtered.length === 0) {
                 setMessage("Không có sản phẩm nào thuộc loại này");
             }
             else {
                 setMessage("");
             }
-        }else {
+        } else {
             setMessage("");
         }
 
@@ -117,6 +120,8 @@ function ProductList() {
                     }
                 });
                 alert("Đã thêm sản phẩm vào giỏ hàng");
+
+                updateCartItems(); // Cập nhật số lượng giỏ hàng
             }
         } catch (err) {
             console.error("Lỗi khi thêm/cập nhật giỏ hàng:", err);
@@ -180,7 +185,7 @@ function ProductList() {
 
             <h2 className="mb-4">Danh sách sản phẩm</h2>
             {message && <div className="alert alert-warning">{message}</div>}
-            <br/>
+            <br />
             <Row xs={1} sm={2} md={3} lg={4} className="g-4">
                 {products.map((product) => (
                     <Col key={product.id}>
@@ -190,7 +195,7 @@ function ProductList() {
                             <Card.Body onClick={() => handleProductDetail(product.id)}>
                                 <Card.Img
                                     variant="top"
-                                    src={`../../public/assets/images/products/${product.id}.jpg`}
+                                    src={product.src || `../../public/assets/images/products/${product.id}.jpg`} // Sử dụng src từ database
                                     alt={product.name}
                                     style={{
                                         height: "200px",

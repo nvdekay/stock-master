@@ -265,7 +265,7 @@
     {
       "userId": "13",
       "productId": "45",
-      "quantity": 4,
+      "quantity": 6,
       "id": 5
     },
     {
@@ -525,7 +525,8 @@
       "id": "1",
       "quantity": 12,
       "warehouseId": "1",
-      "productTypeId": 8
+      "productTypeId": 8,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "2",
@@ -536,7 +537,8 @@
       "warrantyExpire": "2026-07-15",
       "quantity": 80,
       "warehouseId": "2",
-      "productTypeId": 14
+      "productTypeId": 14,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "3",
@@ -547,7 +549,8 @@
       "warrantyExpire": "2027-01-01",
       "quantity": 150,
       "warehouseId": "3",
-      "productTypeId": 2
+      "productTypeId": 2,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "4",
@@ -556,9 +559,10 @@
       "price": 3500000,
       "status": "out_of_stock",
       "warrantyExpire": "2026-11-20",
-      "quantity": 20,
+      "quantity": 0,
       "warehouseId": "4",
-      "productTypeId": 5
+      "productTypeId": 5,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "5",
@@ -569,7 +573,8 @@
       "warrantyExpire": "2028-03-10",
       "quantity": 40,
       "warehouseId": "5",
-      "productTypeId": 10
+      "productTypeId": 10,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "6",
@@ -580,7 +585,8 @@
       "warrantyExpire": "2026-09-01",
       "quantity": 30,
       "warehouseId": "6",
-      "productTypeId": 7
+      "productTypeId": 7,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "7",
@@ -591,7 +597,8 @@
       "warrantyExpire": "2026-05-05",
       "quantity": 250,
       "warehouseId": "13",
-      "productTypeId": 18
+      "productTypeId": 18,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "8",
@@ -602,18 +609,20 @@
       "warrantyExpire": "2029-12-31",
       "quantity": 100,
       "warehouseId": "2",
-      "productTypeId": 17
+      "productTypeId": 17,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "9",
       "name": "Router Wifi Asus RT-AX86U",
       "description": "Chuẩn Wifi 6, tốc độ cao, chế độ Gaming",
       "price": 6800000,
-      "status": "discontinued",
+      "status": "available",
       "warrantyExpire": "2025-10-10",
       "quantity": 90,
       "warehouseId": "13",
-      "productTypeId": 13
+      "productTypeId": 13,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "10",
@@ -624,7 +633,8 @@
       "warrantyExpire": "2026-08-22",
       "quantity": 90,
       "warehouseId": "4",
-      "productTypeId": 15
+      "productTypeId": 15,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "11",
@@ -635,7 +645,8 @@
       "warrantyExpire": "2026-11-11",
       "quantity": 90,
       "warehouseId": "3",
-      "productTypeId": 9
+      "productTypeId": 9,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "12",
@@ -646,7 +657,8 @@
       "warrantyExpire": "2027-04-18",
       "quantity": 90,
       "warehouseId": "11",
-      "productTypeId": 19
+      "productTypeId": 19,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "13",
@@ -657,7 +669,8 @@
       "warrantyExpire": "2026-10-30",
       "quantity": 90,
       "warehouseId": "12",
-      "productTypeId": 7
+      "productTypeId": 7,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "14",
@@ -668,7 +681,8 @@
       "warrantyExpire": "2030-01-01",
       "quantity": 90,
       "warehouseId": "14",
-      "productTypeId": 8
+      "productTypeId": 8,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "15",
@@ -677,9 +691,10 @@
       "price": 11500000,
       "status": "out_of_stock",
       "warrantyExpire": "2026-09-15",
-      "quantity": 90,
+      "quantity": 0,
       "warehouseId": "15",
-      "productTypeId": 15
+      "productTypeId": 15,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "16",
@@ -690,7 +705,8 @@
       "warrantyExpire": "2028-02-28",
       "quantity": 90,
       "warehouseId": "16",
-      "productTypeId": 4
+      "productTypeId": 4,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "17",
@@ -701,7 +717,8 @@
       "warrantyExpire": "2026-07-20",
       "quantity": 90,
       "warehouseId": "17",
-      "productTypeId": 19
+      "productTypeId": 19,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "18",
@@ -712,7 +729,8 @@
       "warrantyExpire": "2033-01-01",
       "quantity": 90,
       "warehouseId": "18",
-      "productTypeId": 12
+      "productTypeId": 12,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "19",
@@ -723,7 +741,8 @@
       "warrantyExpire": "2026-04-12",
       "quantity": 90,
       "warehouseId": "19",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "20",
@@ -734,29 +753,32 @@
       "warrantyExpire": "2029-08-01",
       "quantity": 90,
       "warehouseId": "20",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "21",
       "name": "Giá đỡ điện thoại",
       "description": "Giá đỡ điện thoại cao cấp, chất lượng tốt",
       "price": 1106000,
-      "status": "expired",
-      "warrantyExpire": "2032-07-11",
+      "status": "available",
+      "warrantyExpire": "2022-07-11",
       "quantity": 90,
       "warehouseId": "8",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "22",
       "name": "Tai nghe không dây",
       "description": "Tai nghe không dây cao cấp, chất lượng tốt",
       "price": 1873000,
-      "status": "expired",
+      "status": "available",
       "warrantyExpire": "2032-12-28",
       "quantity": 90,
       "warehouseId": "9",
-      "productTypeId": 14
+      "productTypeId": 14,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "23",
@@ -764,10 +786,11 @@
       "description": "Bàn phím cơ cao cấp, chất lượng tốt",
       "price": 1037000,
       "status": "out-of-stock",
-      "warrantyExpire": "2028-01-21",
-      "quantity": 90,
+      "warrantyExpire": "2020-01-21",
+      "quantity": 0,
       "warehouseId": "10",
-      "productTypeId": 2
+      "productTypeId": 2,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "24",
@@ -776,9 +799,10 @@
       "price": 1563000,
       "status": "out-of-stock",
       "warrantyExpire": "2032-12-18",
-      "quantity": 90,
+      "quantity": 0,
       "warehouseId": "11",
-      "productTypeId": 5
+      "productTypeId": 5,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "25",
@@ -789,7 +813,8 @@
       "warrantyExpire": "2032-12-07",
       "quantity": 90,
       "warehouseId": "12",
-      "productTypeId": 8
+      "productTypeId": 8,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "name": "Củ sạc nhanh",
@@ -799,7 +824,8 @@
       "warrantyExpire": "2032-12-19",
       "quantity": 90,
       "warehouseId": "13",
-      "id": "26"
+      "id": "26",
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "name": "Cáp sạc USB-C",
@@ -810,7 +836,8 @@
       "id": "27",
       "quantity": 10,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "28",
@@ -821,18 +848,20 @@
       "warrantyExpire": "2027-04-11",
       "quantity": 90,
       "warehouseId": "14",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "29",
       "name": "USB 128GB",
       "description": "USB 128GB cao cấp, chất lượng tốt",
       "price": 1003000,
-      "status": "out-of-stock",
+      "status": "available",
       "warrantyExpire": "2028-09-29",
       "quantity": 90,
       "warehouseId": "15",
-      "productTypeId": 6
+      "productTypeId": 6,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "30",
@@ -840,10 +869,11 @@
       "description": "Webcam HD cao cấp, chất lượng tốt",
       "price": 1972000,
       "status": "expired",
-      "warrantyExpire": "2030-10-27",
+      "warrantyExpire": "2020-10-27",
       "quantity": 90,
       "warehouseId": "2",
-      "productTypeId": 15
+      "productTypeId": 15,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "31",
@@ -851,10 +881,11 @@
       "description": "Đèn LED RGB cao cấp, chất lượng tốt",
       "price": 1552000,
       "status": "expired",
-      "warrantyExpire": "2031-07-21",
+      "warrantyExpire": "2020-07-21",
       "quantity": 90,
       "warehouseId": "3",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "32",
@@ -865,7 +896,8 @@
       "warrantyExpire": "2028-11-12",
       "quantity": 90,
       "warehouseId": "4",
-      "productTypeId": 18
+      "productTypeId": 18,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "33",
@@ -874,9 +906,10 @@
       "price": 1489000,
       "status": "out-of-stock",
       "warrantyExpire": "2030-07-28",
-      "quantity": 90,
+      "quantity": 0,
       "warehouseId": "5",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "34",
@@ -887,18 +920,20 @@
       "warrantyExpire": "2028-02-10",
       "quantity": 90,
       "warehouseId": "6",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "35",
       "name": "Vòng đeo tay sức khỏe",
       "description": "Vòng đeo tay sức khỏe cao cấp, chất lượng tốt",
       "price": 1526000,
-      "status": "expired",
+      "status": "available",
       "warrantyExpire": "2032-11-30",
       "quantity": 90,
       "warehouseId": "7",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "36",
@@ -909,7 +944,8 @@
       "warrantyExpire": "2031-06-30",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "37",
@@ -920,40 +956,44 @@
       "warrantyExpire": "2032-11-01",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 8
+      "productTypeId": 8,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "38",
       "name": "Bộ vệ sinh laptop",
       "description": "Bộ vệ sinh laptop cao cấp, chất lượng tốt",
       "price": 1182000,
-      "status": "expired",
+      "status": "available",
       "warrantyExpire": "2031-01-21",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "39",
       "name": "Balo laptop",
       "description": "Balo laptop cao cấp, chất lượng tốt",
       "price": 993000,
-      "status": "out-of-stock",
+      "status": "available",
       "warrantyExpire": "2031-03-23",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "40",
       "name": "Kính chống ánh sáng xanh",
       "description": "Kính chống ánh sáng xanh cao cấp, chất lượng tốt",
       "price": 1976000,
-      "status": "out-of-stock",
+      "status": "available",
       "warrantyExpire": "2030-08-02",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "41",
@@ -964,7 +1004,8 @@
       "warrantyExpire": "2030-11-19",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "42",
@@ -975,29 +1016,32 @@
       "warrantyExpire": "2026-10-06",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 5
+      "productTypeId": 5,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "43",
       "name": "Đế tản nhiệt laptop",
       "description": "Đế tản nhiệt laptop cao cấp, chất lượng tốt",
       "price": 886000,
-      "status": "out-of-stock",
+      "status": "available",
       "warrantyExpire": "2031-01-02",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "44",
       "name": "Hub chuyển đổi Type-C",
       "description": "Hub chuyển đổi Type-C cao cấp, chất lượng tốt",
       "price": 321000,
-      "status": "expired",
+      "status": "available",
       "warrantyExpire": "2033-08-31",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 6
+      "productTypeId": 6,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "45",
@@ -1008,7 +1052,8 @@
       "warrantyExpire": "2030-03-02",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "46",
@@ -1019,40 +1064,44 @@
       "warrantyExpire": "2033-04-17",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "47",
       "name": "Micro thu âm",
       "description": "Micro thu âm cao cấp, chất lượng tốt",
       "price": 1734000,
-      "status": "out-of-stock",
+      "status": "available",
       "warrantyExpire": "2031-01-06",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 9
+      "productTypeId": 9,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "48",
       "name": "Ốp lưng điện thoại",
       "description": "Ốp lưng điện thoại cao cấp, chất lượng tốt",
       "price": 1959000,
-      "status": "out-of-stock",
+      "status": "available",
       "warrantyExpire": "2027-12-16",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     },
     {
       "id": "49",
       "name": "Kính cường lực",
       "description": "Kính cường lực cao cấp, chất lượng tốt",
       "price": 105000,
-      "status": "expired",
+      "status": "available",
       "warrantyExpire": "2028-06-07",
       "quantity": 20,
       "warehouseId": "1",
-      "productTypeId": 20
+      "productTypeId": 20,
+      "src": "https://i.pinimg.com/736x/57/fc/78/57fc78ba847be583534bafe58b8e8264.jpg"
     }
   ],
   "orders": [
@@ -1239,6 +1288,20 @@
       "receiveWarehouseId": "13",
       "buyerId": null,
       "note": "ok"
+    },
+    {
+      "type": "import",
+      "status": "completed",
+      "date": "2025-07-15",
+      "enterpriseId": "3",
+      "senderStaffId": null,
+      "receiverStaffId": "4",
+      "sendWarehouseId": "3",
+      "receiveWarehouseId": "1",
+      "buyerId": null,
+      "note": "dddd",
+      "id": "as0Vcap",
+      "completedDate": "2025-07-15T17:14:53.326Z"
     }
   ],
   "orderDetails": [
@@ -1342,6 +1405,38 @@
       "price": 8490000
     },
     {
+      "orderId": "as0Vcap",
+      "productId": "1",
+      "quantity": 8,
+      "price": 1290000,
+      "id": "YP8uUoc",
+      "status": "accepted"
+    },
+    {
+      "orderId": "as0Vcap",
+      "productId": "2",
+      "quantity": 8,
+      "price": 8490000,
+      "id": "RtO7xtx",
+      "status": "accepted"
+    },
+    {
+      "orderId": "as0Vcap",
+      "productId": "1",
+      "quantity": 2,
+      "price": 1290000,
+      "status": "refunded",
+      "id": "y5rS_IG"
+    },
+    {
+      "orderId": "as0Vcap",
+      "productId": "2",
+      "quantity": 2,
+      "price": 8490000,
+      "status": "refunded",
+      "id": "Tjpt-9C"
+    },
+    {
       "id": "11",
       "orderId": "XVWBUtc",
       "productId": "2",
@@ -1440,6 +1535,12 @@
       "userId": "4",
       "action": "Import order #XVWButc processed. 0 items accepted, 1 items refunded",
       "timestamp": "2025-07-13T05:54:23.904Z"
+    },
+    {
+      "userId": "4",
+      "action": "Import order #as0Vcap processed",
+      "timestamp": "2025-07-15T17:14:53.359Z",
+      "id": "xriwGi-"
     }
   ],
   "product_types": [
@@ -1528,7 +1629,7 @@
     {
       "productId": "1",
       "warehouseId": "1",
-      "quantity": 12,
+      "quantity": 20,
       "id": "1"
     },
     {
@@ -1734,6 +1835,12 @@
       "productId": "35",
       "warehouseId": "7",
       "quantity": 90
+    },
+    {
+      "productId": "2",
+      "warehouseId": "1",
+      "quantity": 8,
+      "id": "ysUPI1q"
     }
   ]
 }

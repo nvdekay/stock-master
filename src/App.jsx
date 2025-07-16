@@ -48,6 +48,7 @@ import ExporterDashboard from "./pages/staff/exporter/ExporterDashboard";
 import ExporterLayout from "./layouts/ExporterLayout";
 import PendingOrders from "./pages/staff/exporter/PendingOrders";
 import ExportHistory from "./pages/staff/exporter/ExportHistory";
+import CreateProduct from "./pages/warehouseman/CreateProduct";
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
 // import OrderTracking from "./pages/OrderTracking";
@@ -165,6 +166,7 @@ function App() {
             <Route element={<WarehousemanLayout />}>
               <Route index element={<WarehousemanDashboard />} />
               <Route path="import" element={<ImportProducts />} />
+              <Route path="create-product" element={<CreateProduct />} />
             </Route>
           </Route>
         </Route>

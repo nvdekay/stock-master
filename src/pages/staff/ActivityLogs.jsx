@@ -20,20 +20,27 @@ const ActivityLogs = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState({});
 
-  const { currentUser } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchActivityLogs = async () => {
       try {
         setLoading(true);
 
-        if (!currentUser?.warehouseId) {
+        if (!user?.warehouseId) {
           setError("No warehouse assigned to your account");
           setLoading(false);
           return;
         }
 
-        // Fetch logs related to this warehouse
+        const ordersRes = await api.get("/orders", {
+          params: {
+            receiveWarehouseId: user.warehouseId,
+            type: "import",
+          },
+        });
+        const orderIds = ordersRes.data.map((order) => order.id);
+
         const logsRes = await api.get("/logs", {
           params: {
             warehouseId: currentUser.warehouseId,
@@ -43,12 +50,16 @@ const ActivityLogs = () => {
           },
         });
 
-        setLogs(logsRes.data);
+        const filteredLogs = logsRes.data.filter(
+          (log) =>
+            log.userId === user.id ||
+            (log.action.includes("Import order") &&
+              orderIds.some((id) => log.action.includes(`#${id}`)))
+        );
 
-        // Collect unique user IDs from logs
-        const userIds = [...new Set(logsRes.data.map((log) => log.userId))];
+        setLogs(filteredLogs);
 
-        // Fetch user details
+        const userIds = [...new Set(filteredLogs.map((log) => log.userId))];
         const userDetailsPromises = userIds.map((userId) =>
           api.get(`/users/${userId}`)
         );
@@ -72,7 +83,7 @@ const ActivityLogs = () => {
     };
 
     fetchActivityLogs();
-  }, [currentUser]);
+  }, [user]);
 
   // Filter logs based on search term
   const filteredLogs = logs.filter(
@@ -81,13 +92,9 @@ const ActivityLogs = () => {
       log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
       log.details.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (users[log.userId]?.username &&
-        users[log.userId].username
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())) ||
+        users[log.userId].username.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (users[log.userId]?.fullName &&
-        users[log.userId].fullName
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()))
+        users[log.userId].fullName.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   if (loading) {
@@ -112,20 +119,12 @@ const ActivityLogs = () => {
   }
 
   const getActionBadge = (action) => {
-    switch (action) {
-      case "import":
-        return <Badge bg="success">Import</Badge>;
-      case "export":
-        return <Badge bg="info">Export</Badge>;
-      case "update":
-        return <Badge bg="warning">Update</Badge>;
-      case "delete":
-        return <Badge bg="danger">Delete</Badge>;
-      case "create":
-        return <Badge bg="primary">Create</Badge>;
-      default:
-        return <Badge bg="secondary">{action}</Badge>;
+    if (action.includes("logged in")) {
+      return <Badge bg="primary">Login</Badge>;
+    } else if (action.includes("Import order")) {
+      return <Badge bg="success">Import Processed</Badge>;
     }
+    return <Badge bg="secondary">{action}</Badge>;
   };
 
   return (
@@ -140,7 +139,7 @@ const ActivityLogs = () => {
                 <FaSearch />
               </InputGroup.Text>
               <Form.Control
-                placeholder="Search logs by action, details or user"
+                placeholder="Search logs by action or user"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -159,7 +158,7 @@ const ActivityLogs = () => {
             <tbody>
               {filteredLogs.length === 0 ? (
                 <tr>
-                  <td colSpan="4" className="text-center">
+                  <td colSpan="3" className="text-center">
                     No activity logs found
                   </td>
                 </tr>
