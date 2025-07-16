@@ -17,7 +17,6 @@ import ImportOrderProcess from "./pages/staff/ImportOrderProcess";
 import ImportsList from "./pages/staff/ImportsList";
 import CreateImport from "./pages/staff/CreateImport";
 import StaffInventory from "./pages/staff/StaffInventory";
-import ActivityLogs from "./pages/staff/ActivityLogs";
 import StaffLayout from "./layouts/StaffLayout";
 
 // Products
@@ -135,7 +134,6 @@ function App() {
               <Route path="imports" element={<ImportsList />} />
               <Route path="create-import" element={<CreateImport />} />
               <Route path="inventory" element={<StaffInventory />} />
-              <Route path="logs" element={<ActivityLogs />} />
             </Route>
           </Route>
 
