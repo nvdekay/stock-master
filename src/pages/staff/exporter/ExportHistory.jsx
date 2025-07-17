@@ -66,7 +66,7 @@ const ExportHistory = () => {
                         items: order.orderDetails.length
                     }
                 })
-                console.log("exportHistory: ", exportOrder)
+                // console.log("exportHistory: ", exportOrder)
                 setExportHistory(exportOrder);
                 setFilteredHistory(exportOrder);
 
@@ -80,7 +80,7 @@ const ExportHistory = () => {
 
     // filter by search and status
     useEffect(() => {
-        console.log("timeFilter: ", timeFilter)
+        // console.log("timeFilter: ", timeFilter)
         const filterOrder = () => {
             let filtered = exportHistory.filter((order) => {
                 const matchesSearch = searchTerm !== null ?
@@ -105,12 +105,12 @@ const ExportHistory = () => {
                     default:
                         break;
                 }
-                console.log("index: ", index)
+                // console.log("index: ", index)
 
-                console.log("date: ", order.date.split("-"))
-                console.log("date: ", new Date().toLocaleDateString((
-                    "en-CA"
-                )).split("-")[index])
+                // console.log("date: ", order.date.split("-"))
+                // consol.elog("date: ", new Date().toLocaleDateString((
+                //     "en-CA"
+                // )).split("-")[index])
 
                 // if (index === -1) {
                 const matchesTime = index === -1 ?
@@ -124,11 +124,11 @@ const ExportHistory = () => {
                         )).split("-")[i]
                     )
 
-                console.log("matchTime: ", matchesTime);
+                // console.log("matchTime: ", matchesTime);
                 return matchesSearch && matchesStatus && matchesTime;
             })
 
-            console.log("filtered: ", filtered);
+            // console.log("filtered: ", filtered);
             setFilteredHistory(filtered)
         }
 
@@ -200,7 +200,7 @@ const ExportHistory = () => {
                     </Col>
                     <Col xs="auto">
                         <div className="text-center">
-                            <h3 className="mb-0">{filteredHistory.length}</h3>
+                            <h3 className="mb-0">{deliveredOrders.length}</h3>
                             <small>Completed Orders</small>
                         </div>
                     </Col>

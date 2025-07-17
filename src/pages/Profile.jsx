@@ -20,18 +20,21 @@ export default function UserProfile() {
         const fetchStaffData = async () => {
             if (user.warehouseId !== null && user.enterpriseId !== null) {
                 try {
-                    const [warehouseRes, enterpriseRes] = await Promise.all([
+                    const [warehouseRes, enterpriseRes, locationRes] = await Promise.all([
                         api.get(`http://localhost:9999/warehouses/${user.warehouseId}`),
-                        api.get(`http://localhost:9999/enterprises/${user.enterpriseId}`)
+                        api.get(`http://localhost:9999/enterprises/${user.enterpriseId}`),
+                        api.get(`http://localhost:9999/locations?userId=${user.id}`)
                     ])
 
                     setWarehouse(warehouseRes.data);
                     setEnterprise(enterpriseRes.data);
+                    // console.log("locationRes.data.location: ", locationRes.data)
                     setFormData({
                         ...formData,
                         enterpriseName: enterpriseRes.data.name,
                         warehouseName: warehouseRes.data.name,
-                        warehouseLocation: warehouseRes.data.location
+                        warehouseLocation: warehouseRes.data.location,
+                        location: locationRes.data[0].location
                     })
                 } catch (err) {
                     console.log("error fetching staff data: ", err)
@@ -61,23 +64,29 @@ export default function UserProfile() {
             }
             const updateRes = await api.patch(`/users/${user.id}`, updateBody)
             const getLocationByUserId = await api.get(`/locations?userId=${user.id}`)
-            console.log("getLocation: ", getLocationByUserId.data)
+            const locations = getLocationByUserId.data;
+            console.log("getLocation: ", locations)
 
             // console.log(updateRes)
-            if (getLocationByUserId.status === 404) {
+            if (getLocationByUserId.length === 0) {
                 const addNewLocationRes = await api.post(`/locations`, {
                     userId: formData.id,
                     location: formData.location
                 })
                 console.log("add new location: ", addNewLocationRes.data)
             } else {
-                const locationUpdateRes = await api.patch(`/locations/${getLocationByUserId.data.id}`, {
+                const locationId = locations[0].id;
+                const locationUpdateRes = await api.patch(`/locations/${locationId}`, {
                     location: formData.location
                 })
                 console.log("update location: ", locationUpdateRes.data)
             }
-            if (updateRes.status === 200 ) {
-                login(updateRes.data, JSON.parse(localStorage.getItem("token")));
+            if (updateRes.status === 200) {
+                const tokenString = localStorage.getItem("token");
+                console.log(tokenString)
+
+                login(updateRes.data, tokenString);
+
                 setTimeout(() => {
                     setAlertMessage("Your profile is updated successfully")
                     setAlertVariant("success")
@@ -187,7 +196,7 @@ export default function UserProfile() {
                                 <Form.Group className="mb-3">
                                     <Form.Label htmlFor="phone">Contact Phone{' '}<span className="text-danger">*</span></Form.Label>
                                     <Form.Control
-                                        type="tel"
+                                        type="number"
                                         id="phone"
                                         value={formData.phone}
                                         onChange={(e) => handleInputChange("phone", e.target.value)}
@@ -203,11 +212,12 @@ export default function UserProfile() {
                                         </InputGroup.Text>
                                         <Form.Control
                                             as="textarea"
-                                            rows={3}
+                                            rows={2}
                                             id="location"
                                             value={formData.location}
                                             onChange={(e) => handleInputChange("location", e.target.value)}
                                             placeholder="Enter your location (city, state, country)"
+                                            required
                                         />
                                     </InputGroup>
                                     <Form.Text className="text-muted">

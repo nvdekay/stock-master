@@ -14,7 +14,7 @@ const ExporterSidebar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const pathNames = location.pathname.split(["/"]);
-    console.log(pathNames[pathNames.length - 1])
+    // console.log(pathNames[pathNames.length - 1])
     const [activeTab, setActiveTab] = useState('');
 
     useEffect(() => {
