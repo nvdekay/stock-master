@@ -135,7 +135,6 @@ const dashboardData = {
 
 
 export default function ExporterDashboard() {
-  const [timeRange, setTimeRange] = useState("6M")
 
   return (
     <div className="min-vh-100 bg-light">

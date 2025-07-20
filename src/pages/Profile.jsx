@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Container, Row, Col, Card, Form, Button, InputGroup } from "react-bootstrap"
+import { Container, Row, Col, Card, Form, Button, InputGroup, Alert } from "react-bootstrap"
 import { User, Mail, MapPin, Building, Warehouse } from "lucide-react"
 import { useAuth } from "../auth/AuthProvider"
 import api from "../api/axiosInstance"
@@ -53,7 +53,7 @@ export default function UserProfile() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log("Form submitted:", formData)
+        // console.log("Form submitted:", formData)
 
         try {
             const updateBody = {
@@ -65,7 +65,7 @@ export default function UserProfile() {
             const updateRes = await api.patch(`/users/${user.id}`, updateBody)
             const getLocationByUserId = await api.get(`/locations?userId=${user.id}`)
             const locations = getLocationByUserId.data;
-            console.log("getLocation: ", locations)
+            // console.log("getLocation: ", locations)
 
             // console.log(updateRes)
             if (getLocationByUserId.length === 0) {
@@ -73,17 +73,17 @@ export default function UserProfile() {
                     userId: formData.id,
                     location: formData.location
                 })
-                console.log("add new location: ", addNewLocationRes.data)
+                // console.log("add new location: ", addNewLocationRes.data)
             } else {
                 const locationId = locations[0].id;
                 const locationUpdateRes = await api.patch(`/locations/${locationId}`, {
                     location: formData.location
                 })
-                console.log("update location: ", locationUpdateRes.data)
+                // console.log("update location: ", locationUpdateRes.data)
             }
             if (updateRes.status === 200) {
                 const tokenString = localStorage.getItem("token");
-                console.log(tokenString)
+                // console.log(tokenString)
 
                 login(updateRes.data, tokenString);
 
