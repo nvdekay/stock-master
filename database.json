@@ -1253,9 +1253,9 @@
     },
     {
       "type": "transfer",
-      "status": "ready",
+      "status": "pending",
       "date": "2025-07-13",
-      "senderStaffId": "12",
+      "senderStaffId": null,
       "receiverStaffId": "4",
       "sendWarehouseId": "3",
       "receiveWarehouseId": "1",

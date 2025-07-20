@@ -75,26 +75,45 @@ const OrderDetails = () => {
         if (!orderData) return;
         const fetchProductList = async () => {
             try {
-                const [productListRes] = await Promise.all([
-                    api.get(`http://localhost:9999/products?warehouseId=${orderData.sendWarehouseId}`)
-                ])
+                const productListRes = await Promise.all(
+                    orderData.orderDetails.map(async (product) =>
+                        api.get(`http://localhost:9999/products/${product.productId}`)
+                    )
+                )
+                console.log(productListRes)
                 const pList = productListRes.data;
+                console.log("pLIst: ", pList)
                 setProductList(pList);
             } catch (err) {
                 console.log("error fetching product list: ", err);
             }
         };
-
         fetchProductList();
+    }, [orderData, updateMessage])
 
-    }, [orderData])
-
-    const handleExport = (orderStatus) => {
+    const handleExport = async (orderStatus) => {
         try {
-            api.patch(`http://localhost:9999/orders/${orderData.id}`, {
+            const res = await api.patch(`http://localhost:9999/orders/${orderData.id}`, {
                 status: orderStatus,
                 senderStaffId: user.id
             })
+            if (orderStatus.includes("ready")) {
+                await Promise.all(
+                    orderData.orderDetails.map(async (item) => {
+                        const productRes = await api.get(`http://localhost:9999/products/${item.productId}`);
+                        const product = productRes.data;
+
+                        const updatedStock = product.quantity - item.quantity;
+                        if (updatedStock < 0) {
+                            throw new Error(`Not enough stock for ${product.name}`);
+                        }
+
+                        await api.patch(`http://localhost:9999/products/${item.productId}`, {
+                            stock: updatedStock,
+                        });
+                    })
+                );
+            }
             setUpdateMessage('Order updated successfully')
             setVariant("success")
         } catch (err) {
@@ -238,7 +257,7 @@ const OrderDetails = () => {
                                     <Table className="table table-hover mb-0">
                                         <thead className="table-light">
                                             <tr>
-                                                <th>Product</th>
+                                                <th className="text-center">Product</th>
                                                 <th className="text-center">Quantity</th>
 
                                                 {
@@ -252,7 +271,7 @@ const OrderDetails = () => {
                                         </thead>
                                         <tbody>
                                             {orderData.orderDetails.map((product) => {
-                                                const p = productList.find(p => p.id === product.id);
+                                                let p = productList.find(p => p.id === product.id);
                                                 return (
                                                     <tr key={product.id}>
                                                         <td>
@@ -265,7 +284,8 @@ const OrderDetails = () => {
                                                                 />
                                                                 <div>
                                                                     <h6 className="mb-0">{product.name}</h6>
-                                                                    <small className="text-muted">ID: {product.productId}</small>
+                                                                    <small className="text-muted">ID: {product.productId}</small><br />
+                                                                    <small className="text-muted">{p?.name}</small>
                                                                 </div>
                                                             </div>
                                                         </td>
