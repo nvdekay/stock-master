@@ -75,13 +75,11 @@ const OrderDetails = () => {
         if (!orderData) return;
         const fetchProductList = async () => {
             try {
-                const productListRes = await Promise.all(
-                    orderData.orderDetails.map(async (product) =>
-                        api.get(`http://localhost:9999/products/${product.productId}`)
-                    )
-                )
-                console.log(productListRes)
-                const pList = productListRes.data;
+                const pList = [];
+                orderData.orderDetails.map(async (product) => {
+                    const p = await api.get(`http://localhost:9999/products/${product.productId}`)
+                    pList.push(p?.data);
+                })
                 console.log("pLIst: ", pList)
                 setProductList(pList);
             } catch (err) {
@@ -93,10 +91,7 @@ const OrderDetails = () => {
 
     const handleExport = async (orderStatus) => {
         try {
-            const res = await api.patch(`http://localhost:9999/orders/${orderData.id}`, {
-                status: orderStatus,
-                senderStaffId: user.id
-            })
+
             if (orderStatus.includes("ready")) {
                 await Promise.all(
                     orderData.orderDetails.map(async (item) => {
@@ -114,6 +109,10 @@ const OrderDetails = () => {
                     })
                 );
             }
+            await api.patch(`http://localhost:9999/orders/${orderData.id}`, {
+                status: orderStatus,
+                senderStaffId: user.id
+            })
             setUpdateMessage('Order updated successfully')
             setVariant("success")
         } catch (err) {
@@ -134,6 +133,7 @@ const OrderDetails = () => {
 
     if (loading || !orderData) return <div className="text-center">Loading data...</div>
 
+    console.log("productList: ", productList)
     return (
         <Container fluid className="py-4 px-0" style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }} >
             <Container className="px-0">
@@ -271,13 +271,13 @@ const OrderDetails = () => {
                                         </thead>
                                         <tbody>
                                             {orderData.orderDetails.map((product) => {
-                                                let p = productList.find(p => p.id === product.id);
+                                                let p = productList?.find(p => p.id === product.productId);
                                                 return (
                                                     <tr key={product.id}>
                                                         <td>
                                                             <div className="d-flex align-items-center">
                                                                 <img
-                                                                    src={product.image || "/placeholder.svg"}
+                                                                    src={p.src || `../../public/assets/images/products/${product.id}.jpg`} // Sử dụng src từ database
                                                                     alt={product.name}
                                                                     className="rounded me-3"
                                                                     style={{ width: "60px", height: "60px", objectFit: "cover" }}
