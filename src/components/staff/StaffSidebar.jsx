@@ -4,7 +4,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthProvider";
 import {
   FaBoxes,
-  FaClipboardList,
   FaWarehouse,
   FaSignOutAlt,
   FaHome,
@@ -49,11 +48,6 @@ const StaffSidebar = () => {
         <Nav.Item>
           <NavLink to="/staff/inventory" className="nav-link">
             <FaWarehouse className="me-2" /> Inventory
-          </NavLink>
-        </Nav.Item>
-        <Nav.Item>
-          <NavLink to="/staff/logs" className="nav-link">
-            <FaClipboardList className="me-2" /> Activity Logs
           </NavLink>
         </Nav.Item>
       </Nav>
