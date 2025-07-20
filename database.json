@@ -1241,7 +1241,7 @@
       "type": "transfer",
       "status": "completed",
       "date": "2025-07-13",
-      "senderStaffId": null,
+      "senderStaffId": "12",
       "receiverStaffId": "4",
       "sendWarehouseId": "3",
       "receiveWarehouseId": "1",
@@ -1253,9 +1253,9 @@
     },
     {
       "type": "transfer",
-      "status": "pending",
+      "status": "declined",
       "date": "2025-07-13",
-      "senderStaffId": null,
+      "senderStaffId": "12",
       "receiverStaffId": "4",
       "sendWarehouseId": "3",
       "receiveWarehouseId": "1",
@@ -1269,6 +1269,7 @@
       "type": "transfer",
       "status": "pending",
       "date": "2025-07-13",
+      "expectedDeliveryDate": "2025-07-18",
       "senderStaffId": null,
       "receiverStaffId": "4",
       "sendWarehouseId": "2",
@@ -1282,6 +1283,7 @@
       "type": "transfer",
       "status": "pending",
       "date": "2025-07-15",
+      "expectedDeliveryDate": "2025-07-18",
       "senderStaffId": null,
       "receiverStaffId": null,
       "sendWarehouseId": "1",
@@ -1294,6 +1296,7 @@
       "type": "transfer",
       "status": "pending",
       "date": "2025-07-15",
+      "expectedDeliveryDate": "2025-07-18",
       "senderStaffId": null,
       "receiverStaffId": null,
       "sendWarehouseId": "2",
@@ -1302,9 +1305,10 @@
       "note": "ok"
     },
     {
-      "type": "import",
+      "type": "transfer",
       "status": "completed",
       "date": "2025-07-15",
+      "expectedDeliveryDate": "2025-07-18",
       "enterpriseId": "3",
       "senderStaffId": null,
       "receiverStaffId": "4",
@@ -1427,24 +1431,8 @@
     {
       "orderId": "as0Vcap",
       "productId": "2",
-      "quantity": 8,
-      "price": 8490000,
-      "id": "RtO7xtx",
-      "status": "accepted"
-    },
-    {
-      "orderId": "as0Vcap",
-      "productId": "1",
       "quantity": 2,
-      "price": 1290000,
-      "status": "refunded",
-      "id": "y5rS_IG"
-    },
-    {
-      "orderId": "as0Vcap",
-      "productId": "2",
-      "quantity": 2,
-      "price": 8490000,
+      "price": 7600000,
       "status": "refunded",
       "id": "Tjpt-9C"
     },
@@ -1453,7 +1441,7 @@
       "orderId": "XVWBUtc",
       "productId": "2",
       "quantity": 1,
-      "price": 8490000
+      "price": 3800000
     }
   ],
   "shipments": [

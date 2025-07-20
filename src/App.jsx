@@ -50,6 +50,7 @@ import PendingOrders from "./pages/staff/exporter/PendingOrders";
 import ExportHistory from "./pages/staff/exporter/ExportHistory";
 import CreateProduct from "./pages/warehouseman/CreateProduct";
 import UserProfile from "./pages/Profile";
+import OrderDetails from "./pages/staff/exporter/OrderDetails";
 
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
@@ -144,6 +145,7 @@ function App() {
               <Route path="dashboard" element={<ExporterDashboard />} />
               <Route path="pending-orders" element={<PendingOrders />} />
               <Route path="history" element={<ExportHistory />} />
+              <Route path="order-details/:orderId" element={<OrderDetails />} />
             </Route>
           </Route>
 

@@ -29,6 +29,10 @@ import {
 import api from "../../../api/axiosInstance"
 import { useAuth } from "../../../auth/AuthProvider"
 import PerformanceAlert from "../../../components/staff/exporter/PerformanceAlert"
+import { useNavigate } from "react-router-dom"
+import OrderDetails from "./OrderDetails"
+import FormatCurrency from "../../../components/common/FormatCurrency"
+import { getStatusBadgeClass, getStatusIcon } from "../../../components/common/StatusStyling"
 
 const ExportHistory = () => {
     const [searchTerm, setSearchTerm] = useState("")
@@ -36,7 +40,16 @@ const ExportHistory = () => {
     const [timeFilter, setTimeFilter] = useState("all")
     const [exportHistory, setExportHistory] = useState([]);
     const [filteredHistory, setFilteredHistory] = useState([]);
+    // const [showDetail, setShowDetail] = useState(false);
+    // const [orderDetail, setOrderDetail] = useState(null);
+
     const { user } = useAuth();
+    const navigate = useNavigate();
+
+    // const handleShowDetail = (order) => {
+    //     setOrderDetail(order);
+    //     setShowDetail(true);
+    // }
 
     useEffect(() => {
         // console.log(user.warehouseId)
@@ -57,7 +70,7 @@ const ExportHistory = () => {
                     let sendWarehouse = warehouses.find(w => w.id === order.receiveWarehouseId);
                     let buyer = users.find(u => u.id === order.buyerId);
                     let destinationInfo = order.buyerId !== null ?
-                        { customer: buyer.username, destination: locations.find(l => l.userId === buyer.id).location }
+                        { customer: buyer.username, destination: locations?.find(l => l.userId === buyer.id)?.location }
                         : { customer: sendWarehouse.name, destination: sendWarehouse.location }
                     return {
                         ...order,
@@ -136,36 +149,6 @@ const ExportHistory = () => {
 
     }, [searchTerm, timeFilter, statusFilter])
 
-    const getStatusVariant = (status) => {
-        switch (status.toLowerCase()) {
-            case "completed":
-                return "success"
-            case "in_transit":
-                return "primary"
-            case "cancelled":
-                return "danger"
-            case "pending":
-                return "warning"
-            case "shipped": 
-                return "info"
-            default:
-                return "secondary"
-        }
-    }
-
-    const getStatusIcon = (status) => {
-        switch (status) {
-            case "completed":
-                return <CheckCircle size={16} />
-            case "in_transit":
-                return <Clock size={16} />
-            case "Cancelled":
-                return <XCircle size={16} />
-            default:
-                return <Package size={16} />
-        }
-    }
-
     const renderStars = (rating) => {
         if (!rating) return <span className="text-muted">Not rated</span>
         return (
@@ -230,7 +213,7 @@ const ExportHistory = () => {
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
                                     <h6 className="mb-1 opacity-75">Total Revenue</h6>
-                                    <h4 className="mb-0">${totalValue.toLocaleString()}</h4>
+                                    <h4 className="mb-0"><FormatCurrency amount={totalValue} /></h4>
                                 </div>
                                 <TrendingUp size={32} className="opacity-75" />
                             </div>
@@ -370,7 +353,7 @@ const ExportHistory = () => {
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <strong className="text-success">${order.value?.toLocaleString()}</strong>
+                                                        <strong className="text-success"><FormatCurrency amount={order.value} /></strong>
                                                         <br />
                                                         {/* <small className="text-muted">${(order.value / order.items)?.toFixed(0)}/item</small> */}
                                                     </td>
@@ -391,7 +374,7 @@ const ExportHistory = () => {
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <Badge bg={getStatusVariant(order.status)} className="d-flex align-items-center gap-1 mb-2">
+                                                            <Badge bg={getStatusBadgeClass(order.status)} className="d-flex align-items-center gap-1 mb-2">
                                                                 {getStatusIcon(order.status)}
                                                                 {order.status}
                                                             </Badge>
@@ -402,12 +385,16 @@ const ExportHistory = () => {
                                                     </td>
                                                     <td>
                                                         <ButtonGroup size="sm">
-                                                            <Button variant="outline-primary" title="View Details">
+                                                            <Button
+                                                                type="button"
+                                                                onClick={() => navigate(`/exporter/order-details/${order.id}`)}
+                                                                variant="outline-primary" title="View Details"
+                                                            >
                                                                 <Eye size={14} />
                                                             </Button>
-                                                            <Button variant="outline-danger" title="Update Order">
+                                                            {/* <Button variant="outline-danger" title="Update Order">
                                                                 <Pencil size={14} />
-                                                            </Button>
+                                                            </Button> */}
                                                         </ButtonGroup>
                                                     </td>
                                                 </tr>
@@ -433,6 +420,13 @@ const ExportHistory = () => {
                     </div>
                 </Card.Body>
             </Card>
+            {/* {
+                showDetail &&
+                <OrderDetails
+                    orderData={orderDetail}
+                    setShowDetail={setShowDetail}
+                />
+            } */}
         </div>
     )
 }
