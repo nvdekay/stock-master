@@ -26,23 +26,21 @@ export default function ProtectedRoute({ requiredRoles }) {
     if (token) {
         try {
             const decoded = jwtDecode(token);
-            console.log(decoded); // This will print the payload of the JWT
+            // console.log(decoded); // This will print the payload of the JWT
             const exp = decoded.exp;
             const currentTime = Math.floor(Date.now() / 1000); // current time in seconds
 
             if (exp < currentTime) {
-                console.log("Token has expired");
+                // console.log("Token has expired");
                 return <RedirectPage
                     message={`Your token was expired!`}
                     pageName="Login Page"
                     redirectUrl="/auth/login"
                 />
 
-            } else {
-                console.log("Token is still valid");
             }
         } catch (error) {
-            console.error("Invalid token", error);
+            // console.error("Invalid token", error);
                 return <RedirectPage
                     message={`Your token is invalid!`}
                     pageName="Login Page"

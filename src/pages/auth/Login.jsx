@@ -52,7 +52,7 @@ const LoginPage = () => {
         password: formData.password,
       });
 
-      console.log("Login response:", response.data);
+      // console.log("Login response:", response.data);
 
       // If your server returns { accessToken, user }
       const { accessToken, user } = response.data;

@@ -32,6 +32,7 @@ import PerformanceAlert from "../../../components/staff/exporter/PerformanceAler
 import { useNavigate } from "react-router-dom"
 import OrderDetails from "./OrderDetails"
 import FormatCurrency from "../../../components/common/FormatCurrency"
+import { getStatusBadgeClass, getStatusIcon } from "../../../components/common/StatusStyling"
 
 const ExportHistory = () => {
     const [searchTerm, setSearchTerm] = useState("")
@@ -39,15 +40,16 @@ const ExportHistory = () => {
     const [timeFilter, setTimeFilter] = useState("all")
     const [exportHistory, setExportHistory] = useState([]);
     const [filteredHistory, setFilteredHistory] = useState([]);
-    const [showDetail, setShowDetail] = useState(false);
-    const [orderDetail, setOrderDetail] = useState(null);
+    // const [showDetail, setShowDetail] = useState(false);
+    // const [orderDetail, setOrderDetail] = useState(null);
 
     const { user } = useAuth();
+    const navigate = useNavigate();
 
-    const handleShowDetail = (order) => {
-        setOrderDetail(order);
-        setShowDetail(true);
-    }
+    // const handleShowDetail = (order) => {
+    //     setOrderDetail(order);
+    //     setShowDetail(true);
+    // }
 
     useEffect(() => {
         // console.log(user.warehouseId)
@@ -146,36 +148,6 @@ const ExportHistory = () => {
         filterOrder();
 
     }, [searchTerm, timeFilter, statusFilter])
-
-    const getStatusVariant = (status) => {
-        switch (status.toLowerCase()) {
-            case "completed":
-                return "success"
-            case "in_transit":
-                return "primary"
-            case "cancelled":
-                return "danger"
-            case "pending":
-                return "warning"
-            case "shipped":
-                return "info"
-            default:
-                return "secondary"
-        }
-    }
-
-    const getStatusIcon = (status) => {
-        switch (status) {
-            case "completed":
-                return <CheckCircle size={16} />
-            case "in_transit":
-                return <Clock size={16} />
-            case "Cancelled":
-                return <XCircle size={16} />
-            default:
-                return <Package size={16} />
-        }
-    }
 
     const renderStars = (rating) => {
         if (!rating) return <span className="text-muted">Not rated</span>
@@ -402,7 +374,7 @@ const ExportHistory = () => {
                                                     </td>
                                                     <td>
                                                         <div>
-                                                            <Badge bg={getStatusVariant(order.status)} className="d-flex align-items-center gap-1 mb-2">
+                                                            <Badge bg={getStatusBadgeClass(order.status)} className="d-flex align-items-center gap-1 mb-2">
                                                                 {getStatusIcon(order.status)}
                                                                 {order.status}
                                                             </Badge>
@@ -414,7 +386,8 @@ const ExportHistory = () => {
                                                     <td>
                                                         <ButtonGroup size="sm">
                                                             <Button
-                                                                onClick={() => handleShowDetail(order)}
+                                                                type="button"
+                                                                onClick={() => navigate(`/exporter/order-details/${order.id}`)}
                                                                 variant="outline-primary" title="View Details"
                                                             >
                                                                 <Eye size={14} />
@@ -447,13 +420,13 @@ const ExportHistory = () => {
                     </div>
                 </Card.Body>
             </Card>
-            {
+            {/* {
                 showDetail &&
                 <OrderDetails
                     orderData={orderDetail}
                     setShowDetail={setShowDetail}
                 />
-            }
+            } */}
         </div>
     )
 }

@@ -1253,7 +1253,7 @@
     },
     {
       "type": "transfer",
-      "status": "ready",
+      "status": "declined",
       "date": "2025-07-13",
       "senderStaffId": "12",
       "receiverStaffId": "4",

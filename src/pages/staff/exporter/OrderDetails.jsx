@@ -12,59 +12,86 @@ import {
     UserPen,
 } from "lucide-react"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import api from "../../../api/axiosInstance"
-import { Alert, Button, ButtonGroup, Card, Col, Container, Row, Table } from "react-bootstrap"
+import { Alert, Badge, Button, ButtonGroup, Card, Col, Container, Row, Table } from "react-bootstrap"
 import FormatCurrency from "../../../components/common/FormatCurrency"
 import { useAuth } from "../../../auth/AuthProvider"
+import { BiLeftArrow } from "react-icons/bi"
+import { getStatusBadgeClass } from "../../../components/common/StatusStyling"
 
-const OrderDetails = ({ orderData, setShowDetail }) => {
+const OrderDetails = () => {
     const [productList, setProductList] = useState([]);
     const [updateError, setUpdateError] = useState('');
+    const [orderData, setOrderData] = useState(null);
 
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
+    const { orderId } = useParams();
+    const navigate = useNavigate();
+    console.log("orderId from params: ", orderId)
 
     useEffect(() => {
+        window.scrollTo(0, 0); // Scroll to top when component mounts
+    }, []);
+
+    useEffect(() => {
+        if (!orderId) return;
         setUpdateError('');
-        const fetchData = async () => {
+        const fetchOrderDetails = async () => {
+            console.log('fetching')
+            try {
+                const exportOrderRes = await api.get(`http://localhost:9999/orders/${orderId}?_embed=orderDetails`);
+                const order = exportOrderRes.data;
+                console.log("order: ", exportOrderRes.data)
+                if (order.buyerId) {
+                    const buyerRes = await api.get(`http://localhost:9999/users/${order.buyerId}`)
+                    const locationRes = await api.get(`http://localhost:9999/locations?userId=${order.buyerId}`)
+                    const buyer = buyerRes.data;
+                    order.customer = buyer.username;
+                    order.destination = locationRes.data.location;
+                }
+                if (order.receiveWarehouseId) {
+                    const receiveWarehouseRes = await api.get(`http://localhost:9999/warehouses/${order.receiveWarehouseId}`)
+                    const receiverWarehouse = receiveWarehouseRes.data;
+                    order.customer = receiverWarehouse.name;
+                    order.destination = receiverWarehouse.location;
+                }
+                setOrderData({
+                    ...order,
+                    value: order.orderDetails.reduce((total, product) => total + product.price, 0),
+                    items: order.orderDetails.length
+                })
+
+            } catch (err) {
+                console.log("error fetching order details: ", err);
+            }
+        }
+
+        const fetchProductList = async () => {
             try {
                 const [productListRes] = await Promise.all([
-                    api.get(`http://localhost:9999/products?warehouseId=${orderData.sendWarehouseId}`),
+                    api.get(`http://localhost:9999/products?warehouseId=${orderData.sendWarehouseId}`)
                 ])
                 const pList = productListRes.data;
                 setProductList(pList);
             } catch (err) {
-                console.log("error fetching product list: ", err)
+                console.log("error fetching product list: ", err);
             }
+        };
 
-        }
-        fetchData();
-    }, [orderData])
+        fetchOrderDetails();
+        fetchProductList();
+    }, [orderId]);
 
     const handleExport = (orderStatus) => {
         try {
-            api.patch(`http://localhost:9999/orders/${orderData.id}`, { 
-                status: orderStatus, 
+            api.patch(`http://localhost:9999/orders/${orderData.id}`, {
+                status: orderStatus,
                 senderStaffId: user.id
             })
         } catch (err) {
             console.log("error updating status: ", err)
             setUpdateError(err.status)
-        }
-    }
-
-    const getStatusBadgeClass = (status) => {
-        switch (status.toLowerCase()) {
-            case "completed":
-                return "bg-success"
-            case "in transit":
-                return "bg-primary"
-            case "pending":
-                return "bg-warning"
-            case "cancelled":
-                return "bg-danger"
-            default:
-                return "bg-secondary"
         }
     }
 
@@ -77,28 +104,31 @@ const OrderDetails = ({ orderData, setShowDetail }) => {
         })
     }
 
-
-
+    if (loading || !orderData) return <div className="text-center">Loading data...</div>
 
     return (
-        <Container fluid className="py-4 px-0 mt-4" style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }} >
+        <Container fluid className="py-4 px-0" style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }} >
             <Container className="px-0">
                 {/* Header */}
-                <Row className="row mb-4">
+                <Row className="mb-4">
                     <Col className="col-12">
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                            <h1 className="h3 mb-0">Order Details</h1>
-                            <button className="btn btn-outline-secondary me-3" onClick={() => setShowDetail(false)}>
-                                Hide Detail
+                        <div className="d-flex align-items-center mb-3">
+                            <button
+                                className="btn btn-outline-secondary me-3"
+                                onClick={() => navigate(-1)}
+                            >
+                                <ArrowLeft size={20} />
                             </button>
+                            <h1 className="h3 mb-0">Order Details</h1>
+
                         </div>
                         <Card className="shadow-sm">
                             <Card.Body>
                                 <Row className="align-items-center">
                                     <Col md={8}>
-                                        <h2 className="h4 mb-2">Order #{orderData.id}</h2>
+                                        <h2 className="h4 mb-2">Order #{orderData?.id}</h2>
                                         <div className="d-flex flex-wrap gap-3">
-                                            <span className={`badge ${getStatusBadgeClass(orderData.status)} fs-6`}>{orderData.status}</span>
+                                            <Badge bg={getStatusBadgeClass(orderData.status)} className={`fs-6`}>{orderData?.status}</Badge>
                                             <span className="badge bg-light text-dark fs-6">
                                                 {orderData.type === "transfer" ? "Transfer" : "Wholesale"}
                                             </span>

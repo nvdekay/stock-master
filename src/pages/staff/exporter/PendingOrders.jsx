@@ -39,6 +39,7 @@ import { useAuth } from "../../../auth/AuthProvider"
 import api from "../../../api/axiosInstance"
 import FormatCurrency from "../../../components/common/FormatCurrency"
 import OrderDetails from "./OrderDetails"
+import { useNavigate } from "react-router-dom"
 
 const PendingOrders = () => {
     const [currentPage, setCurrentPage] = useState(1)
@@ -48,15 +49,8 @@ const PendingOrders = () => {
     const [pendingOrders, setPendingOrders] = useState([]);
     const [filteredPendingOrders, setFilteredPendingOrders] = useState([]);
 
-    const [showDetail, setShowDetail] = useState(false);
-    const [orderDetail, setOrderDetail] = useState(null);
     const { user } = useAuth();
-
-    const handleShowDetail = (order) => {
-        setOrderDetail(order);
-        setShowDetail(true);
-    }
-
+    const navigate = useNavigate();
 
     useEffect(() => {
         // console.log(user.warehouseId)
@@ -454,7 +448,7 @@ const PendingOrders = () => {
                                                             <Button 
                                                             variant="outline-primary" 
                                                             title="View Details"
-                                                                onClick={() => handleShowDetail(order)}
+                                                                onClick={() => navigate(`/exporter/order-details/${order.id}`)}
                                                             >
                                                                 <Eye size={14} />
                                                             </Button>
@@ -473,7 +467,7 @@ const PendingOrders = () => {
                                         : <tr>
                                             <td colSpan={10}>
                                                 <Alert variant="danger">
-                                                    There are no exported order that you handle yet
+                                                    There are no pending order to be exported yet
                                                 </Alert>
                                             </td>
                                         </tr>
@@ -515,13 +509,6 @@ const PendingOrders = () => {
                     </Card.Footer>
                 )}
             </Card>
-            {
-                showDetail &&
-                <OrderDetails
-                    orderData={orderDetail}
-                    setShowDetail={setShowDetail}
-                />
-            }
         </div>
     )
 }
