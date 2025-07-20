@@ -76,7 +76,7 @@ const PendingOrders = () => {
                         items: order.orderDetails.length
                     }
                 })
-                console.log("pending Order: ", pendingOrder)
+                // console.log("pending Order: ", pendingOrder)
                 setPendingOrders(pendingOrder);
                 setFilteredPendingOrders(pendingOrder);
 
@@ -90,7 +90,7 @@ const PendingOrders = () => {
 
     // filter by search and status
     useEffect(() => {
-        console.log("timeFilter: ", timeFilter)
+        // console.log("timeFilter: ", timeFilter)
         const filterOrder = () => {
             let filtered = pendingOrders.filter((order) => {
                 const matchesSearch = searchTerm !== null ?
@@ -115,12 +115,12 @@ const PendingOrders = () => {
                     default:
                         break;
                 }
-                console.log("index: ", index)
+                // console.log("index: ", index)
 
-                console.log("date: ", order.date.split("-"))
-                console.log("date: ", new Date().toLocaleDateString((
-                    "en-CA"
-                )).split("-")[index])
+                // console.log("date: ", order.date.split("-"))
+                // console.log("date: ", new Date().toLocaleDateString((
+                //     "en-CA"
+                // )).split("-")[index])
 
                 // if (index === -1) {
                 const matchesTime = index === -1 ?
@@ -134,11 +134,11 @@ const PendingOrders = () => {
                         )).split("-")[i]
                     )
 
-                console.log("matchTime: ", matchesTime);
+                // console.log("matchTime: ", matchesTime);
                 return matchesSearch && matchesStatus && matchesTime;
             })
 
-            console.log("filtered: ", filtered);
+            // console.log("filtered: ", filtered);
             setFilteredPendingOrders(filtered)
         }
 

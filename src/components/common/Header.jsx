@@ -1,5 +1,5 @@
 import { Navbar, Nav, Dropdown, Container, Button } from "react-bootstrap"
-import { LogOut, ShoppingCart, User } from "lucide-react"
+import { Calendar, LogOut, ShoppingCart, User } from "lucide-react"
 import { useState } from "react"
 import { useAuth } from "../../auth/AuthProvider"
 import CartButton from "../cart/CartButton"
@@ -55,7 +55,7 @@ const Header = () => {
                                     ""
                                     :
                                     <Dropdown.Item href={dashboardLink}>
-                                        <ShoppingCart size={16} className="me-2" />
+                                        <Calendar size={16} className="me-2" />
                                         View Dashboard
                                     </Dropdown.Item>
                             }
