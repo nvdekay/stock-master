@@ -10,6 +10,7 @@ import {
     User,
     Warehouse,
     UserPen,
+    Bell,
 } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
@@ -22,8 +23,10 @@ import { getStatusBadgeClass } from "../../../components/common/StatusStyling"
 
 const OrderDetails = () => {
     const [productList, setProductList] = useState([]);
-    const [updateError, setUpdateError] = useState('');
     const [orderData, setOrderData] = useState(null);
+
+    const [updateMessage, setUpdateMessage] = useState('');
+    const [variant, setVariant] = useState();
 
     const { user, loading } = useAuth();
     const { orderId } = useParams();
@@ -36,7 +39,6 @@ const OrderDetails = () => {
 
     useEffect(() => {
         if (!orderId) return;
-        setUpdateError('');
         const fetchOrderDetails = async () => {
             console.log('fetching')
             try {
@@ -66,7 +68,11 @@ const OrderDetails = () => {
                 console.log("error fetching order details: ", err);
             }
         }
+        fetchOrderDetails();
+    }, [orderId, updateMessage]);
 
+    useEffect(() => {
+        if (!orderData) return;
         const fetchProductList = async () => {
             try {
                 const [productListRes] = await Promise.all([
@@ -79,9 +85,9 @@ const OrderDetails = () => {
             }
         };
 
-        fetchOrderDetails();
         fetchProductList();
-    }, [orderId]);
+
+    }, [orderData])
 
     const handleExport = (orderStatus) => {
         try {
@@ -89,9 +95,12 @@ const OrderDetails = () => {
                 status: orderStatus,
                 senderStaffId: user.id
             })
+            setUpdateMessage('Order updated successfully')
+            setVariant("success")
         } catch (err) {
             console.log("error updating status: ", err)
-            setUpdateError(err.status)
+            setUpdateMessage(err.status)
+            setVariant("danger")
         }
     }
 
@@ -357,19 +366,20 @@ const OrderDetails = () => {
                                             >
                                                 Decline
                                             </Button>
-                                            {updateError &&
-                                                <Alert variant="danger" className="mb-4">
-                                                    <Alert.Heading className="h6 mb-2">
-                                                        <Bell className="me-2" size={16} />
-                                                        Update Error
-                                                    </Alert.Heading>
-                                                    <p className="mb-0">
-                                                        {updateError}
-                                                    </p>
-                                                </Alert>
-                                            }
+
                                         </ButtonGroup>
                                         : ""
+                                }
+                                {updateMessage &&
+                                    <Alert variant={variant} className="mt-3">
+                                        <Alert.Heading className="h6 mb-2">
+                                            <Bell className="me-2" size={16} />
+                                            Update Message
+                                        </Alert.Heading>
+                                        <p className="mb-0">
+                                            {updateMessage}
+                                        </p>
+                                    </Alert>
                                 }
                             </Card.Body>
                         </Card>
