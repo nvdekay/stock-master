@@ -15,18 +15,25 @@ export function CartProvider({ children }) {
     }
 
     try {
-      const res = await axios.get("http://localhost:9999/carts", {
+      const res = await axios.get("http://localhost:9999/carts?userID=" + user.id, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const userCart = res.data.filter((item) => item.userId === user.id);
-      setCartItems(userCart.length);
+
+      if (res.data.length > 0) {
+        const cart = res.data[0];
+        const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+        setCartItems(totalItems);
+      } else {
+        setCartItems(0);
+      }
     } catch (error) {
       console.error("Lỗi khi fetch cart:", error);
       setCartItems(0);
     }
   };
+
 
   useEffect(() => {
     updateCartItems();

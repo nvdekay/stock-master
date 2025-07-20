@@ -51,6 +51,7 @@ import ExportHistory from "./pages/staff/exporter/ExportHistory";
 import CreateProduct from "./pages/warehouseman/CreateProduct";
 import UserProfile from "./pages/Profile";
 import OrderDetails from "./pages/staff/exporter/OrderDetails";
+import PurchasePage from "./pages/Purchase";
 
 // import Cart from "./pages/Cart";
 // import CreateOrder from "./pages/CreateOrder";
@@ -71,7 +72,7 @@ function App() {
           <Route index element={<ProductList />} />
           <Route path="product/:id" element={<ProductDetail />} /> 
           <Route path="cart" element={<Cart />} />
-
+          <Route path="purchase" element={<PurchasePage />} />
 
           {/* Unauthenticated Routes */}
           {/* route public mà không cần đăng nhập */}
