@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, use } from "react"
 import {
     Container,
     Row,
@@ -37,16 +37,26 @@ import {
 } from "lucide-react"
 import { useAuth } from "../../../auth/AuthProvider"
 import api from "../../../api/axiosInstance"
+import FormatCurrency from "../../../components/common/FormatCurrency"
+import OrderDetails from "./OrderDetails"
 
 const PendingOrders = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [searchTerm, setSearchTerm] = useState("")
     const [statusFilter, setStatusFilter] = useState("All")
-    const [priorityFilter, setPriorityFilter] = useState("All")
     const [timeFilter, setTimeFilter] = useState("all")
     const [pendingOrders, setPendingOrders] = useState([]);
     const [filteredPendingOrders, setFilteredPendingOrders] = useState([]);
+
+    const [showDetail, setShowDetail] = useState(false);
+    const [orderDetail, setOrderDetail] = useState(null);
     const { user } = useAuth();
+
+    const handleShowDetail = (order) => {
+        setOrderDetail(order);
+        setShowDetail(true);
+    }
+
 
     useEffect(() => {
         // console.log(user.warehouseId)
@@ -250,7 +260,7 @@ const PendingOrders = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <h6 className="text-info mb-1">Total Value</h6>
-                                    <h4 className="mb-0">${pendingOrders.reduce((sum, o) => sum + o.value, 0).toLocaleString()}</h4>
+                                    <h4 className="mb-0"><FormatCurrency amount={pendingOrders.reduce((sum, o) => sum + o.value, 0)} /></h4>
                                 </div>
                                 <div className="text-info">
                                     <Globe size={24} />
@@ -378,7 +388,7 @@ const PendingOrders = () => {
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <strong className="text-success">${order.value.toLocaleString()}</strong>
+                                                        <strong className="text-success"><FormatCurrency amount={order.value} /></strong>
                                                     </td>
                                                     {/* <td>
                                             <Badge bg={getPriorityVariant(order.priority)} className="px-3 py-2">
@@ -419,16 +429,33 @@ const PendingOrders = () => {
                                                             day: "2-digit"
                                                         })}</strong>
                                                         <br />
-                                                        <small className="text-muted">
-                                                            {Math.ceil(
+                                                        {
+                                                            Math.ceil(
                                                                 (new Date(order.expectedDeliveryDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
-                                                            )}{" "}
-                                                            days remaining
-                                                        </small>
+                                                            ) >= 0 ?
+
+                                                                <small className="text-info">
+                                                                    {Math.ceil(
+                                                                        (new Date(order.expectedDeliveryDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24),
+                                                                    )}
+                                                                    day(s) remaining
+                                                                </small>
+                                                                :
+                                                                <small className="text-danger">
+                                                                    {Math.ceil(
+                                                                        (new Date().getTime() - new Date(order.expectedDeliveryDate).getTime()) / (1000 * 60 * 60 * 24),
+                                                                    )}
+                                                                    {' '}day(s) late
+                                                                </small>
+                                                        }
                                                     </td>
                                                     <td>
                                                         <ButtonGroup size="sm">
-                                                            <Button variant="outline-primary" title="View Details">
+                                                            <Button 
+                                                            variant="outline-primary" 
+                                                            title="View Details"
+                                                                onClick={() => handleShowDetail(order)}
+                                                            >
                                                                 <Eye size={14} />
                                                             </Button>
                                                             <Button variant="outline-danger" title="Update Order">
@@ -488,6 +515,13 @@ const PendingOrders = () => {
                     </Card.Footer>
                 )}
             </Card>
+            {
+                showDetail &&
+                <OrderDetails
+                    orderData={orderDetail}
+                    setShowDetail={setShowDetail}
+                />
+            }
         </div>
     )
 }
