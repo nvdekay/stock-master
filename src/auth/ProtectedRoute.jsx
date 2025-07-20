@@ -1,10 +1,12 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
 import RedirectPage from "../pages/auth/Unauthorized";
+import { jwtDecode } from "jwt-decode";
+
 
 export default function ProtectedRoute({ requiredRoles }) {
     // extract user from AuthProvider context
-    const { user, loading } = useAuth();
+    const { user, loading, token } = useAuth();
     // const user1 = JSON.parse(localStorage.getItem("user"));
 
     if (loading) {
@@ -18,6 +20,35 @@ export default function ProtectedRoute({ requiredRoles }) {
             pageName="Login Page"
             redirectUrl="/auth/login"
         />
+    }
+
+
+    if (token) {
+        try {
+            const decoded = jwtDecode(token);
+            console.log(decoded); // This will print the payload of the JWT
+            const exp = decoded.exp;
+            const currentTime = Math.floor(Date.now() / 1000); // current time in seconds
+
+            if (exp < currentTime) {
+                console.log("Token has expired");
+                return <RedirectPage
+                    message={`Your token was expired!`}
+                    pageName="Login Page"
+                    redirectUrl="/auth/login"
+                />
+
+            } else {
+                console.log("Token is still valid");
+            }
+        } catch (error) {
+            console.error("Invalid token", error);
+                return <RedirectPage
+                    message={`Your token is invalid!`}
+                    pageName="Login Page"
+                    redirectUrl="/auth/login"
+                />
+        }
     }
     // console.log(requiredRoles.includes("admin"))
     // console.log("role", user.userData.role)
