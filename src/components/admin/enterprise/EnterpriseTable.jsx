@@ -51,11 +51,6 @@ const EnterpriseTable = ({ refreshEnterprises }) => {
         setIsEditModalOpen(true);
     };
 
-    const handleToggleStatusClick = (enterprise) => {
-        setSelectedEnterprise(enterprise);
-        setIsToggleStatusModalOpen(true);
-    };
-
     const filteredEnterprises = enterprises.filter(enterprise => {
         const matchesSearch = searchTerm === '' ||
             enterprise.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -114,22 +109,6 @@ const EnterpriseTable = ({ refreshEnterprises }) => {
                                     className="rounded-pill"
                                 />
                             </InputGroup>
-                            <Form.Group controlId="filterStatus">
-                                <InputGroup>
-                                    <Form.Select
-                                        value={filterStatus}
-                                        onChange={(e) => {
-                                            setFilterStatus(e.target.value);
-                                            setCurrentPage(1);
-                                        }}
-                                        className="rounded-pill"
-                                    >
-                                        <option value="">All Status</option>
-                                        <option value="active">Active</option>
-                                        <option value="banned">Banned</option>
-                                    </Form.Select>
-                                </InputGroup>
-                            </Form.Group>
                         </div>
                     </div>
                     <div className="table-responsive">
@@ -168,18 +147,6 @@ const EnterpriseTable = ({ refreshEnterprises }) => {
                                                         onClick={() => handleEditClick(enterprise)}
                                                     >
                                                         <Edit size={14} className="me-1" /> Chỉnh sửa
-                                                    </Button>
-                                                    <Button
-                                                        variant={enterprise.status === 'active' ? 'outline-danger' : 'outline-success'}
-                                                        size="sm"
-                                                        className="d-flex align-items-center rounded-pill"
-                                                        onClick={() => handleToggleStatusClick(enterprise)}
-                                                    >
-                                                        {enterprise.status === 'active' ? (
-                                                            <><Trash2 size={14} className="me-1" /> Ban</>
-                                                        ) : (
-                                                            <><Plus size={14} className="me-1" /> Unban</>
-                                                        )}
                                                     </Button>
                                                 </div>
                                             </td>

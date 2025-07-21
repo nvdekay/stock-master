@@ -10,12 +10,6 @@ import {
 
 const menuItems = [
     {
-        id: 'dashboard',
-        label: 'Dashboard',
-        icon: Home,
-        href: '/admin/dashboard',
-    },
-    {
         id: 'warehouse',
         label: 'Manage Warehouse',
         icon: Package,
