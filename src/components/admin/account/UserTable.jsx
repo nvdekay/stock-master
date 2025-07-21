@@ -204,14 +204,6 @@ const UserTable = ({ refreshUsers }) => { // Accept refreshUsers prop
                                                     >
                                                         <Edit size={14} className="me-1" /> Edit
                                                     </Button>
-                                                    <Button
-                                                        variant="outline-danger"
-                                                        size="sm"
-                                                        className="d-flex align-items-center rounded-pill"
-                                                        onClick={() => handleDeleteClick(user)}
-                                                    >
-                                                        <Trash2 size={14} className="me-1" /> Delete
-                                                    </Button>
                                                 </div>
                                             </td>
                                         </tr>
