@@ -99,19 +99,19 @@ function ProductList() {
             // Nếu giỏ hàng đã tồn tại
             if (cartRes.data.length > 0) {
                 const cart = cartRes.data[0];
-                const existingItem = cart.items.find(item => item.productID === productId);
+                const existingItem = cart.items.find(item => item.productId === productId);
 
                 let updatedItems;
                 if (existingItem) {
                     // Nếu sản phẩm đã có → tăng số lượng
                     updatedItems = cart.items.map(item =>
-                        item.productID === productId
+                        item.productId === productId
                             ? { ...item, quantity: item.quantity + 1 }
                             : item
                     );
                 } else {
                     // Nếu sản phẩm chưa có → thêm mới vào items
-                    updatedItems = [...cart.items, { productID: productId, quantity: 1 }];
+                    updatedItems = [...cart.items, { productId: productId, quantity: 1 }];
                 }
 
                 // 2. Gửi PATCH để cập nhật toàn bộ items
@@ -131,7 +131,7 @@ function ProductList() {
                     userID: user.id,
                     items: [
                         {
-                            productID: productId,
+                            productId: productId,
                             quantity: 1
                         }
                     ]
@@ -149,8 +149,6 @@ function ProductList() {
             alert("Có lỗi xảy ra khi thêm vào giỏ hàng");
         }
     };
-
-
 
     const handleProductDetail = (id) => {
         if (!user) {

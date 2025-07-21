@@ -23,7 +23,7 @@ export function CartProvider({ children }) {
 
       if (res.data.length > 0) {
         const cart = res.data[0];
-        const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+        const totalItems = cart.items.reduce((sum, item) => sum + 1, 0);
         setCartItems(totalItems);
       } else {
         setCartItems(0);

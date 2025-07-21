@@ -248,7 +248,27 @@
       "userID": "13",
       "items": [
         {
-          "productID": "49",
+          "productId": "49",
+          "quantity": 2
+        },
+        {
+          "productId": "27",
+          "quantity": 5
+        },
+        {
+          "productId": "29",
+          "quantity": 1
+        },
+        {
+          "productId": "7",
+          "quantity": 1
+        },
+        {
+          "productId": "33",
+          "quantity": 1
+        },
+        {
+          "productId": "42",
           "quantity": 1
         }
       ],
@@ -1286,6 +1306,24 @@
       "note": "dddd",
       "id": "as0Vcap",
       "completedDate": "2025-07-15T17:14:53.326Z"
+    },
+    {
+      "buyerId": "13",
+      "type": "wholesale",
+      "status": "pending",
+      "date": "2025-07-21",
+      "sendWarehouseId": "13",
+      "note": "Đơn sỉ từ kho 13 cho buyer02 - Địa chỉ: 456 Đường Trần Hưng Đạo, Quận 5, TP.HCM",
+      "id": "HdwqojO"
+    },
+    {
+      "buyerId": "13",
+      "type": "wholesale",
+      "status": "pending",
+      "date": "2025-07-21",
+      "sendWarehouseId": "15",
+      "note": "Đơn sỉ từ kho 15 cho buyer02 - Địa chỉ: 456 Đường Trần Hưng Đạo, Quận 5, TP.HCM",
+      "id": "4kYItO0"
     }
   ],
   "orderDetails": [
@@ -1410,6 +1448,41 @@
       "productId": "2",
       "quantity": 1,
       "price": 3800000
+    },
+    {
+      "orderId": "T3byQQH",
+      "productId": "27",
+      "quantity": 3,
+      "price": 178000,
+      "id": "d_rljDC"
+    },
+    {
+      "orderId": "T3byQQH",
+      "productId": "49",
+      "quantity": 2,
+      "price": 105000,
+      "id": "9HpfK5F"
+    },
+    {
+      "orderId": "aJLQQyP",
+      "productId": "7",
+      "quantity": 2,
+      "price": 1100000,
+      "id": "BzwkK1s"
+    },
+    {
+      "orderId": "HdwqojO",
+      "productId": "7",
+      "quantity": 2,
+      "price": 1100000,
+      "id": "qSd5xdq"
+    },
+    {
+      "orderId": "4kYItO0",
+      "productId": "29",
+      "quantity": 2,
+      "price": 1003000,
+      "id": "-xAP9Z-"
     }
   ],
   "shipments": [

@@ -19,9 +19,9 @@ function Cart() {
 
   const toggleSelect = (item) => {
     setSelectedItems((prevSelected) => {
-      const exists = prevSelected.some(i => i.productID === item.productID);
+      const exists = prevSelected.some(i => i.productId === item.productId);
       return exists
-        ? prevSelected.filter(i => i.productID !== item.productID)
+        ? prevSelected.filter(i => i.productId !== item.productId)
         : [...prevSelected, item];
     });
   };
@@ -63,10 +63,10 @@ function Cart() {
     return e ? e.name : "Không rõ";
   };
 
-  const updateQuantity = async (productID, newQuantity) => {
+  const updateQuantity = async (productId, newQuantity) => {
     try {
       const newItems = cartItems.map(item =>
-        item.productID === productID ? { ...item, quantity: newQuantity } : item
+        item.productId === productId ? { ...item, quantity: newQuantity } : item
       );
 
       await axios.patch(
@@ -86,12 +86,12 @@ function Cart() {
     }
   };
 
-  const handleDeleteProduct = async (productID) => {
+  const handleDeleteProduct = async (productId) => {
     if (!window.confirm("Bạn có chắc muốn xoá sản phẩm này khỏi giỏ hàng?")) {
       return;
     }
 
-    const filteredItems = cartItems.filter(item => item.productID !== productID);
+    const filteredItems = cartItems.filter(item => item.productId !== productId);
 
     try {
       await axios.patch(`http://localhost:9999/carts/${cartId}`, {
@@ -111,11 +111,14 @@ function Cart() {
     }
   };
 
-  const { setItemsToPurchase } = usePurchase();
+  const { itemsToPurchase, setItemsToPurchase } = usePurchase();
 
   const handleBuySelected = () => {
     setItemsToPurchase(selectedItems);
-    navigate("/purchase");
+    // Trì hoãn navigate để đảm bảo context cập nhật xong
+    setTimeout(() => {
+      navigate("/purchase");
+    }, 50);
   };
 
 
@@ -125,11 +128,11 @@ function Cart() {
       <h2>Giỏ hàng của bạn</h2>
       <Row>
         {cartItems.map((item) => {
-          const product = getProductById(item.productID);
+          const product = getProductById(item.productId);
           if (!product) return null;
 
           return (
-            <Col key={item.productID} xs={12} className="mb-4">
+            <Col key={item.productId} xs={12} className="mb-4">
               <Card>
                 <Card.Body className="d-flex align-items-center">
                   <img
@@ -153,7 +156,7 @@ function Cart() {
                     <div className="d-flex align-items-center gap-2">
                       <button
                         className="btn btn-outline-secondary"
-                        onClick={() => updateQuantity(item.productID, item.quantity - 1)}
+                        onClick={() => updateQuantity(item.productId, item.quantity - 1)}
                         disabled={item.quantity <= 1}
                       >
                         -
@@ -163,23 +166,26 @@ function Cart() {
 
                       <button
                         className="btn btn-outline-secondary"
-                        onClick={() => updateQuantity(item.productID, item.quantity + 1)}
+                        onClick={() => updateQuantity(item.productId, item.quantity + 1)}
                       >
                         +
                       </button>
                     </div>
                     <br />
                     <Button variant="danger" size="sm" style={{ marginRight: "20px" }}
-                      onClick={() => handleDeleteProduct(item.productID)}>
+                      onClick={() => handleDeleteProduct(item.productId)}>
                       Xoá
                     </Button>
-                    <div key={item.productID}>
+                    <div key={item.productId}>
                       <input
                         type="checkbox"
-                        checked={selectedItems.some(i => i.productID === item.productID)}
+                        checked={selectedItems.some(i => i.productId === item.productId)}
                         onChange={() => toggleSelect(item)}
                         style={{ marginTop: "10px", width: "20px", height: "20px" }}
                       />
+                      <p>
+                        Chọn sản phẩm này để mua
+                      </p>
                     </div>
                   </div>
                 </Card.Body>
@@ -196,7 +202,18 @@ function Cart() {
       >
         Mua các sản phẩm đã chọn
       </Button>
+      <hr />
+      {itemsToPurchase?.map((item) => {
+        return (
+          <div key={item.productId}>
+            <h5>{getProductById(item.productId)?.name}</h5>
+            <p>💰 {getProductById(item.productId)?.price * item.quantity} ₫</p>
+            <p>Số lượng: {item.quantity}</p>
+          </div>
 
+        )
+
+      })}
     </Container>
   );
 }
