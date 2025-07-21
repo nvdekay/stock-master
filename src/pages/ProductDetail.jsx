@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import api from "../api/axiosInstance";
 import { useAuth } from "../auth/AuthProvider";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import axios from "axios";
+import { useCart } from "../contexts/CartContext"; // Import useCart để cập nhật giỏ hàng
 
 function ProductDetail() {
     const { id } = useParams(); // Lấy id từ URL
@@ -11,6 +13,8 @@ function ProductDetail() {
     const [relatedProducts, setRelatedProducts] = useState([]);
     const { user, token } = useAuth();
     const navigate = useNavigate();
+
+    const { updateCartItems } = useCart(); // Lấy hàm cập nhật giỏ hàng từ context
 
     // Lấy thông tin chi tiết sản phẩm
     useEffect(() => {
@@ -66,43 +70,67 @@ function ProductDetail() {
             navigate("/auth/login", { state: { from: location.pathname } });
             return;
         }
-        try {
-            // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-            const checkRes = await api.get(
-                `/carts?userId=${user.id}&productId=${productId}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
 
-            if (checkRes.data.length > 0) {
-                // Nếu đã có, tăng quantity
-                const existingItem = checkRes.data[0];
-                await api.patch(`/carts/${existingItem.id}`, {
-                    quantity: existingItem.quantity + 1
+        try {
+            // 1. Kiểm tra user đã có giỏ hàng chưa
+            const cartRes = await axios.get(`http://localhost:9999/carts?userID=${user.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            // Nếu giỏ hàng đã tồn tại
+            if (cartRes.data.length > 0) {
+                const cart = cartRes.data[0];
+                const existingItem = cart.items.find(item => item.productId === productId);
+
+                let updatedItems;
+                if (existingItem) {
+                    // Nếu sản phẩm đã có → tăng số lượng
+                    updatedItems = cart.items.map(item =>
+                        item.productId === productId
+                            ? { ...item, quantity: item.quantity + 1 }
+                            : item
+                    );
+                } else {
+                    // Nếu sản phẩm chưa có → thêm mới vào items
+                    updatedItems = [...cart.items, { productId: productId, quantity: 1 }];
+
+                    
+                }
+
+                // 2. Gửi PATCH để cập nhật toàn bộ items
+                await axios.patch(`http://localhost:9999/carts/${cart.id}`, {
+                    items: updatedItems
                 }, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                alert("Đã cập nhật số lượng sản phẩm có sẵn trong giỏ hàng");
+
+                updateCartItems(); // Cập nhật số lượng item trong giỏ hàng
+                alert("Đã cập nhật giỏ hàng");
             } else {
-                // Nếu chưa có, thêm mới
-                await api.post("/carts", {
-                    userId: user.id,
-                    productId: productId,
-                    quantity: 1
+                // Nếu chưa có giỏ hàng → tạo mới
+                await axios.post(`http://localhost:9999/carts`, {
+                    userID: user.id,
+                    items: [
+                        {
+                            productId: productId,
+                            quantity: 1
+                        }
+                    ]
                 }, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                alert("Đã thêm sản phẩm vào giỏ hàng");
+
+                alert("Đã tạo mới giỏ hàng và thêm sản phẩm");
+                updateCartItems(); // Cập nhật số lượng item trong giỏ hàng
             }
         } catch (err) {
-            console.error("Lỗi khi thêm/cập nhật giỏ hàng:", err);
+            console.error("Lỗi khi thêm vào giỏ hàng:", err);
             alert("Có lỗi xảy ra khi thêm vào giỏ hàng");
         }
     };
