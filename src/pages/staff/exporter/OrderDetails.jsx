@@ -72,22 +72,16 @@ const OrderDetails = () => {
     }, [orderId, updateMessage]);
 
     useEffect(() => {
-        if (!orderData) return;
         const fetchProductList = async () => {
             try {
-                const pList = [];
-                orderData.orderDetails.map(async (product) => {
-                    const p = await api.get(`http://localhost:9999/products/${product.productId}`)
-                    pList.push(p?.data);
-                })
-                console.log("pLIst: ", pList)
-                setProductList(pList);
+                const p = await api.get(`http://localhost:9999/products`)
+                setProductList(p.data);
             } catch (err) {
                 console.log("error fetching product list: ", err);
             }
         };
         fetchProductList();
-    }, [orderData, updateMessage])
+    }, [])
 
     const handleExport = async (orderStatus) => {
         try {
